@@ -32,7 +32,7 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hello! I'm your AI Personal Assistant. How can I help you today?",
+      text: "Hello! I'm your SUNDAY-PAAI. How can I help you today?",
       sender: 'ai',
       timestamp: new Date(),
       type: 'text'
@@ -99,7 +99,7 @@ export default function Home() {
           <div className="w-16 h-16 bg-gradient-to-r from-ai-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <Brain className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold gradient-text">AI Personal Assistant</h1>
+          <h1 className="text-2xl font-bold gradient-text">SUNDAY-PAAI</h1>
           <p className="text-slate-300 mt-2">Loading...</p>
         </div>
       </div>
@@ -151,8 +151,8 @@ export default function Home() {
               <Brain className="w-6 h-6 text-white" />
             </motion.div>
             <div>
-              <h1 className="text-2xl font-bold gradient-text">AI Personal Assistant</h1>
-              <p className="text-slate-300 text-sm">Your Digital Companion</p>
+              <h1 className="text-2xl font-bold gradient-text">SUNDAY-PAAI</h1>
+              <p className="text-slate-300 text-sm">My Life</p>
             </div>
           </div>
           
