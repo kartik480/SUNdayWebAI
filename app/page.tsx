@@ -66,18 +66,52 @@ export default function Home() {
     setInputText('')
     setIsTyping(true)
 
-    // Simulate AI response
-    setTimeout(() => {
+    // Get AI response from Flask backend
+    try {
+      const response = await fetch('/api/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: inputText }),
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success && data.messages.length >= 2) {
+          const aiResponse: Message = {
+            id: (Date.now() + 1).toString(),
+            text: data.messages[1].text,
+            sender: 'ai',
+            timestamp: new Date(),
+            type: 'text'
+          }
+          setMessages((prev: Message[]) => [...prev, aiResponse])
+        }
+      } else {
+        // Fallback response if API fails
+        const aiResponse: Message = {
+          id: (Date.now() + 1).toString(),
+          text: "I'm having trouble connecting right now. Please try again!",
+          sender: 'ai',
+          timestamp: new Date(),
+          type: 'text'
+        }
+        setMessages((prev: Message[]) => [...prev, aiResponse])
+      }
+    } catch (error) {
+      console.error('Error getting AI response:', error)
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `I understand you said: "${inputText}". I'm here to help you with any task, question, or conversation you need. What would you like to explore?`,
+        text: "Sorry, I'm having connection issues. Please try again!",
         sender: 'ai',
         timestamp: new Date(),
         type: 'text'
       }
       setMessages((prev: Message[]) => [...prev, aiResponse])
-      setIsTyping(false)
-    }, 1500)
+    }
+    
+    setIsTyping(false)
   }
 
   const toggleVoice = () => {
