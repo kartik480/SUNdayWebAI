@@ -32,7 +32,7 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hello! I'm your SUNDAY-PAAI. How can I help you today?",
+      text: "Hey there! 😊 I'm SUNDAY-PAAI, your AI buddy! What's up? How can I help you today?",
       sender: 'ai',
       timestamp: new Date(),
       type: 'text'
