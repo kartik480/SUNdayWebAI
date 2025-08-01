@@ -83,7 +83,7 @@
                         <span id="aiStatus">Connecting...</span>
                     </span>
                     <span id="aiProvider" class="text-purple-400">🤖 Ollama</span>
-                    <span id="currentModel" class="text-blue-400">🧠 kart_2003/sunday</span>
+                    <span id="currentModel" class="text-blue-400">🧠 gemma2:2b</span>
                 </div>
             </div>
         </header>
@@ -136,17 +136,33 @@
                 <h3 class="text-lg font-semibold text-white mb-4">AI Model Settings</h3>
                 <div class="flex items-center space-x-4">
                     <select id="modelSelect" class="bg-slate-800 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="gemma2:2b">🤖 Gemma 2B (Default)</option>
                         <option value="kart_2003/sunday">🎯 SUNDAY-PAAI (Custom)</option>
-                        <option value="llama2">Llama 2</option>
-                        <option value="mistral">Mistral</option>
-                        <option value="codellama">Code Llama</option>
-                        <option value="llama2:7b">Llama 2 (7B)</option>
-                        <option value="llama2:13b">Llama 2 (13B)</option>
+                        <option value="llama3.2:latest">🦙 Llama 3.2</option>
+                        <option value="llama2:7b">🦙 Llama 2 (7B)</option>
+                        <option value="mistral">🌪️ Mistral</option>
+                        <option value="codellama">💻 Code Llama</option>
                     </select>
                     <button id="changeModelBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-all duration-200">
                         Change Model
                     </button>
-                    <span id="modelStatus" class="text-sm text-slate-300">Current: kart_2003/sunday</span>
+                    <span id="modelStatus" class="text-sm text-slate-300">Current: gemma2:2b</span>
+                </div>
+            </div>
+
+            <!-- Memory Management -->
+            <div class="glass rounded-2xl p-6 mt-4">
+                <h3 class="text-lg font-semibold text-white mb-4">Memory Management</h3>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <span id="memoryStatus" class="text-sm text-slate-300">Memory: 0/10 entries</span>
+                        <div class="w-32 bg-slate-700 rounded-full h-2">
+                            <div id="memoryBar" class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <button id="clearMemoryBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-200">
+                        Clear Memory
+                    </button>
                 </div>
             </div>
         </div>
@@ -388,8 +404,54 @@
             });
         });
 
+        // Memory management functions
+        async function loadMemoryStatus() {
+            try {
+                const response = await fetch('/api/memory');
+                const data = await response.json();
+                
+                const memoryStatus = document.getElementById('memoryStatus');
+                const memoryBar = document.getElementById('memoryBar');
+                
+                const percentage = (data.memory_entries / data.memory_limit) * 100;
+                memoryStatus.textContent = `Memory: ${data.memory_entries}/${data.memory_limit} entries`;
+                memoryBar.style.width = `${percentage}%`;
+            } catch (error) {
+                console.error('Memory status error:', error);
+            }
+        }
+
+        async function clearMemory() {
+            try {
+                const response = await fetch('/api/memory/clear', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    showSuccess('Memory cleared successfully');
+                    loadMemoryStatus();
+                } else {
+                    showError('Failed to clear memory');
+                }
+            } catch (error) {
+                console.error('Clear memory error:', error);
+                showError('Failed to clear memory');
+            }
+        }
+
+        // Event listeners
+        document.getElementById('clearMemoryBtn').addEventListener('click', clearMemory);
+
+        // Load memory status on startup
+        loadMemoryStatus();
+
         // Periodic status check
         setInterval(checkAIStatus, 30000); // Check every 30 seconds
+        setInterval(loadMemoryStatus, 10000); // Update memory status every 10 seconds
     </script>
 </body>
 </html> 

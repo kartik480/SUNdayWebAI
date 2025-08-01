@@ -8,35 +8,92 @@ app = Flask(__name__)
 
 # Ollama configuration
 OLLAMA_BASE_URL = "http://localhost:11434"
-DEFAULT_MODEL = "llama2:7b"  # Use available model until custom model is ready
+DEFAULT_MODEL = "gemma2:2b"  # Use Gemma 2B as default model
 
 # Store messages in memory (in production, use a database)
 messages = [
     {
         'id': '1',
-        'text': "Hello! I'm your SUNDAY-PAAI. How can I help you today?",
+        'text': "Hello! I'm your SUNDAY-PAAI powered by Gemma 2B. I have memory capabilities and can remember our conversations. How can I help you today?",
         'sender': 'ai',
         'timestamp': datetime.now().isoformat(),
         'type': 'text'
     }
 ]
 
-def get_ollama_response(prompt, model=DEFAULT_MODEL):
-    """Get response from Ollama API"""
+# Memory system
+conversation_memory = []
+memory_limit = 10  # Keep last 10 exchanges for context
+
+def add_to_memory(user_message, ai_response):
+    """Add conversation to memory"""
+    global conversation_memory
+    memory_entry = {
+        'user': user_message,
+        'ai': ai_response,
+        'timestamp': datetime.now().isoformat()
+    }
+    conversation_memory.append(memory_entry)
+    
+    # Keep only the last memory_limit entries
+    if len(conversation_memory) > memory_limit:
+        conversation_memory = conversation_memory[-memory_limit:]
+    
+    print(f"💾 Memory updated: {len(conversation_memory)} entries stored")
+
+def get_conversation_context():
+    """Get recent conversation context for better responses"""
+    if not conversation_memory:
+        return ""
+    
+    context = "Recent conversation context:\n"
+    for i, entry in enumerate(conversation_memory[-3:], 1):  # Last 3 exchanges
+        context += f"{i}. User: {entry['user']}\n"
+        context += f"   AI: {entry['ai']}\n"
+    context += "\nCurrent conversation: "
+    return context
+
+def warm_up_model():
+    """Warm up the model to make first response faster"""
     try:
+        print(f"🔥 Warming up {DEFAULT_MODEL}...")
+        warm_up_prompt = "Hi"
+        get_ollama_response(warm_up_prompt, DEFAULT_MODEL)
+        print(f"✅ {DEFAULT_MODEL} is ready!")
+    except Exception as e:
+        print(f"⚠️  Warm-up failed: {e}")
+
+def get_ollama_response(prompt, model=DEFAULT_MODEL):
+    """Get response from Ollama API with memory context"""
+    try:
+        # Get conversation context for better responses
+        context = get_conversation_context()
+        enhanced_prompt = context + prompt if context else prompt
+        
         url = f"{OLLAMA_BASE_URL}/api/generate"
         payload = {
             "model": model,
-            "prompt": prompt,
-            "stream": False
+            "prompt": enhanced_prompt,
+            "stream": False,
+            "options": {
+                "temperature": 0.7,
+                "top_p": 0.9,
+                "num_predict": 150  # Increased for better context responses
+            }
         }
         
-        response = requests.post(url, json=payload, timeout=30)
+        # Increase timeout for first response, especially for Gemma 2B
+        timeout = 60 if model == "gemma2:2b" else 30
+        
+        response = requests.post(url, json=payload, timeout=timeout)
         response.raise_for_status()
         
         result = response.json()
         return result.get('response', 'Sorry, I could not generate a response.')
         
+    except requests.exceptions.Timeout as e:
+        print(f"Ollama API timeout: {e}")
+        return "I'm taking longer than expected to respond. Please try again with a shorter question."
     except requests.exceptions.RequestException as e:
         print(f"Ollama API error: {e}")
         return f"I'm having trouble connecting to my AI brain right now. Error: {str(e)}"
@@ -96,6 +153,9 @@ def send_message():
     }
     messages.append(ai_response)
     
+    # Add to memory for future context
+    add_to_memory(data['text'], ai_response_text)
+    
     return jsonify({'success': True, 'messages': [user_message, ai_response]})
 
 @app.route('/api/status')
@@ -149,17 +209,33 @@ def get_model_info():
     """Get information about the current model"""
     return jsonify({
         'name': DEFAULT_MODEL,
-        'description': 'Custom SUNDAY-PAAI model based on Llama 3.2',
-        'base_model': 'llama3.2',
-        'creator': 'kart_2003',
-        'system_prompt': 'You are a friendly assistant.',
-        'custom': True
+        'description': 'SUNDAY-PAAI powered by Google Gemma 2B',
+        'base_model': 'gemma2:2b',
+        'creator': 'Google',
+        'system_prompt': 'You are a friendly and helpful AI assistant.',
+        'custom': False
     })
 
+@app.route('/api/memory')
+def get_memory():
+    """Get current memory status"""
+    return jsonify({
+        'memory_entries': len(conversation_memory),
+        'memory_limit': memory_limit,
+        'recent_context': conversation_memory[-3:] if conversation_memory else []
+    })
+
+@app.route('/api/memory/clear', methods=['POST'])
+def clear_memory():
+    """Clear conversation memory"""
+    global conversation_memory
+    conversation_memory = []
+    return jsonify({'success': True, 'message': 'Memory cleared successfully'})
+
 if __name__ == '__main__':
-    print("🚀 Starting SUNDAY-PAAI Flask Server with Custom Model Integration...")
+    print("🚀 Starting SUNDAY-PAAI Flask Server with Gemma 2B Integration...")
     print(f"🤖 AI Provider: Ollama")
-    print(f"🧠 Custom Model: {DEFAULT_MODEL}")
+    print(f"🧠 Model: {DEFAULT_MODEL}")
     print(f"🌐 Server will be available at: http://localhost:8080")
     print(f"🔗 Ollama API: {OLLAMA_BASE_URL}")
     print("📋 Press Ctrl+C to stop the server")
@@ -169,13 +245,15 @@ if __name__ == '__main__':
         models = get_available_models()
         print(f"✅ Available models: {', '.join(models)}")
         if DEFAULT_MODEL in models:
-            print(f"🎯 Custom model '{DEFAULT_MODEL}' is available!")
+            print(f"🎯 Model '{DEFAULT_MODEL}' is available!")
+            # Warm up the model for faster first response
+            warm_up_model()
         else:
-            print(f"⚠️  Custom model '{DEFAULT_MODEL}' not found. Please ensure it's created.")
+            print(f"⚠️  Model '{DEFAULT_MODEL}' not found. Please ensure it's installed.")
     except:
         print("⚠️  Warning: Ollama not detected. Please make sure Ollama is running.")
         print("   Install Ollama from: https://ollama.ai")
-        print(f"   Then create your custom model: kart_2003/sunday")
+        print(f"   Then install Gemma 2B: ollama pull gemma2:2b")
     
     try:
         app.run(debug=True, host='0.0.0.0', port=8080)
