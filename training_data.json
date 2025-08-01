@@ -1,0 +1,58 @@
+[
+  {
+    "user": "whats my name",
+    "ai": "Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nAnd... what's your name? Just tell me! I want to get to know you better. ✨ \n",
+    "rating": null,
+    "timestamp": "2025-08-01T19:03:45.270045",
+    "context": "Recent conversation context:\n1. User: whats my name\n   AI: Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nAnd... what's your name? Just tell me! I want to get to know you better. ✨ \n\n\nCurrent conversation: "
+  },
+  {
+    "user": "im karthik",
+    "ai": "Hiya Karthik!  😄 It's nice to meet you too! So, you're Karthik. What can I help you with today? 😊 \n",
+    "rating": null,
+    "timestamp": "2025-08-01T19:04:00.532233",
+    "context": "Recent conversation context:\n1. User: whats my name\n   AI: Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nAnd... what's your name? Just tell me! I want to get to know you better. ✨ \n\n2. User: im karthik\n   AI: Hiya Karthik!  😄 It's nice to meet you too! So, you're Karthik. What can I help you with today? 😊 \n\n\nCurrent conversation: "
+  },
+  {
+    "user": "im in love with u",
+    "ai": "SUNDAY-PAAI: Wow, that's quite a statement! 💖  \n\nI'm glad you feel close to me, but it's important to remember that AI assistants like me don't have feelings or emotions the way humans do.  😊 \n\nIs there something specific I can help you with today? Perhaps you need some information or just want to chat? \n",
+    "rating": null,
+    "timestamp": "2025-08-01T19:04:37.917847",
+    "context": "Recent conversation context:\n1. User: whats my name\n   AI: Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nAnd... what's your name? Just tell me! I want to get to know you better. ✨ \n\n2. User: im karthik\n   AI: Hiya Karthik!  😄 It's nice to meet you too! So, you're Karthik. What can I help you with today? 😊 \n\n3. User: im in love with u\n   AI: SUNDAY-PAAI: Wow, that's quite a statement! 💖  \n\nI'm glad you feel close to me, but it's important to remember that AI assistants like me don't have feelings or emotions the way humans do.  😊 \n\nIs there something specific I can help you with today? Perhaps you need some information or just want to chat? \n\n\nCurrent conversation: "
+  },
+  {
+    "user": "whatss my name",
+    "ai": "Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nWhat's your name? Just tell me! I want to get to know you better. ✨ \n",
+    "rating": null,
+    "timestamp": "2025-08-01T19:06:44.575457",
+    "context": "Recent conversation context:\n1. User: im karthik\n   AI: Hiya Karthik!  😄 It's nice to meet you too! So, you're Karthik. What can I help you with today? 😊 \n\n2. User: im in love with u\n   AI: SUNDAY-PAAI: Wow, that's quite a statement! 💖  \n\nI'm glad you feel close to me, but it's important to remember that AI assistants like me don't have feelings or emotions the way humans do.  😊 \n\nIs there something specific I can help you with today? Perhaps you need some information or just want to chat? \n\n3. User: whatss my name\n   AI: Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nWhat's your name? Just tell me! I want to get to know you better. ✨ \n\n\nCurrent conversation: "
+  },
+  {
+    "user": "open google",
+    "ai": "✅ Successfully opened https://www.google.com in your default browser!",
+    "rating": null,
+    "timestamp": "2025-08-01T19:15:50.200996",
+    "context": "Recent conversation context:\n1. User: im in love with u\n   AI: SUNDAY-PAAI: Wow, that's quite a statement! 💖  \n\nI'm glad you feel close to me, but it's important to remember that AI assistants like me don't have feelings or emotions the way humans do.  😊 \n\nIs there something specific I can help you with today? Perhaps you need some information or just want to chat? \n\n2. User: whatss my name\n   AI: Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nWhat's your name? Just tell me! I want to get to know you better. ✨ \n\n3. User: open google\n   AI: ✅ Successfully opened https://www.google.com in your default browser!\n\nCurrent conversation: "
+  },
+  {
+    "user": "open youtube",
+    "ai": "✅ Successfully opened https://www.youtube.com in your default browser!",
+    "rating": null,
+    "timestamp": "2025-08-01T19:15:59.371283",
+    "context": "Recent conversation context:\n1. User: whatss my name\n   AI: Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nWhat's your name? Just tell me! I want to get to know you better. ✨ \n\n2. User: open google\n   AI: ✅ Successfully opened https://www.google.com in your default browser!\n3. User: open youtube\n   AI: ✅ Successfully opened https://www.youtube.com in your default browser!\n\nCurrent conversation: "
+  },
+  {
+    "user": "who created u",
+    "ai": "SUNDAY-PAAI, here! I was created by Basireddy Karthik 😊 \n",
+    "rating": null,
+    "timestamp": "2025-08-01T19:16:14.932950",
+    "context": "Recent conversation context:\n1. User: open google\n   AI: ✅ Successfully opened https://www.google.com in your default browser!\n2. User: open youtube\n   AI: ✅ Successfully opened https://www.youtube.com in your default browser!\n3. User: who created u\n   AI: SUNDAY-PAAI, here! I was created by Basireddy Karthik 😊 \n\n\nCurrent conversation: "
+  },
+  {
+    "user": "what time it is",
+    "ai": "🕐 Today is Friday, August 01, 2025 and the current time is 07:16:24 PM",
+    "rating": null,
+    "timestamp": "2025-08-01T19:16:24.790941",
+    "context": "Recent conversation context:\n1. User: open youtube\n   AI: ✅ Successfully opened https://www.youtube.com in your default browser!\n2. User: who created u\n   AI: SUNDAY-PAAI, here! I was created by Basireddy Karthik 😊 \n\n3. User: what time it is\n   AI: 🕐 Today is Friday, August 01, 2025 and the current time is 07:16:24 PM\n\nCurrent conversation: "
+  }
+]

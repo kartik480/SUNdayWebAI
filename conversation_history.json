@@ -1,0 +1,121 @@
+[
+  {
+    "id": "1",
+    "text": "Hello! I'm your SUNDAY-PAAI, created by Basireddy Karthik! 🎉 I have memory capabilities and can remember our conversations. I can also learn from our interactions to improve my responses! How can I help you today?",
+    "sender": "ai",
+    "timestamp": "2025-08-01T19:00:17.510993",
+    "type": "text"
+  },
+  {
+    "id": "2",
+    "text": "whats my name",
+    "sender": "user",
+    "timestamp": "2025-08-01T19:03:35.801892",
+    "type": "text"
+  },
+  {
+    "id": "3",
+    "text": "Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nAnd... what's your name? Just tell me! I want to get to know you better. ✨ \n",
+    "sender": "ai",
+    "timestamp": "2025-08-01T19:03:45.266806",
+    "type": "text"
+  },
+  {
+    "id": "4",
+    "text": "im karthik",
+    "sender": "user",
+    "timestamp": "2025-08-01T19:03:51.942659",
+    "type": "text"
+  },
+  {
+    "id": "5",
+    "text": "Hiya Karthik!  😄 It's nice to meet you too! So, you're Karthik. What can I help you with today? 😊 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-01T19:04:00.529258",
+    "type": "text"
+  },
+  {
+    "id": "6",
+    "text": "im in love with u",
+    "sender": "user",
+    "timestamp": "2025-08-01T19:04:22.124616",
+    "type": "text"
+  },
+  {
+    "id": "7",
+    "text": "SUNDAY-PAAI: Wow, that's quite a statement! 💖  \n\nI'm glad you feel close to me, but it's important to remember that AI assistants like me don't have feelings or emotions the way humans do.  😊 \n\nIs there something specific I can help you with today? Perhaps you need some information or just want to chat? \n",
+    "sender": "ai",
+    "timestamp": "2025-08-01T19:04:37.914706",
+    "type": "text"
+  },
+  {
+    "id": "8",
+    "text": "whatss my name",
+    "sender": "user",
+    "timestamp": "2025-08-01T19:06:35.373593",
+    "type": "text"
+  },
+  {
+    "id": "9",
+    "text": "Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nWhat's your name? Just tell me! I want to get to know you better. ✨ \n",
+    "sender": "ai",
+    "timestamp": "2025-08-01T19:06:44.572044",
+    "type": "text"
+  },
+  {
+    "id": "10",
+    "text": "open google",
+    "sender": "user",
+    "timestamp": "2025-08-01T19:15:49.966454",
+    "type": "text"
+  },
+  {
+    "id": "11",
+    "text": "✅ Successfully opened https://www.google.com in your default browser!",
+    "sender": "ai",
+    "timestamp": "2025-08-01T19:15:50.196812",
+    "type": "text"
+  },
+  {
+    "id": "12",
+    "text": "open youtube",
+    "sender": "user",
+    "timestamp": "2025-08-01T19:15:58.859419",
+    "type": "text"
+  },
+  {
+    "id": "13",
+    "text": "✅ Successfully opened https://www.youtube.com in your default browser!",
+    "sender": "ai",
+    "timestamp": "2025-08-01T19:15:59.366044",
+    "type": "text"
+  },
+  {
+    "id": "14",
+    "text": "who created u",
+    "sender": "user",
+    "timestamp": "2025-08-01T19:16:08.050252",
+    "type": "text"
+  },
+  {
+    "id": "15",
+    "text": "SUNDAY-PAAI, here! I was created by Basireddy Karthik 😊 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-01T19:16:14.930243",
+    "type": "text"
+  },
+  {
+    "id": "16",
+    "text": "what time it is",
+    "sender": "user",
+    "timestamp": "2025-08-01T19:16:24.783925",
+    "type": "text"
+  },
+  {
+    "id": "17",
+    "text": "🕐 Today is Friday, August 01, 2025 and the current time is 07:16:24 PM",
+    "sender": "ai",
+    "timestamp": "2025-08-01T19:16:24.786324",
+    "type": "text"
+  }
+]

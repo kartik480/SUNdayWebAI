@@ -3,6 +3,10 @@ from datetime import datetime
 import json
 import requests
 import os
+import webbrowser
+import subprocess
+import platform
+import re
 
 app = Flask(__name__)
 
@@ -10,23 +14,107 @@ app = Flask(__name__)
 OLLAMA_BASE_URL = "http://localhost:11434"
 DEFAULT_MODEL = "gemma2:2b"  
 
-# Store messages in memory (in production, use a database)
-messages = [
-    {
-        'id': '1',
-        'text': "Hello! I'm your SUNDAY-PAAI, created by Basireddy Karthik! 🎉 I have memory capabilities and can remember our conversations. I can also learn from our interactions to improve my responses! How can I help you today?",
-        'sender': 'ai',
-        'timestamp': datetime.now().isoformat(),
-        'type': 'text'
-    }
-]
+# File paths for persistent storage
+CONVERSATION_FILE = "conversation_history.json"
+MEMORY_FILE = "memory_data.json"
+TRAINING_FILE = "training_data.json"
 
-# Memory system
-conversation_memory = []
+# Load or create conversation history
+def load_conversation_history():
+    """Load conversation history from file"""
+    try:
+        if os.path.exists(CONVERSATION_FILE):
+            with open(CONVERSATION_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                print(f"📂 Loaded {len(data)} messages from conversation history")
+                return data
+        else:
+            # Create initial welcome message
+            initial_message = {
+                'id': '1',
+                'text': "Hello! I'm your SUNDAY-PAAI, created by Basireddy Karthik! 🎉 I have memory capabilities and can remember our conversations. I can also learn from our interactions to improve my responses! Plus, I can access the internet to get real-time information and perform actions like opening websites! How can I help you today?",
+                'sender': 'ai',
+                'timestamp': datetime.now().isoformat(),
+                'type': 'text'
+            }
+            save_conversation_history([initial_message])
+            return [initial_message]
+    except Exception as e:
+        print(f"⚠️ Error loading conversation history: {e}")
+        # Return default welcome message if file is corrupted
+        return [{
+            'id': '1',
+            'text': "Hello! I'm your SUNDAY-PAAI, created by Basireddy Karthik! 🎉 I have memory capabilities and can remember our conversations. I can also learn from our interactions to improve my responses! Plus, I can access the internet to get real-time information and perform actions like opening websites! How can I help you today?",
+            'sender': 'ai',
+            'timestamp': datetime.now().isoformat(),
+            'type': 'text'
+        }]
+
+def save_conversation_history(messages):
+    """Save conversation history to file"""
+    try:
+        with open(CONVERSATION_FILE, 'w', encoding='utf-8') as f:
+            json.dump(messages, f, indent=2, ensure_ascii=False)
+        print(f"💾 Saved {len(messages)} messages to conversation history")
+    except Exception as e:
+        print(f"⚠️ Error saving conversation history: {e}")
+
+# Load or create memory data
+def load_memory_data():
+    """Load memory data from file"""
+    try:
+        if os.path.exists(MEMORY_FILE):
+            with open(MEMORY_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                print(f"📂 Loaded {len(data)} memory entries")
+                return data
+        else:
+            return []
+    except Exception as e:
+        print(f"⚠️ Error loading memory data: {e}")
+        return []
+
+def save_memory_data(memory_data):
+    """Save memory data to file"""
+    try:
+        with open(MEMORY_FILE, 'w', encoding='utf-8') as f:
+            json.dump(memory_data, f, indent=2, ensure_ascii=False)
+        print(f"💾 Saved {len(memory_data)} memory entries")
+    except Exception as e:
+        print(f"⚠️ Error saving memory data: {e}")
+
+# Load or create training data
+def load_training_data():
+    """Load training data from file"""
+    try:
+        if os.path.exists(TRAINING_FILE):
+            with open(TRAINING_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                print(f"📂 Loaded {len(data)} training samples")
+                return data
+        else:
+            return []
+    except Exception as e:
+        print(f"⚠️ Error loading training data: {e}")
+        return []
+
+def save_training_data(training_data):
+    """Save training data to file"""
+    try:
+        with open(TRAINING_FILE, 'w', encoding='utf-8') as f:
+            json.dump(training_data, f, indent=2, ensure_ascii=False)
+        print(f"💾 Saved {len(training_data)} training samples")
+    except Exception as e:
+        print(f"⚠️ Error saving training data: {e}")
+
+# Initialize data from files
+messages = load_conversation_history()
+conversation_memory = load_memory_data()
+training_data = load_training_data()
+
 memory_limit = 10  # Keep last 10 exchanges for context
 
 # Training system
-training_data = []
 training_status = {
     'is_training': False,
     'progress': 0,
@@ -51,6 +139,8 @@ def add_to_memory(user_message, ai_response):
     if len(conversation_memory) > memory_limit:
         conversation_memory = conversation_memory[-memory_limit:]
     
+    # Save to file
+    save_memory_data(conversation_memory)
     print(f"💾 Memory updated: {len(conversation_memory)} entries stored")
 
 def add_to_training_data(user_message, ai_response, rating=None):
@@ -64,6 +154,9 @@ def add_to_training_data(user_message, ai_response, rating=None):
         'context': get_conversation_context()
     }
     training_data.append(training_entry)
+    
+    # Save to file
+    save_training_data(training_data)
     print(f"📚 Training data updated: {len(training_data)} samples collected")
 
 def get_conversation_context():
@@ -129,9 +222,111 @@ def warm_up_model():
     except Exception as e:
         print(f"⚠️  Warm-up failed: {e}")
 
+def get_current_time():
+    """Get current date and time"""
+    now = datetime.now()
+    return {
+        'date': now.strftime("%A, %B %d, %Y"),
+        'time': now.strftime("%I:%M:%S %p"),
+        'timezone': 'Local Time',
+        'formatted': f"Today is {now.strftime('%A, %B %d, %Y')} and the current time is {now.strftime('%I:%M:%S %p')}"
+    }
+
+def open_website(url):
+    """Open a website in the default browser"""
+    try:
+        # Clean and validate URL
+        if not url.startswith(('http://', 'https://')):
+            url = 'https://' + url
+        
+        # Open in default browser
+        webbrowser.open(url)
+        return f"✅ Successfully opened {url} in your default browser!"
+    except Exception as e:
+        return f"❌ Sorry, I couldn't open {url}. Error: {str(e)}"
+
+def open_youtube():
+    """Open YouTube in the default browser"""
+    return open_website("https://www.youtube.com")
+
+def open_google():
+    """Open Google in the default browser"""
+    return open_website("https://www.google.com")
+
+def search_web(query):
+    """Perform a web search (simulated - opens Google search)"""
+    try:
+        search_url = f"https://www.google.com/search?q={requests.utils.quote(query)}"
+        webbrowser.open(search_url)
+        return f"🔍 I've opened a Google search for '{query}' in your browser!"
+    except Exception as e:
+        return f"❌ Sorry, I couldn't perform the web search. Error: {str(e)}"
+
+def detect_action_request(prompt):
+    """Detect if the user is requesting an action"""
+    prompt_lower = prompt.lower()
+    
+    # Time-related requests
+    time_keywords = ['what time', 'current time', 'what is the time', 'time now', 'what day', 'current date', 'today\'s date']
+    if any(keyword in prompt_lower for keyword in time_keywords):
+        return 'time'
+    
+    # YouTube requests
+    youtube_keywords = ['open youtube', 'go to youtube', 'youtube', 'play youtube', 'watch youtube']
+    if any(keyword in prompt_lower for keyword in youtube_keywords):
+        return 'youtube'
+    
+    # Google requests
+    google_keywords = ['open google', 'go to google', 'search google', 'google search']
+    if any(keyword in prompt_lower for keyword in google_keywords):
+        return 'google'
+    
+    # Web search requests
+    search_keywords = ['search for', 'search', 'find', 'look up', 'google']
+    if any(keyword in prompt_lower for keyword in search_keywords):
+        # Extract search query
+        for keyword in search_keywords:
+            if keyword in prompt_lower:
+                # Extract text after the search keyword
+                parts = prompt_lower.split(keyword, 1)
+                if len(parts) > 1:
+                    query = parts[1].strip()
+                    if query:
+                        return f'search:{query}'
+        return 'search'
+    
+    # URL opening requests
+    url_pattern = r'https?://[^\s]+'
+    urls = re.findall(url_pattern, prompt)
+    if urls:
+        return f'url:{urls[0]}'
+    
+    return None
+
 def get_ollama_response(prompt, model=DEFAULT_MODEL):
     """Get response from Ollama API with memory context"""
     try:
+        # Check for action requests first
+        action_type = detect_action_request(prompt)
+        
+        if action_type == 'time':
+            time_info = get_current_time()
+            return f"🕐 {time_info['formatted']}"
+        
+        elif action_type == 'youtube':
+            return open_youtube()
+        
+        elif action_type == 'google':
+            return open_google()
+        
+        elif action_type and action_type.startswith('search:'):
+            query = action_type.split(':', 1)[1]
+            return search_web(query)
+        
+        elif action_type and action_type.startswith('url:'):
+            url = action_type.split(':', 1)[1]
+            return open_website(url)
+        
         # Check for creator-related questions
         creator_keywords = [
             'who created you', 'who made you', 'who built you', 'who developed you',
@@ -211,7 +406,7 @@ Props for asking about my creator. Karthik is seriously the real deal in AI deve
         url = f"{OLLAMA_BASE_URL}/api/generate"
         payload = {
             "model": model,
-            "prompt": f"You are SUNDAY-PAAI, an AI assistant created by Basireddy Karthik. Always identify yourself as SUNDAY-PAAI, not as Gemma or any other model. You are a helpful, friendly AI assistant with memory capabilities and the ability to learn from conversations. {enhanced_prompt}",
+            "prompt": f"You are SUNDAY-PAAI, an AI assistant created by Basireddy Karthik. Always identify yourself as SUNDAY-PAAI, not as Gemma or any other model. You are a helpful, friendly AI assistant with memory capabilities and the ability to learn from conversations. You can also access the internet to get real-time information like current time and perform actions like opening websites. {enhanced_prompt}",
             "stream": False,
             "options": {
                 "temperature": 0.7,
@@ -278,6 +473,7 @@ def send_message():
         'type': 'text'
     }
     messages.append(user_message)
+    save_conversation_history(messages) # Save after each user message
     
     # Get AI response from Ollama using your custom model
     ai_response_text = get_ollama_response(data['text'])
@@ -290,6 +486,7 @@ def send_message():
         'type': 'text'
     }
     messages.append(ai_response)
+    save_conversation_history(messages) # Save after each AI response
     
     # Add to memory for future context
     add_to_memory(data['text'], ai_response_text)
@@ -371,7 +568,24 @@ def clear_memory():
     """Clear conversation memory"""
     global conversation_memory
     conversation_memory = []
+    save_memory_data(conversation_memory) # Save empty memory
     return jsonify({'success': True, 'message': 'Memory cleared successfully'})
+
+@app.route('/api/conversation/clear', methods=['POST'])
+def clear_conversation():
+    """Clear all conversation history"""
+    global messages
+    # Keep only the initial welcome message
+    initial_message = {
+        'id': '1',
+        'text': "Hello! I'm your SUNDAY-PAAI, created by Basireddy Karthik! 🎉 I have memory capabilities and can remember our conversations. I can also learn from our interactions to improve my responses! How can I help you today?",
+        'sender': 'ai',
+        'timestamp': datetime.now().isoformat(),
+        'type': 'text'
+    }
+    messages = [initial_message]
+    save_conversation_history(messages)
+    return jsonify({'success': True, 'message': 'Conversation history cleared successfully'})
 
 # Training endpoints
 @app.route('/api/training/status')
@@ -427,7 +641,36 @@ def clear_training_data():
     """Clear all training data"""
     global training_data
     training_data = []
+    save_training_data(training_data) # Save empty training data
     return jsonify({'success': True, 'message': 'Training data cleared successfully'})
+
+@app.route('/api/capabilities')
+def get_capabilities():
+    """Get information about AI capabilities"""
+    capabilities = {
+        'name': 'SUNDAY-PAAI',
+        'creator': 'Basireddy Karthik',
+        'features': {
+            'memory': 'Can remember conversation history and context',
+            'learning': 'Can learn from interactions and improve responses',
+            'internet_access': 'Can access real-time information and perform web actions',
+            'actions': [
+                'Get current time and date',
+                'Open websites (YouTube, Google, etc.)',
+                'Perform web searches',
+                'Open URLs directly'
+            ],
+            'conversation': 'Natural language processing with context awareness'
+        },
+        'supported_actions': {
+            'time': 'Ask for current time or date',
+            'youtube': 'Open YouTube in browser',
+            'google': 'Open Google in browser',
+            'search': 'Search the web for information',
+            'urls': 'Open any website URL'
+        }
+    }
+    return jsonify(capabilities)
 
 if __name__ == '__main__':
     print("🚀 Starting SUNDAY-PAAI Flask Server...")

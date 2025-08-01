@@ -160,9 +160,14 @@
                             <div id="memoryBar" class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" style="width: 0%"></div>
                         </div>
                     </div>
-                    <button id="clearMemoryBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-200">
-                        Clear Memory
-                    </button>
+                    <div class="flex space-x-2">
+                        <button id="clearMemoryBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-200">
+                            Clear Memory
+                        </button>
+                        <button id="clearConversationBtn" class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-all duration-200">
+                            Clear Chat
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -223,6 +228,55 @@
                         <button class="rating-btn bg-slate-700 text-white px-3 py-1 rounded hover:bg-slate-600 transition-all duration-200" data-rating="3">3 ⭐</button>
                         <button class="rating-btn bg-slate-700 text-white px-3 py-1 rounded hover:bg-slate-600 transition-all duration-200" data-rating="4">4 ⭐</button>
                         <button class="rating-btn bg-slate-700 text-white px-3 py-1 rounded hover:bg-slate-600 transition-all duration-200" data-rating="5">5 ⭐</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Capabilities -->
+            <div class="glass rounded-2xl p-6 mt-4">
+                <h3 class="text-lg font-semibold text-white mb-4">🌐 AI Capabilities</h3>
+                
+                <!-- Capabilities Display -->
+                <div id="capabilitiesDisplay" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Memory & Learning -->
+                        <div class="p-4 bg-slate-800 rounded-lg">
+                            <h4 class="text-sm font-medium text-white mb-2">🧠 Memory & Learning</h4>
+                            <ul class="text-xs text-slate-300 space-y-1">
+                                <li>• Remember conversation history</li>
+                                <li>• Learn from interactions</li>
+                                <li>• Context-aware responses</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Internet Access -->
+                        <div class="p-4 bg-slate-800 rounded-lg">
+                            <h4 class="text-sm font-medium text-white mb-2">🌐 Internet Access</h4>
+                            <ul class="text-xs text-slate-300 space-y-1">
+                                <li>• Get real-time information</li>
+                                <li>• Open websites</li>
+                                <li>• Perform web searches</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Action Examples -->
+                    <div class="p-4 bg-slate-800 rounded-lg">
+                        <h4 class="text-sm font-medium text-white mb-2">💡 Try These Commands:</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            <button class="capability-example bg-gradient-to-r from-blue-600 to-cyan-600 text-white p-2 rounded text-xs hover:from-blue-700 hover:to-cyan-700 transition-all duration-200">
+                                "What time is it?"
+                            </button>
+                            <button class="capability-example bg-gradient-to-r from-red-600 to-pink-600 text-white p-2 rounded text-xs hover:from-red-700 hover:to-pink-700 transition-all duration-200">
+                                "Open YouTube"
+                            </button>
+                            <button class="capability-example bg-gradient-to-r from-green-600 to-emerald-600 text-white p-2 rounded text-xs hover:from-green-700 hover:to-emerald-700 transition-all duration-200">
+                                "Search for AI news"
+                            </button>
+                            <button class="capability-example bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-2 rounded text-xs hover:from-purple-700 hover:to-indigo-700 transition-all duration-200">
+                                "Open google.com"
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -504,8 +558,34 @@
             }
         }
 
+        async function clearConversation() {
+            if (confirm('Are you sure you want to clear all conversation history? This cannot be undone.')) {
+                try {
+                    const response = await fetch('/api/conversation/clear', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    const result = await response.json();
+                    if (result.success) {
+                        showSuccess('Conversation history cleared successfully');
+                        // Reload the page to show fresh conversation
+                        location.reload();
+                    } else {
+                        showError('Failed to clear conversation history');
+                    }
+                } catch (error) {
+                    console.error('Clear conversation error:', error);
+                    showError('Failed to clear conversation history');
+                }
+            }
+        }
+
         // Event listeners
         document.getElementById('clearMemoryBtn').addEventListener('click', clearMemory);
+        document.getElementById('clearConversationBtn').addEventListener('click', clearConversation);
         
         // Training event listeners
         document.getElementById('startTrainingBtn').addEventListener('click', startTraining);
@@ -653,6 +733,18 @@
         // Load memory status on startup
         loadMemoryStatus();
         loadTrainingStatus();
+
+        // Add event listeners for capability example buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const capabilityExamples = document.querySelectorAll('.capability-example');
+            capabilityExamples.forEach(button => {
+                button.addEventListener('click', function() {
+                    const command = this.textContent.trim();
+                    document.getElementById('messageInput').value = command;
+                    document.getElementById('messageInput').focus();
+                });
+            });
+        });
 
         // Periodic status check
         setInterval(checkAIStatus, 30000); // Check every 30 seconds
