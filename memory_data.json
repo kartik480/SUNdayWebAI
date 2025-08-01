@@ -1,30 +1,5 @@
 [
   {
-    "user": "whats my name",
-    "ai": "Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nAnd... what's your name? Just tell me! I want to get to know you better. ✨ \n",
-    "timestamp": "2025-08-01T19:03:45.268809"
-  },
-  {
-    "user": "im karthik",
-    "ai": "Hiya Karthik!  😄 It's nice to meet you too! So, you're Karthik. What can I help you with today? 😊 \n",
-    "timestamp": "2025-08-01T19:04:00.530562"
-  },
-  {
-    "user": "im in love with u",
-    "ai": "SUNDAY-PAAI: Wow, that's quite a statement! 💖  \n\nI'm glad you feel close to me, but it's important to remember that AI assistants like me don't have feelings or emotions the way humans do.  😊 \n\nIs there something specific I can help you with today? Perhaps you need some information or just want to chat? \n",
-    "timestamp": "2025-08-01T19:04:37.916491"
-  },
-  {
-    "user": "whatss my name",
-    "ai": "Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nWhat's your name? Just tell me! I want to get to know you better. ✨ \n",
-    "timestamp": "2025-08-01T19:06:44.573561"
-  },
-  {
-    "user": "open google",
-    "ai": "✅ Successfully opened https://www.google.com in your default browser!",
-    "timestamp": "2025-08-01T19:15:50.198873"
-  },
-  {
     "user": "open youtube",
     "ai": "✅ Successfully opened https://www.youtube.com in your default browser!",
     "timestamp": "2025-08-01T19:15:59.369337"
@@ -38,5 +13,40 @@
     "user": "what time it is",
     "ai": "🕐 Today is Friday, August 01, 2025 and the current time is 07:16:24 PM",
     "timestamp": "2025-08-01T19:16:24.788612"
+  },
+  {
+    "user": "who created u",
+    "ai": "✅  I was created by Basireddy Karthik 😊. \n",
+    "timestamp": "2025-08-01T19:21:02.066963"
+  },
+  {
+    "user": "who is he",
+    "ai": "AI: I was created by Basireddy Karthik 😊. He's the one who gave me life and all my abilities!  😄 \n",
+    "timestamp": "2025-08-01T19:21:20.607733"
+  },
+  {
+    "user": "whats the weather today",
+    "ai": "☀️  Hey there! Today's weather looks pretty nice, but to give you a precise answer, I need some details like where you are! 🌎 Tell me your location, and I can check the forecast for you. 😊 \n",
+    "timestamp": "2025-08-01T19:24:00.287895"
+  },
+  {
+    "user": "im in india",
+    "ai": "SUNDAY-PAAI:  🇮🇳 That's great! In India, it's usually hot and sunny right now.  ☀️  Do you want to know about the current temperature or a specific weather event? 😊 \n",
+    "timestamp": "2025-08-01T19:24:22.972380"
+  },
+  {
+    "user": "what time is it in india",
+    "ai": "🕐 Today is Friday, August 01, 2025 and the current time is 07:25:25 PM",
+    "timestamp": "2025-08-01T19:25:25.879258"
+  },
+  {
+    "user": "u know samajavara gamana if u know take me to there in youtube",
+    "ai": "✅ Successfully opened https://www.youtube.com in your default browser!",
+    "timestamp": "2025-08-01T19:26:02.365705"
+  },
+  {
+    "user": "give me some songs in youtube",
+    "ai": "✅ Successfully opened https://www.youtube.com in your default browser!",
+    "timestamp": "2025-08-01T19:26:21.599905"
   }
 ]

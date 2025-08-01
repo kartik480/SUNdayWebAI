@@ -5,10 +5,10 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AI Personal Assistant - Your Digital Companion',
-  description: 'Experience the future of personal assistance with our cutting-edge AI technology. Get help with tasks, conversations, and productivity.',
-  keywords: 'AI, Personal Assistant, Artificial Intelligence, Productivity, Digital Assistant',
-  authors: [{ name: 'AI Personal Assistant Team' }],
+  title: 'SUNDAY-PAAI',
+  description: 'SUNDAY-PAAI - Your AI Assistant created by Basireddy Karthik. Experience the future of personal assistance with memory, learning, and internet capabilities.',
+  keywords: 'SUNDAY-PAAI, AI, Personal Assistant, Artificial Intelligence, Basireddy Karthik',
+  authors: [{ name: 'Basireddy Karthik' }],
   viewport: 'width=device-width, initial-scale=1',
   robots: 'index, follow',
 }

@@ -83,7 +83,7 @@ def save_memory_data(memory_data):
     except Exception as e:
         print(f"⚠️ Error saving memory data: {e}")
 
-# Load or create training data
+
 def load_training_data():
     """Load training data from file"""
     try:
