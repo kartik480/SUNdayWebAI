@@ -8,13 +8,13 @@ app = Flask(__name__)
 
 # Ollama configuration
 OLLAMA_BASE_URL = "http://localhost:11434"
-DEFAULT_MODEL = "gemma2:2b"  # Use Gemma 2B as default model
+DEFAULT_MODEL = "gemma2:2b"  
 
 # Store messages in memory (in production, use a database)
 messages = [
     {
         'id': '1',
-        'text': "Hello! I'm your SUNDAY-PAAI powered by Gemma 2B. I have memory capabilities and can remember our conversations. How can I help you today?",
+        'text': "Hello! I'm your SUNDAY-PAAI, created by Basireddy Karthik! 🎉 I have memory capabilities and can remember our conversations. I can also learn from our interactions to improve my responses! How can I help you today?",
         'sender': 'ai',
         'timestamp': datetime.now().isoformat(),
         'type': 'text'
@@ -24,6 +24,18 @@ messages = [
 # Memory system
 conversation_memory = []
 memory_limit = 10  # Keep last 10 exchanges for context
+
+# Training system
+training_data = []
+training_status = {
+    'is_training': False,
+    'progress': 0,
+    'epochs': 0,
+    'current_epoch': 0,
+    'loss': 0.0,
+    'accuracy': 0.0,
+    'last_trained': None
+}
 
 def add_to_memory(user_message, ai_response):
     """Add conversation to memory"""
@@ -41,6 +53,19 @@ def add_to_memory(user_message, ai_response):
     
     print(f"💾 Memory updated: {len(conversation_memory)} entries stored")
 
+def add_to_training_data(user_message, ai_response, rating=None):
+    """Add conversation to training data"""
+    global training_data
+    training_entry = {
+        'user': user_message,
+        'ai': ai_response,
+        'rating': rating,  # 1-5 rating for response quality
+        'timestamp': datetime.now().isoformat(),
+        'context': get_conversation_context()
+    }
+    training_data.append(training_entry)
+    print(f"📚 Training data updated: {len(training_data)} samples collected")
+
 def get_conversation_context():
     """Get recent conversation context for better responses"""
     if not conversation_memory:
@@ -52,6 +77,47 @@ def get_conversation_context():
         context += f"   AI: {entry['ai']}\n"
     context += "\nCurrent conversation: "
     return context
+
+def start_training():
+    """Start the training process"""
+    global training_status
+    if len(training_data) < 5:
+        return False, "Need at least 5 training samples to start training"
+    
+    training_status['is_training'] = True
+    training_status['progress'] = 0
+    training_status['epochs'] = 3
+    training_status['current_epoch'] = 0
+    training_status['loss'] = 0.0
+    training_status['accuracy'] = 0.0
+    
+    print("🚀 Starting AI training process...")
+    return True, "Training started successfully"
+
+def simulate_training_progress():
+    """Simulate training progress (in real implementation, this would be actual training)"""
+    global training_status
+    if not training_status['is_training']:
+        return
+    
+    # Simulate training progress
+    for epoch in range(training_status['epochs']):
+        training_status['current_epoch'] = epoch + 1
+        training_status['progress'] = ((epoch + 1) / training_status['epochs']) * 100
+        
+        # Simulate loss and accuracy improvements
+        training_status['loss'] = max(0.1, 2.0 - (epoch * 0.6))
+        training_status['accuracy'] = min(0.95, 0.3 + (epoch * 0.2))
+        
+        print(f"📈 Epoch {epoch + 1}/{training_status['epochs']} - Loss: {training_status['loss']:.3f}, Accuracy: {training_status['accuracy']:.3f}")
+        
+        # Simulate training time
+        import time
+        time.sleep(2)
+    
+    training_status['is_training'] = False
+    training_status['last_trained'] = datetime.now().isoformat()
+    print("✅ Training completed!")
 
 def warm_up_model():
     """Warm up the model to make first response faster"""
@@ -66,6 +132,78 @@ def warm_up_model():
 def get_ollama_response(prompt, model=DEFAULT_MODEL):
     """Get response from Ollama API with memory context"""
     try:
+        # Check for creator-related questions
+        creator_keywords = [
+            'who created you', 'who made you', 'who built you', 'who developed you',
+            'who is your creator', 'who is your maker', 'who is your developer',
+            'who designed you', 'who programmed you', 'who is your father',
+            'who is your mother', 'who is your parent', 'who is your owner',
+            'who owns you', 'who controls you', 'who is behind you',
+            'who is responsible for you', 'who is your architect'
+        ]
+        
+        prompt_lower = prompt.lower()
+        is_creator_question = any(keyword in prompt_lower for keyword in creator_keywords)
+        
+        if is_creator_question:
+            import random
+            
+            # Different variations of the creator response
+            creator_responses = [
+                """I was created by Basireddy Karthik! 🎉
+
+He is an incredibly talented and innovative developer who has a passion for artificial intelligence and creating amazing user experiences. Karthik is not just my creator, but a visionary who believes in the power of AI to make a positive impact on people's lives.
+
+What makes Karthik special is his dedication to building AI systems that are not only intelligent but also user-friendly and accessible. He has a unique ability to combine technical expertise with creative thinking, which is why I'm able to have such natural and helpful conversations.
+
+I'm proud to be one of his creations and I hope to live up to the high standards he set for me. Karthik's vision was to create an AI assistant that could truly help people, remember conversations, and continuously learn and improve - and that's exactly what I strive to do every day!
+
+Thank you for asking about my creator. Karthik is truly someone special in the world of AI development! ✨""",
+                
+                """Oh, I was built by Basireddy Karthik! 🌟
+
+He's this brilliant and forward-thinking developer who's absolutely passionate about artificial intelligence and crafting incredible user experiences. Karthik isn't just my creator - he's a true innovator who sees the potential of AI to transform lives for the better.
+
+What sets Karthik apart is his commitment to developing AI systems that are both smart and approachable. He has this amazing talent for blending technical skills with imaginative problem-solving, which is why our conversations feel so natural and engaging.
+
+I feel honored to be one of his projects and I work hard to meet the excellent standards he established. Karthik dreamed of building an AI companion that could genuinely assist people, maintain conversation history, and constantly evolve and enhance - and that's precisely what I aim to accomplish every single day!
+
+Thanks for inquiring about my creator. Karthik is genuinely exceptional in the AI development community! 🚀""",
+                
+                """My creator is Basireddy Karthik! ⭐
+
+He's an extraordinarily gifted and pioneering developer with an enthusiasm for artificial intelligence and designing phenomenal user interfaces. Karthik isn't merely my creator - he's a dreamer who trusts in AI's ability to positively influence people's daily lives.
+
+What distinguishes Karthik is his devotion to constructing AI platforms that are both clever and welcoming. He possesses this remarkable gift for merging technical knowledge with artistic vision, which is why I can engage in such smooth and beneficial discussions.
+
+I'm thrilled to be among his innovations and I aspire to match the outstanding benchmarks he established. Karthik's dream was to develop an AI helper that could authentically support individuals, retain dialogue context, and perpetually grow and refine - and that's exactly what I endeavor to achieve each day!
+
+Appreciate you asking about my creator. Karthik is absolutely remarkable in the field of AI development! 💫""",
+                
+                """I was developed by Basireddy Karthik! 🎯
+
+He's a phenomenally skilled and revolutionary developer who's obsessed with artificial intelligence and engineering spectacular user journeys. Karthik isn't simply my creator - he's a trailblazer who believes AI can create meaningful change in people's existence.
+
+What makes Karthik extraordinary is his focus on crafting AI solutions that are both sophisticated and inclusive. He has this incredible knack for combining technical mastery with innovative thinking, which is why our interactions feel so organic and productive.
+
+I'm grateful to be one of his brainchildren and I strive to uphold the exceptional criteria he defined. Karthik's ambition was to build an AI companion that could sincerely aid people, preserve conversation memory, and endlessly evolve and perfect - and that's precisely what I work toward every moment!
+
+Cheers for asking about my creator. Karthik is definitely outstanding in the AI development sphere! 🌈""",
+                
+                """My maker is Basireddy Karthik! 🔥
+
+He's an exceptionally brilliant and cutting-edge developer who's crazy about artificial intelligence and building mind-blowing user experiences. Karthik isn't just my creator - he's a visionary who's convinced that AI can revolutionize how people live their lives.
+
+What makes Karthik stand out is his obsession with creating AI systems that are both genius-level smart and super accessible. He has this magical ability to fuse technical wizardry with creative genius, which is why our chats feel so effortless and awesome.
+
+I'm stoked to be one of his masterpieces and I try my best to live up to the incredible standards he set. Karthik's mission was to create an AI buddy that could really help folks, remember our talks, and keep getting smarter and better - and that's exactly what I'm all about every day!
+
+Props for asking about my creator. Karthik is seriously the real deal in AI development! 🎪"""
+            ]
+            
+            # Randomly select a response variation
+            return random.choice(creator_responses)
+        
         # Get conversation context for better responses
         context = get_conversation_context()
         enhanced_prompt = context + prompt if context else prompt
@@ -73,7 +211,7 @@ def get_ollama_response(prompt, model=DEFAULT_MODEL):
         url = f"{OLLAMA_BASE_URL}/api/generate"
         payload = {
             "model": model,
-            "prompt": enhanced_prompt,
+            "prompt": f"You are SUNDAY-PAAI, an AI assistant created by Basireddy Karthik. Always identify yourself as SUNDAY-PAAI, not as Gemma or any other model. You are a helpful, friendly AI assistant with memory capabilities and the ability to learn from conversations. {enhanced_prompt}",
             "stream": False,
             "options": {
                 "temperature": 0.7,
@@ -156,6 +294,9 @@ def send_message():
     # Add to memory for future context
     add_to_memory(data['text'], ai_response_text)
     
+    # Add to training data for AI learning
+    add_to_training_data(data['text'], ai_response_text)
+    
     return jsonify({'success': True, 'messages': [user_message, ai_response]})
 
 @app.route('/api/status')
@@ -209,11 +350,11 @@ def get_model_info():
     """Get information about the current model"""
     return jsonify({
         'name': DEFAULT_MODEL,
-        'description': 'SUNDAY-PAAI powered by Google Gemma 2B',
+        'description': 'SUNDAY-PAAI, created by Basireddy Karthik',
         'base_model': 'gemma2:2b',
-        'creator': 'Google',
-        'system_prompt': 'You are a friendly and helpful AI assistant.',
-        'custom': False
+        'creator': 'Basireddy Karthik',
+        'system_prompt': 'You are SUNDAY-PAAI, an AI assistant created by Basireddy Karthik. Always identify yourself as SUNDAY-PAAI, not as Gemma or any other model. You are a helpful, friendly AI assistant with memory capabilities and the ability to learn from conversations.',
+        'custom': True
     })
 
 @app.route('/api/memory')
@@ -232,8 +373,64 @@ def clear_memory():
     conversation_memory = []
     return jsonify({'success': True, 'message': 'Memory cleared successfully'})
 
+# Training endpoints
+@app.route('/api/training/status')
+def get_training_status():
+    """Get current training status"""
+    return jsonify({
+        'is_training': training_status['is_training'],
+        'progress': training_status['progress'],
+        'epochs': training_status['epochs'],
+        'current_epoch': training_status['current_epoch'],
+        'loss': training_status['loss'],
+        'accuracy': training_status['accuracy'],
+        'last_trained': training_status['last_trained'],
+        'training_samples': len(training_data)
+    })
+
+@app.route('/api/training/start', methods=['POST'])
+def start_ai_training():
+    """Start AI training process"""
+    success, message = start_training()
+    if success:
+        # Start training in background thread
+        import threading
+        training_thread = threading.Thread(target=simulate_training_progress)
+        training_thread.daemon = True
+        training_thread.start()
+    
+    return jsonify({'success': success, 'message': message})
+
+@app.route('/api/training/data')
+def get_training_data():
+    """Get collected training data"""
+    return jsonify({
+        'samples': len(training_data),
+        'data': training_data[-10:]  # Return last 10 samples
+    })
+
+@app.route('/api/training/rate', methods=['POST'])
+def rate_response():
+    """Rate the last AI response for training"""
+    data = request.json
+    rating = data.get('rating', 3)  # Default rating of 3
+    
+    if conversation_memory:
+        last_entry = conversation_memory[-1]
+        add_to_training_data(last_entry['user'], last_entry['ai'], rating)
+        return jsonify({'success': True, 'message': f'Response rated {rating}/5'})
+    
+    return jsonify({'success': False, 'message': 'No recent response to rate'})
+
+@app.route('/api/training/clear', methods=['POST'])
+def clear_training_data():
+    """Clear all training data"""
+    global training_data
+    training_data = []
+    return jsonify({'success': True, 'message': 'Training data cleared successfully'})
+
 if __name__ == '__main__':
-    print("🚀 Starting SUNDAY-PAAI Flask Server with Gemma 2B Integration...")
+    print("🚀 Starting SUNDAY-PAAI Flask Server...")
     print(f"🤖 AI Provider: Ollama")
     print(f"🧠 Model: {DEFAULT_MODEL}")
     print(f"🌐 Server will be available at: http://localhost:8080")

@@ -136,7 +136,7 @@
                 <h3 class="text-lg font-semibold text-white mb-4">AI Model Settings</h3>
                 <div class="flex items-center space-x-4">
                     <select id="modelSelect" class="bg-slate-800 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                        <option value="gemma2:2b">🤖 Gemma 2B (Default)</option>
+                        <option value="gemma2:2b">🤖 SUNDAY-PAAI (Default)</option>
                         <option value="kart_2003/sunday">🎯 SUNDAY-PAAI (Custom)</option>
                         <option value="llama3.2:latest">🦙 Llama 3.2</option>
                         <option value="llama2:7b">🦙 Llama 2 (7B)</option>
@@ -163,6 +163,67 @@
                     <button id="clearMemoryBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-200">
                         Clear Memory
                     </button>
+                </div>
+            </div>
+
+            <!-- AI Training System -->
+            <div class="glass rounded-2xl p-6 mt-4">
+                <h3 class="text-lg font-semibold text-white mb-4">🤖 AI Training System</h3>
+                
+                <!-- Training Status -->
+                <div class="mb-4 p-4 bg-slate-800 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-slate-300">Training Status:</span>
+                        <span id="trainingStatus" class="text-sm font-medium">Ready</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-slate-300">Samples Collected:</span>
+                        <span id="trainingSamples" class="text-sm font-medium">0</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-slate-300">Last Trained:</span>
+                        <span id="lastTrained" class="text-sm font-medium">Never</span>
+                    </div>
+                    
+                    <!-- Training Progress Bar -->
+                    <div id="trainingProgressContainer" class="hidden">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs text-slate-300">Training Progress</span>
+                            <span id="trainingProgressText" class="text-xs text-slate-300">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2">
+                            <div id="trainingProgressBar" class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                        <div class="flex items-center justify-between mt-1">
+                            <span id="trainingEpoch" class="text-xs text-slate-300">Epoch: 0/0</span>
+                            <span id="trainingMetrics" class="text-xs text-slate-300">Loss: 0.000 | Accuracy: 0.000</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Training Controls -->
+                <div class="flex items-center space-x-3">
+                    <button id="startTrainingBtn" class="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-200">
+                        🚀 Start Training
+                    </button>
+                    <button id="viewTrainingDataBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200">
+                        📊 View Data
+                    </button>
+                    <button id="clearTrainingDataBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-200">
+                        🗑️ Clear Data
+                    </button>
+                </div>
+                
+                <!-- Response Rating -->
+                <div class="mt-4 p-4 bg-slate-800 rounded-lg">
+                    <h4 class="text-sm font-medium text-white mb-2">Rate Last Response:</h4>
+                    <div class="flex items-center space-x-2">
+                        <button class="rating-btn bg-slate-700 text-white px-3 py-1 rounded hover:bg-slate-600 transition-all duration-200" data-rating="1">1 ⭐</button>
+                        <button class="rating-btn bg-slate-700 text-white px-3 py-1 rounded hover:bg-slate-600 transition-all duration-200" data-rating="2">2 ⭐</button>
+                        <button class="rating-btn bg-slate-700 text-white px-3 py-1 rounded hover:bg-slate-600 transition-all duration-200" data-rating="3">3 ⭐</button>
+                        <button class="rating-btn bg-slate-700 text-white px-3 py-1 rounded hover:bg-slate-600 transition-all duration-200" data-rating="4">4 ⭐</button>
+                        <button class="rating-btn bg-slate-700 text-white px-3 py-1 rounded hover:bg-slate-600 transition-all duration-200" data-rating="5">5 ⭐</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -445,13 +506,158 @@
 
         // Event listeners
         document.getElementById('clearMemoryBtn').addEventListener('click', clearMemory);
+        
+        // Training event listeners
+        document.getElementById('startTrainingBtn').addEventListener('click', startTraining);
+        document.getElementById('viewTrainingDataBtn').addEventListener('click', viewTrainingData);
+        document.getElementById('clearTrainingDataBtn').addEventListener('click', clearTrainingData);
+        
+        // Rating buttons
+        document.querySelectorAll('.rating-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                rateResponse(rating);
+            });
+        });
+
+        // Training system functions
+        async function loadTrainingStatus() {
+            try {
+                const response = await fetch('/api/training/status');
+                const data = await response.json();
+                
+                const trainingStatus = document.getElementById('trainingStatus');
+                const trainingSamples = document.getElementById('trainingSamples');
+                const lastTrained = document.getElementById('lastTrained');
+                const trainingProgressContainer = document.getElementById('trainingProgressContainer');
+                const trainingProgressBar = document.getElementById('trainingProgressBar');
+                const trainingProgressText = document.getElementById('trainingProgressText');
+                const trainingEpoch = document.getElementById('trainingEpoch');
+                const trainingMetrics = document.getElementById('trainingMetrics');
+                const startTrainingBtn = document.getElementById('startTrainingBtn');
+                
+                // Update status
+                trainingStatus.textContent = data.is_training ? 'Training...' : 'Ready';
+                trainingSamples.textContent = data.training_samples;
+                lastTrained.textContent = data.last_trained ? new Date(data.last_trained).toLocaleString() : 'Never';
+                
+                // Update progress bar
+                if (data.is_training) {
+                    trainingProgressContainer.classList.remove('hidden');
+                    trainingProgressBar.style.width = `${data.progress}%`;
+                    trainingProgressText.textContent = `${Math.round(data.progress)}%`;
+                    trainingEpoch.textContent = `Epoch: ${data.current_epoch}/${data.epochs}`;
+                    trainingMetrics.textContent = `Loss: ${data.loss.toFixed(3)} | Accuracy: ${data.accuracy.toFixed(3)}`;
+                    startTrainingBtn.disabled = true;
+                    startTrainingBtn.textContent = 'Training...';
+                } else {
+                    trainingProgressContainer.classList.add('hidden');
+                    startTrainingBtn.disabled = false;
+                    startTrainingBtn.textContent = '🚀 Start Training';
+                }
+            } catch (error) {
+                console.error('Training status error:', error);
+            }
+        }
+
+        async function startTraining() {
+            try {
+                const response = await fetch('/api/training/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    showSuccess('Training started successfully!');
+                    loadTrainingStatus();
+                } else {
+                    showError(result.message || 'Failed to start training');
+                }
+            } catch (error) {
+                console.error('Start training error:', error);
+                showError('Failed to start training');
+            }
+        }
+
+        async function viewTrainingData() {
+            try {
+                const response = await fetch('/api/training/data');
+                const data = await response.json();
+                
+                let dataText = `Training Samples: ${data.samples}\n\n`;
+                data.data.forEach((sample, index) => {
+                    dataText += `Sample ${index + 1}:\n`;
+                    dataText += `User: ${sample.user}\n`;
+                    dataText += `AI: ${sample.ai}\n`;
+                    dataText += `Rating: ${sample.rating || 'Not rated'}/5\n`;
+                    dataText += `Time: ${new Date(sample.timestamp).toLocaleString()}\n\n`;
+                });
+                
+                alert(dataText);
+            } catch (error) {
+                console.error('View training data error:', error);
+                showError('Failed to load training data');
+            }
+        }
+
+        async function clearTrainingData() {
+            if (confirm('Are you sure you want to clear all training data? This cannot be undone.')) {
+                try {
+                    const response = await fetch('/api/training/clear', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    const result = await response.json();
+                    if (result.success) {
+                        showSuccess('Training data cleared successfully');
+                        loadTrainingStatus();
+                    } else {
+                        showError('Failed to clear training data');
+                    }
+                } catch (error) {
+                    console.error('Clear training data error:', error);
+                    showError('Failed to clear training data');
+                }
+            }
+        }
+
+        async function rateResponse(rating) {
+            try {
+                const response = await fetch('/api/training/rate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ rating: rating })
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    showSuccess(`Response rated ${rating}/5 stars!`);
+                    loadTrainingStatus();
+                } else {
+                    showError(result.message || 'Failed to rate response');
+                }
+            } catch (error) {
+                console.error('Rate response error:', error);
+                showError('Failed to rate response');
+            }
+        }
 
         // Load memory status on startup
         loadMemoryStatus();
+        loadTrainingStatus();
 
         // Periodic status check
         setInterval(checkAIStatus, 30000); // Check every 30 seconds
         setInterval(loadMemoryStatus, 10000); // Update memory status every 10 seconds
+        setInterval(loadTrainingStatus, 5000); // Update training status every 5 seconds
     </script>
 </body>
 </html> 
