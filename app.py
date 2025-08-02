@@ -38,6 +38,7 @@ TRAINING_FILE = "training_data.json"
 USER_PROFILE_FILE = "user_profiles.json"
 LONG_TERM_MEMORY_FILE = "long_term_memory.json"
 TASK_MEMORY_FILE = "task_memory.json"
+REMINDERS_FILE = "reminders.json"
 
 # Load or create conversation history
 def generate_dynamic_welcome_message():
@@ -234,6 +235,57 @@ def add_task_to_memory(task_description, priority="medium", status="pending"):
 def get_boss_tasks():
     """Get all tasks for the boss"""
     return task_memory
+
+def load_reminders():
+    """Load reminders from file"""
+    try:
+        if os.path.exists(REMINDERS_FILE):
+            with open(REMINDERS_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                print(f"📂 Loaded {len(data)} reminders")
+                return data
+        else:
+            print("📂 No reminders file found, creating new one")
+            return []
+    except Exception as e:
+        print(f"❌ Error loading reminders: {e}")
+        return []
+
+def save_reminders(reminders):
+    """Save reminders to file"""
+    try:
+        with open(REMINDERS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(reminders, f, indent=2, ensure_ascii=False)
+        print(f"💾 Saved {len(reminders)} reminders")
+    except Exception as e:
+        print(f"❌ Error saving reminders: {e}")
+
+def add_reminder(reminder_data):
+    """Add a new reminder"""
+    try:
+        reminders = load_reminders()
+        reminder_id = str(len(reminders) + 1)
+        
+        new_reminder = {
+            'id': reminder_id,
+            'task': reminder_data.get('task', ''),
+            'details': reminder_data.get('details', ''),
+            'date': reminder_data.get('date', ''),
+            'time': reminder_data.get('time', ''),
+            'day': reminder_data.get('day', ''),
+            'timestamp': reminder_data.get('timestamp', ''),
+            'status': 'active',
+            'created_at': datetime.now().isoformat()
+        }
+        
+        reminders.append(new_reminder)
+        save_reminders(reminders)
+        
+        print(f"🔔 Added reminder: {new_reminder['task']} for {new_reminder['date']} at {new_reminder['time']}")
+        return True
+    except Exception as e:
+        print(f"❌ Error adding reminder: {e}")
+        return False
 
 def load_training_data():
     """Load training data from file"""
@@ -1920,6 +1972,43 @@ def get_welcome_message():
     """Get a fresh welcome message (doesn't load conversation history)"""
     welcome_message = generate_dynamic_welcome_message()
     return jsonify({'message': welcome_message})
+
+@app.route('/api/set-reminder', methods=['POST'])
+def set_reminder():
+    """Set a new reminder"""
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'success': False, 'error': 'No data provided'}), 400
+        
+        # Add the reminder
+        success = add_reminder(data)
+        
+        if success:
+            return jsonify({
+                'success': True, 
+                'message': f"Reminder set successfully for {data.get('date')} at {data.get('time')}",
+                'reminder': data
+            })
+        else:
+            return jsonify({'success': False, 'error': 'Failed to set reminder'}), 500
+            
+    except Exception as e:
+        print(f"❌ Error setting reminder: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/reminders', methods=['GET'])
+def get_reminders():
+    """Get all reminders"""
+    try:
+        reminders = load_reminders()
+        return jsonify({
+            'success': True,
+            'reminders': reminders
+        })
+    except Exception as e:
+        print(f"❌ Error getting reminders: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/capabilities')
 def get_capabilities():

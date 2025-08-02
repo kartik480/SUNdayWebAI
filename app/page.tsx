@@ -45,6 +45,7 @@ export default function Home() {
   const [reminderDate, setReminderDate] = useState('')
   const [reminderTime, setReminderTime] = useState('')
   const [reminderDay, setReminderDay] = useState('')
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default')
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll to bottom when new messages arrive
@@ -102,6 +103,16 @@ export default function Home() {
   useEffect(() => {
     setIsClient(true)
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
+    
+    // Request notification permission on app load
+    if (Notification.permission === 'default') {
+      Notification.requestPermission().then(permission => {
+        setNotificationPermission(permission)
+      })
+    } else {
+      setNotificationPermission(Notification.permission)
+    }
+    
     return () => clearInterval(timer)
   }, [])
 
@@ -190,20 +201,97 @@ export default function Home() {
     }
   }
 
-  const handleReminderSubmit = () => {
+  const handleReminderSubmit = async () => {
     if (reminderDetails.trim() && reminderDate && reminderTime) {
-      console.log('Reminder set:', {
+      const reminderData = {
+        task: scheduleNote, // The original task from Schedule Task
         details: reminderDetails,
         date: reminderDate,
         time: reminderTime,
-        day: reminderDay
-      })
-      setReminderDetails('')
-      setReminderDate('')
-      setReminderTime('')
-      setReminderDay('')
-      setShowReminderSection(false)
-      alert('Reminder set successfully!')
+        day: reminderDay,
+        timestamp: new Date().toISOString()
+      }
+      
+      console.log('Reminder set:', reminderData)
+      
+      try {
+        // Send reminder to AI backend
+        const response = await fetch('http://localhost:8080/api/set-reminder', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(reminderData),
+        })
+        
+        if (response.ok) {
+          // Request notification permission
+          if (Notification.permission === 'default') {
+            await Notification.requestPermission()
+          }
+          
+          // Schedule the notification
+          scheduleNotification(reminderData)
+          
+          setReminderDetails('')
+          setReminderDate('')
+          setReminderTime('')
+          setReminderDay('')
+          setShowReminderSection(false)
+          alert('Reminder set successfully! AI will remind you at the scheduled time.')
+        } else {
+          alert('Failed to set reminder. Please try again.')
+        }
+      } catch (error) {
+        console.error('Error setting reminder:', error)
+        alert('Error setting reminder. Please try again.')
+      }
+    }
+  }
+
+  const scheduleNotification = (reminderData: any) => {
+    const reminderDateTime = new Date(`${reminderData.date}T${reminderData.time}`)
+    const now = new Date()
+    const timeUntilReminder = reminderDateTime.getTime() - now.getTime()
+    
+    if (timeUntilReminder > 0) {
+      setTimeout(() => {
+        if (Notification.permission === 'granted') {
+          // Create notification
+          const notification = new Notification('SUNDAY-PAAI Reminder 🔔', {
+            body: `Task: ${reminderData.task}\n\nDetails: ${reminderData.details}\n\nScheduled for: ${reminderData.date} at ${reminderData.time}`,
+            icon: '/favicon.ico',
+            badge: '/favicon.ico',
+            tag: 'sunday-paai-reminder',
+            requireInteraction: true, // Notification stays until user interacts
+            silent: false
+          })
+          
+          // Play notification sound
+          try {
+            const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT')
+            audio.play()
+          } catch (e) {
+            console.log('Could not play notification sound')
+          }
+          
+          // Handle notification click
+          notification.onclick = () => {
+            window.focus()
+            notification.close()
+          }
+          
+          // Also send a message to the AI chat
+          const reminderMessage = `🔔 REMINDER ALERT! 🔔\n\nTask: ${reminderData.task}\n\nDetails: ${reminderData.details}\n\nScheduled for: ${reminderData.date} at ${reminderData.time}\n\nTime to get it done, Boss! 💪`
+          setMessages(prev => [...prev, {
+            id: Date.now().toString(),
+            text: reminderMessage,
+            sender: 'ai',
+            timestamp: new Date(),
+            type: 'text'
+          }])
+        }
+      }, timeUntilReminder)
     }
   }
 
@@ -272,6 +360,16 @@ export default function Home() {
             <div>
               <h1 className="text-2xl font-bold gradient-text">SUNDAY-PAAI</h1>
               <p className="text-slate-300 text-sm">My Life</p>
+              <div className="flex items-center gap-2 mt-1">
+                <div className={`w-2 h-2 rounded-full ${
+                  notificationPermission === 'granted' ? 'bg-green-500' : 
+                  notificationPermission === 'denied' ? 'bg-red-500' : 'bg-yellow-500'
+                }`} />
+                <span className="text-xs text-slate-400">
+                  {notificationPermission === 'granted' ? 'Notifications Enabled' : 
+                   notificationPermission === 'denied' ? 'Notifications Disabled' : 'Notifications Pending'}
+                </span>
+              </div>
             </div>
           </div>
           
