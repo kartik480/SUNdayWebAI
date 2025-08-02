@@ -11,6 +11,14 @@ import hashlib
 
 app = Flask(__name__)
 
+# Add CORS headers manually
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
+
 # Ollama configuration
 OLLAMA_BASE_URL = "http://localhost:11434"
 DEFAULT_MODEL = "gemma2:2b"  
@@ -1032,6 +1040,12 @@ def clear_training_data():
     training_data = []
     save_training_data(training_data) # Save empty training data
     return jsonify({'success': True, 'message': 'Training data cleared successfully'})
+
+@app.route('/api/welcome')
+def get_welcome_message():
+    """Get a fresh welcome message (doesn't load conversation history)"""
+    welcome_message = generate_dynamic_welcome_message()
+    return jsonify({'message': welcome_message})
 
 @app.route('/api/capabilities')
 def get_capabilities():

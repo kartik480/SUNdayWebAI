@@ -29,21 +29,57 @@ interface Message {
 }
 
 export default function Home() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: "Hey there! 😊 I'm SUNDAY-PAAI, your AI buddy! What's up? How can I help you today?",
-      sender: 'ai',
-      timestamp: new Date(),
-      type: 'text'
-    }
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
   const [inputText, setInputText] = useState('')
   const [isListening, setIsListening] = useState(false)
   const [isTyping, setIsTyping] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
   const [isClient, setIsClient] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Load fresh welcome message only (clear chat display, keep backend memory)
+  useEffect(() => {
+    const loadFreshWelcome = async () => {
+      try {
+        // Get a fresh welcome message from backend
+        const response = await fetch('/api/welcome')
+        if (response.ok) {
+          const data = await response.json()
+          setMessages([{
+            id: '1',
+            text: data.message,
+            sender: 'ai',
+            timestamp: new Date(),
+            type: 'text'
+          }])
+        } else {
+          // Fallback welcome message
+          setMessages([{
+            id: '1',
+            text: "⚡ Boss! SUNDAY-PAAI is charged up and ready to go! Your AI companion, created by Basireddy Karthik, is here to supercharge your day. What's the energy we're bringing? 🔋",
+            sender: 'ai',
+            timestamp: new Date(),
+            type: 'text'
+          }])
+        }
+      } catch (error) {
+        console.error('Error loading welcome message:', error)
+        // Fallback welcome message
+        setMessages([{
+          id: '1',
+          text: "⚡ Boss! SUNDAY-PAAI is charged up and ready to go! Your AI companion, created by Basireddy Karthik, is here to supercharge your day. What's the energy we're bringing? 🔋",
+          sender: 'ai',
+          timestamp: new Date(),
+          type: 'text'
+        }])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadFreshWelcome()
+  }, [])
 
   useEffect(() => {
     setIsClient(true)
@@ -126,15 +162,19 @@ export default function Home() {
     }
   }
 
-  if (!isClient) {
+  if (!isClient || isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-r from-ai-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-16 h-16 bg-gradient-to-r from-ai-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4"
+          >
             <Brain className="w-8 h-8 text-white" />
-          </div>
+          </motion.div>
           <h1 className="text-2xl font-bold gradient-text">SUNDAY-PAAI</h1>
-          <p className="text-slate-300 mt-2">Loading...</p>
+          <p className="text-slate-300 mt-2">Connecting to Boss...</p>
         </div>
       </div>
     )
