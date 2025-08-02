@@ -29,6 +29,15 @@ const nextConfig = {
       },
     ]
   },
+  // Increase timeout for API routes
+  experimental: {
+    serverComponentsExternalPackages: [],
+  },
+  // Configure server timeout
+  serverRuntimeConfig: {
+    // Increase timeout for API calls
+    apiTimeout: 60000, // 60 seconds
+  },
 }
 
 module.exports = nextConfig 

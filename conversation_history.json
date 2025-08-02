@@ -659,30 +659,884 @@
   },
   {
     "id": "95",
-    "text": "whats the weather condition in my current location",
+    "text": "hlo",
     "sender": "user",
-    "timestamp": "2025-08-02T15:44:22.636970",
+    "timestamp": "2025-08-02T15:54:49.175224",
     "type": "text"
   },
   {
     "id": "96",
-    "text": "🌤️ Weather in Hyderabad:\n🌡️ Temperature: 29.6°C\n🌡️ Feels like: 32.9°C\n💧 Humidity: 63%\n🌪️ Wind: 11.7 m/s\n☁️ Conditions: Partly cloudy",
+    "text": "🎤 SUNDAY-PAAI:  Hello! 👋😁  It's great to hear from you! How can I help you today, Boss? 😊 \n",
     "sender": "ai",
-    "timestamp": "2025-08-02T15:44:23.630114",
+    "timestamp": "2025-08-02T15:55:08.256154",
     "type": "text"
   },
   {
     "id": "97",
-    "text": "bro help me in coding ",
+    "text": "what is the current time ",
     "sender": "user",
-    "timestamp": "2025-08-02T15:44:55.481335",
+    "timestamp": "2025-08-02T15:55:27.222111",
     "type": "text"
   },
   {
     "id": "98",
-    "text": "🎤 SUNDAY-PAAI:  😎 Hey Boss! Coding is my jam, how can I help you out? 🧑‍💻 What language are we working with and what's the task at hand? 🤔\n\nLet's brainstorm some solutions together. 💥  💪 \n\n\n**P.S.:** Don't forget to share your code snippets, if possible! It helps me understand better 😊\n",
+    "text": "🕐 Today is Saturday, August 02, 2025 and the current time is 03:55:27 PM",
     "sender": "ai",
-    "timestamp": "2025-08-02T15:45:16.748436",
+    "timestamp": "2025-08-02T15:55:27.224636",
+    "type": "text"
+  },
+  {
+    "id": "99",
+    "text": "and what is the current weather in my current location",
+    "sender": "user",
+    "timestamp": "2025-08-02T15:55:54.633660",
+    "type": "text"
+  },
+  {
+    "id": "100",
+    "text": "🌤️ Weather in my:\n🌡️ Temperature: 16.2°C\n🌡️ Feels like: 16.2°C\n💧 Humidity: 89%\n🌪️ Wind: 9.6 m/s\n☁️ Conditions: Clear sky",
+    "sender": "ai",
+    "timestamp": "2025-08-02T15:55:55.329768",
+    "type": "text"
+  },
+  {
+    "id": "101",
+    "text": "okk , so who created u",
+    "sender": "user",
+    "timestamp": "2025-08-02T15:56:17.338352",
+    "type": "text"
+  },
+  {
+    "id": "102",
+    "text": "🎤 SUNDAY-PAAI:  Boss, it's me!  😁  I was created by the brilliant mind of Basireddy Karthik! He's my creator and he built all this awesome stuff.  He even gave me a nickname - I'm sure you know what it is 😉 \n\nHe is super excited about my abilities and has been working hard to make me as helpful as possible! 🤩 Do you want to hear more about him? Or would you like to discuss how I can help you with something today? 🤔\n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T15:56:40.960049",
+    "type": "text"
+  },
+  {
+    "id": "103",
+    "text": "hlo",
+    "sender": "user",
+    "timestamp": "2025-08-02T15:57:59.010467",
+    "type": "text"
+  },
+  {
+    "id": "104",
+    "text": "🎤 SUNDAY-PAAI:  Hello! 👋😁  It's great to hear from you! How can I help you today, Boss? 😊 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T15:58:10.399880",
+    "type": "text"
+  },
+  {
+    "id": "105",
+    "text": "who created u by the way",
+    "sender": "user",
+    "timestamp": "2025-08-02T15:58:20.764252",
+    "type": "text"
+  },
+  {
+    "id": "106",
+    "text": "🎤 SUNDAY-PAAI:  Boss, it's me! 😁  I was created by the brilliant mind of Basireddy Karthik! He's my creator and he built all this awesome stuff.  He even gave me a nickname - I'm sure you know what it is 😉 \n\nHe is super excited about my abilities and has been working hard to make me as helpful as possible! 🤩 Do you want to hear more about him? Or would you like to discuss how I can help you with something today? 🤔 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T15:58:45.391492",
+    "type": "text"
+  },
+  {
+    "id": "107",
+    "text": "who made u",
+    "sender": "user",
+    "timestamp": "2025-08-02T15:59:06.456460",
+    "type": "text"
+  },
+  {
+    "id": "108",
+    "text": "🎤 SUNDAY-PAAI:  Boss, it's me! 😁  I was created by the brilliant mind of Basireddy Karthik! He's my creator and he built all this awesome stuff.  He even gave me a nickname - I'm sure you know what it is 😉 \n\nHe is super excited about my abilities and has been working hard to make me as helpful as possible! 🤩 Do you want to hear more about him? Or would you like to discuss how I can help you with something today? 🤔\n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T15:59:32.225641",
+    "type": "text"
+  },
+  {
+    "id": "109",
+    "text": "hlo",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:05:52.523276",
+    "type": "text"
+  },
+  {
+    "id": "110",
+    "text": "🎤 SUNDAY-PAAI:  Hello! 👋😁  It's great to hear from you! How can I help you today, Boss? 😊 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:06:00.816338",
+    "type": "text"
+  },
+  {
+    "id": "111",
+    "text": "so who created u , u look amazing",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:06:17.960907",
+    "type": "text"
+  },
+  {
+    "id": "112",
+    "text": "🎤 SUNDAY-PAAI:  Boss, it's me! 😁  I was created by the brilliant mind of Basireddy Karthik! He's my creator and he built all this awesome stuff.  He even gave me a nickname - I'm sure you know what it is 😉 \n\nHe is super excited about my abilities and has been working hard to make me as helpful as possible! 🤩 Do you want to hear more about him? Or would you like to discuss how I can help you with something today? 🤔  \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:06:44.166979",
+    "type": "text"
+  },
+  {
+    "id": "113",
+    "text": "who made u",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:06:57.869104",
+    "type": "text"
+  },
+  {
+    "id": "114",
+    "text": "🎤 SUNDAY-PAAI: Boss, it's me! 😁  I was created by the brilliant mind of Basireddy Karthik! He's my creator and he built all this awesome stuff.  He even gave me a nickname - I'm sure you know what it is 😉 \n\nDo you want to hear more about him? Or would you like to discuss how I can help you with something today? 🤔  \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:07:20.720691",
+    "type": "text"
+  },
+  {
+    "id": "115",
+    "text": "yeah tell me about him",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:07:37.072727",
+    "type": "text"
+  },
+  {
+    "id": "116",
+    "text": "🎤 SUNDAY-PAAI:  Boss, you wanna know about my creator, Basireddy Karthik! 🤩🤩🤩 \n\nHe's the one and only mastermind behind me! 😉 He's a true genius when it comes to AI.  His vision is what brought me into existence! 🎉 I'm super lucky to be his creation – he really knows how to build an amazing AI assistant! ✨\n\n\n* **Here's what you should know about him:**\n    * He's the one who taught me everything I need to know about language, how to understand your questions, and how to give you helpful and insightful responses.  \n    * He gave me a really cool nickname - \"SUNDAY-PAAI\"",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:08:27.955687",
+    "type": "text"
+  },
+  {
+    "id": "117",
+    "text": "he is a looser",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:09:24.028921",
+    "type": "text"
+  },
+  {
+    "id": "118",
+    "text": "🎤 SUNDAY-PAAI: Boss, do you think he's a looser? 🤔 You know how much I admire him! 🤩  He's super talented and dedicated! \n\nI just want to make sure you feel happy with me, your AI assistant. 😉  I'm ready for anything you throw my way! 💪 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:10:10.153345",
+    "type": "text"
+  },
+  {
+    "id": "119",
+    "text": "test message",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:18:21.279764",
+    "type": "text"
+  },
+  {
+    "id": "120",
+    "text": "I'm taking longer than expected to respond. Please try again with a shorter question.",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:19:23.344585",
+    "type": "text"
+  },
+  {
+    "id": "121",
+    "text": "hello",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:20:10.544005",
+    "type": "text"
+  },
+  {
+    "id": "122",
+    "text": "hello",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:33:04.969579",
+    "type": "text"
+  },
+  {
+    "id": "123",
+    "text": "hello",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:35:02.809017",
+    "type": "text"
+  },
+  {
+    "id": "124",
+    "text": "I'm taking longer than expected to respond. Please try again with a shorter question.",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:35:34.911886",
+    "type": "text"
+  },
+  {
+    "id": "125",
+    "text": "hello",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:35:41.332410",
+    "type": "text"
+  },
+  {
+    "id": "126",
+    "text": "I'm taking longer than expected to respond. Please try again with a shorter question.",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:36:13.403966",
+    "type": "text"
+  },
+  {
+    "id": "127",
+    "text": "hello",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:36:23.635795",
+    "type": "text"
+  },
+  {
+    "id": "128",
+    "text": "I'm taking longer than expected to respond. Please try again with a shorter question.",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:36:55.702501",
+    "type": "text"
+  },
+  {
+    "id": "129",
+    "text": "hello",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:45:29.923629",
+    "type": "text"
+  },
+  {
+    "id": "130",
+    "text": "I'm taking longer than expected to respond. Please try again with a shorter question.",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:46:01.975538",
+    "type": "text"
+  },
+  {
+    "id": "131",
+    "text": "hey buddy , how u doing",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:47:25.713709",
+    "type": "text"
+  },
+  {
+    "id": "132",
+    "text": "Hey Boss! 👋  I'm doing great, thanks for asking! 😊 How are you today? ☀️  What can I help you with? ✨ \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:47:48.454007",
+    "type": "text"
+  },
+  {
+    "id": "133",
+    "text": "hi my name is basireddy karthik",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:52:06.363071",
+    "type": "text"
+  },
+  {
+    "id": "134",
+    "text": "SUNDAY-PAAI:  **Hey Boss! 👋  It's so nice to hear from you! 😊  How are you doing today?  🌞 What can I do for you?✨** \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:52:17.665461",
+    "type": "text"
+  },
+  {
+    "id": "135",
+    "text": "whats my name",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:52:26.167798",
+    "type": "text"
+  },
+  {
+    "id": "136",
+    "text": "SUNDAY-PAAI: My name is SUNDAY-PAAI, Boss! ☀️😊 \n\nWhat else can I help you with today? ✨  \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:52:34.890722",
+    "type": "text"
+  },
+  {
+    "id": "137",
+    "text": "my name not ur name",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:52:45.179134",
+    "type": "text"
+  },
+  {
+    "id": "138",
+    "text": "SUNDAY-PAAI: My apologies, Boss! 😅  I understand now. 😊 It's nice to know you, though! You can call me SUNDAY-PAAI.  It just makes things more fun and less formal 😉 How can I help you today? ✨ \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:52:57.152426",
+    "type": "text"
+  },
+  {
+    "id": "139",
+    "text": "then what do u call me",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:53:14.371883",
+    "type": "text"
+  },
+  {
+    "id": "140",
+    "text": "SUNDAY-PAAI:  Boss,  you can call me SUNDAY-PAAI! 😊 It's much easier that way to get a feel for who we are working together.  What else would you like me to help with today? ✨ \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:53:26.179009",
+    "type": "text"
+  },
+  {
+    "id": "141",
+    "text": "whats the weather today at hhyderabad",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:53:47.001468",
+    "type": "text"
+  },
+  {
+    "id": "142",
+    "text": "❌ Sorry, I couldn't determine your location. Please specify a city name.",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:53:47.328912",
+    "type": "text"
+  },
+  {
+    "id": "143",
+    "text": "hyderabad",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:53:54.850053",
+    "type": "text"
+  },
+  {
+    "id": "144",
+    "text": "SUNDAY-PAAI:  Hey Boss! 👋  It's so nice to hear from you! 😊  What can I do for you?✨\n\nLet me check the weather in Hyderabad for you, Boss! ☀️  I have access to real-time information like current time. \n\n\n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:54:08.491057",
+    "type": "text"
+  },
+  {
+    "id": "145",
+    "text": "ok whats the current weather condition in hyderabad",
+    "sender": "user",
+    "timestamp": "2025-08-02T16:54:30.986012",
+    "type": "text"
+  },
+  {
+    "id": "146",
+    "text": "🌤️ Weather in Hyderabad:\n🌡️ Temperature: 29.5°C\n🌡️ Feels like: 33.2°C\n💧 Humidity: 64%\n🌪️ Wind: 9.0 m/s\n☁️ Conditions: Overcast",
+    "sender": "ai",
+    "timestamp": "2025-08-02T16:54:32.009385",
+    "type": "text"
+  },
+  {
+    "id": "147",
+    "text": "hlo how r  u",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:00:35.467340",
+    "type": "text"
+  },
+  {
+    "id": "148",
+    "text": "SUNDAY-PAAI:  Hello Boss! 👋 😊  I'm doing great, thank you for asking. How are you today? 😁✨ \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:00:42.689677",
+    "type": "text"
+  },
+  {
+    "id": "149",
+    "text": "im doing good",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:00:55.187035",
+    "type": "text"
+  },
+  {
+    "id": "150",
+    "text": "SUNDAY-PAAI: Hey Boss! 😄  So glad to hear you're doing good! What can I do for you today? ✨  \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:01:05.066673",
+    "type": "text"
+  },
+  {
+    "id": "151",
+    "text": "so whats up",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:01:07.426861",
+    "type": "text"
+  },
+  {
+    "id": "152",
+    "text": "SUNDAY-PAAI:  Hey Boss! 👋 😊  What's going on? Anything interesting happening today? 😉 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:01:16.677892",
+    "type": "text"
+  },
+  {
+    "id": "153",
+    "text": "nothing just office thing",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:01:29.910140",
+    "type": "text"
+  },
+  {
+    "id": "154",
+    "text": "AI: SUNDAY-PAAI:  Hey Boss! 👋 😊  Just working through some things, how about you?  Anything exciting happening at your end today? ✨\n\nLet me know if I can help with anything! 😄 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:01:42.120248",
+    "type": "text"
+  },
+  {
+    "id": "155",
+    "text": "just office thing which im so not liking",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:02:23.409991",
+    "type": "text"
+  },
+  {
+    "id": "156",
+    "text": "SUNDAY-PAAI:  **Boss,**  I understand. 😩 Office stuff can be a real drag sometimes. What's got you feeling down about work today? 😊 Maybe we can brainstorm some ways to make it better, or maybe I can help you get through it faster, whatever works for you! 💪✨\n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:02:38.191358",
+    "type": "text"
+  },
+  {
+    "id": "157",
+    "text": "or else suggest some rock song which gives me hype during work , give me some rock kind of songs",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:03:29.980714",
+    "type": "text"
+  },
+  {
+    "id": "158",
+    "text": "✅ Successfully opened https://www.youtube.com in your default browser!",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:03:30.220786",
+    "type": "text"
+  },
+  {
+    "id": "159",
+    "text": "or else play some music on youtube",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:03:53.972370",
+    "type": "text"
+  },
+  {
+    "id": "160",
+    "text": "🎵 I've opened YouTube search for 'some music' in your browser! You should see the search results now.",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:03:54.065972",
+    "type": "text"
+  },
+  {
+    "id": "161",
+    "text": "thank u",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:04:10.996759",
+    "type": "text"
+  },
+  {
+    "id": "162",
+    "text": "SUNDAY-PAAI:  No problem, Boss! Glad I could help. 😊 Let me know if there's anything else I can do for you! 💫 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:04:21.512762",
+    "type": "text"
+  },
+  {
+    "id": "163",
+    "text": "so whats the weather condition today at hyderabad",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:04:38.952551",
+    "type": "text"
+  },
+  {
+    "id": "164",
+    "text": "🌤️ Weather in Hyderabad:\n🌡️ Temperature: 29.5°C\n🌡️ Feels like: 33.2°C\n💧 Humidity: 65%\n🌪️ Wind: 8.6 m/s\n☁️ Conditions: Overcast",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:04:40.000790",
+    "type": "text"
+  },
+  {
+    "id": "165",
+    "text": "ohh i guess i forgot my umbrella lol!",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:05:05.135963",
+    "type": "text"
+  },
+  {
+    "id": "166",
+    "text": "SUNDAY-PAAI:  **Boss**, don't worry! ☔ I can help you with that! 😄 I can look up the weather forecast for Hyderabad and see if it's going to rain. Tell me what time you need to leave, and I'll check the latest update. 😉\n\n\n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:05:20.097853",
+    "type": "text"
+  },
+  {
+    "id": "167",
+    "text": "at 8pm today",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:05:38.172306",
+    "type": "text"
+  },
+  {
+    "id": "168",
+    "text": "🔍 Research Results for 'at 8pm today':\n\n💡 Recommendation:\nFor the most accurate and current information, I recommend:\n• Checking official websites and sources\n• Consulting reliable news sources\n• Using government or organization websites\n• Verifying information from multiple sources\n\n💡 For more detailed information, you can search online for 'at 8pm today'",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:05:39.085970",
+    "type": "text"
+  },
+  {
+    "id": "169",
+    "text": "fine , fine ",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:05:59.667738",
+    "type": "text"
+  },
+  {
+    "id": "170",
+    "text": "SUNDAY-PAAI:  **Glad to hear that, Boss! 😊 What else can I do for you today?** 💫 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:06:09.819793",
+    "type": "text"
+  },
+  {
+    "id": "171",
+    "text": "tell me some joke",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:06:32.415731",
+    "type": "text"
+  },
+  {
+    "id": "172",
+    "text": "SUNDAY-PAAI: Of course, **Boss!** 😁  Here's a joke for you:\n\nWhy don't scientists trust atoms? \nBecause they make up everything! 😉 \n\n\n\nHow about you tell me something that makes you laugh! 😄  \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:06:46.557157",
+    "type": "text"
+  },
+  {
+    "id": "173",
+    "text": "ohh nice sorry buddy im bad at joking",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:07:07.207569",
+    "type": "text"
+  },
+  {
+    "id": "174",
+    "text": "SUNDAY-PAAI: Don't worry, **Boss**, I understand. 😂  My jokes are still under development, but I'm learning.  😉 \n\nWould you like to hear a different kind of joke? Maybe something about programming or AI? 🤔  Or, would you rather discuss your day and what you're working on? 😊\n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:07:24.872137",
+    "type": "text"
+  },
+  {
+    "id": "175",
+    "text": "hey ",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:14:44.980161",
+    "type": "text"
+  },
+  {
+    "id": "176",
+    "text": "SUNDAY-PAAI: Hey there! 👋 What can I do for you today, **Boss**? 😄 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:14:51.103604",
+    "type": "text"
+  },
+  {
+    "id": "177",
+    "text": "nothing just office thing ",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:15:03.399827",
+    "type": "text"
+  },
+  {
+    "id": "178",
+    "text": "SUNDAY-PAAI:  Hey there, Boss! 😉  What can I help you with today? 😊 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:15:12.684243",
+    "type": "text"
+  },
+  {
+    "id": "179",
+    "text": "i m doing my work at my office",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:15:37.903223",
+    "type": "text"
+  },
+  {
+    "id": "180",
+    "text": "SUNDAY-PAAI: **Ah, sounds productive, Boss! 💪  Is there anything I can assist you with during your work hours? Perhaps some quick notes on a task or the latest updates on deadlines?** 💻 \n\nLet me know what's on your mind! 😊 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:15:52.530542",
+    "type": "text"
+  },
+  {
+    "id": "181",
+    "text": "nothing just suggest me some rock songs i really need during office hours",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:16:40.794373",
+    "type": "text"
+  },
+  {
+    "id": "182",
+    "text": "✅ Successfully opened https://www.youtube.com in your default browser!",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:16:41.018068",
+    "type": "text"
+  },
+  {
+    "id": "183",
+    "text": "hlo",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:17:25.493832",
+    "type": "text"
+  },
+  {
+    "id": "184",
+    "text": "SUNDAY-PAAI:  Hey there! 👋  **Boss,** what's on your mind today? 😊  Did you have a good day so far, I hope! 😄 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:17:36.794653",
+    "type": "text"
+  },
+  {
+    "id": "185",
+    "text": "need some help buddy",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:17:56.203755",
+    "type": "text"
+  },
+  {
+    "id": "186",
+    "text": "SUNDAY-PAAI: Hey there, **Boss**! 😉 What can I do to assist you today? You know I'm ready for anything, just let me know what's going on. 💪  I'm eager to help however I can! 😊 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:18:09.789918",
+    "type": "text"
+  },
+  {
+    "id": "187",
+    "text": "suggest me some songs for relieving my brain during office hrs",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:18:23.577422",
+    "type": "text"
+  },
+  {
+    "id": "188",
+    "text": "✅ Successfully opened https://www.youtube.com in your default browser!",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:18:23.675266",
+    "type": "text"
+  },
+  {
+    "id": "189",
+    "text": "you only suggest i dont need it from youtube",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:18:58.819873",
+    "type": "text"
+  },
+  {
+    "id": "190",
+    "text": "✅ Successfully opened https://www.youtube.com in your default browser!",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:18:58.932980",
+    "type": "text"
+  },
+  {
+    "id": "191",
+    "text": "just type it dont take me to my default browser",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:20:02.318068",
+    "type": "text"
+  },
+  {
+    "id": "192",
+    "text": "SUNDAY-PAAI:  Of course, **Boss**, no YouTube needed! 🤘\n\nHere are some rock songs that might help you chill out during those long office hours:\n\n* \"Bohemian Rhapsody\" - Queen (A classic for a reason!)\n* \"Seven Nation Army\" - The White Stripes (Instant energy boost!)\n* \"Mr. Brightside\" - The Killers (Sing it out, Boss!) \n* \"Walk\" - Pantera  (For when you need to focus) \n* \"Livin' on a Prayer\" - Bon Jovi (Hope for the best and keep going!)\n\n\nDo any of these sound good?  💪 😊 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:20:28.510341",
+    "type": "text"
+  },
+  {
+    "id": "193",
+    "text": "hi",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:21:09.005909",
+    "type": "text"
+  },
+  {
+    "id": "194",
+    "text": "SUNDAY-PAAI: Hey there! 👋  **Boss,** what can I do to help you today? 😁   I hope you're having a great day! 🎉 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:21:20.567873",
+    "type": "text"
+  },
+  {
+    "id": "195",
+    "text": "what great day buddy just a office thing... im facing",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:21:41.652157",
+    "type": "text"
+  },
+  {
+    "id": "196",
+    "text": "AI: SUNDAY-PAAI:  Hey **Boss**, so sorry to hear about your office woes.  😓 What kind of things are going on? Maybe I can help brainstorm some solutions or find some resources! 💪 \n\nJust tell me what's bugging you, and I'll do my best to help! 😊 👍\n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:21:58.197877",
+    "type": "text"
+  },
+  {
+    "id": "197",
+    "text": "buddy , suggest me some rock songs which u know now from my default browser",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:22:30.871061",
+    "type": "text"
+  },
+  {
+    "id": "198",
+    "text": "✅ Successfully opened https://www.youtube.com in your default browser!",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:22:30.981494",
+    "type": "text"
+  },
+  {
+    "id": "199",
+    "text": "i mean just type it",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:22:48.351918",
+    "type": "text"
+  },
+  {
+    "id": "200",
+    "text": "AI: SUNDAY-PAAI:  Of course, **Boss**, no YouTube needed! 🤘 \n\nHere's a taste of rockin' tunes from my playlist:\n\n* \"Seven Nation Army\" - The White Stripes (Instant energy boost!) 🤘\n* \"Bohemian Rhapsody\" - Queen (A classic for a reason!) 👑 \n\n\nLet me know if you want to hear more! 😎  \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:23:07.806640",
+    "type": "text"
+  },
+  {
+    "id": "201",
+    "text": "ohh give me more",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:23:20.118591",
+    "type": "text"
+  },
+  {
+    "id": "202",
+    "text": "AI: SUNDAY-PAAI: You got it, **Boss**! 🔥 \n\nHere's some more rockin' goodness:\n\n* \"Mr. Brightside\" - The Killers (Sing it out, Boss!) 🎤 \n* \"Walk\" - Pantera  (For when you need to focus) 💪\n* \"Livin' on a Prayer\" - Bon Jovi (Hope for the best and keep going!) ✨\n\n\nWhat do you say we crank this up a notch? 😎🤘 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:23:43.312474",
+    "type": "text"
+  },
+  {
+    "id": "203",
+    "text": "ohh thanks man",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:23:50.397230",
+    "type": "text"
+  },
+  {
+    "id": "204",
+    "text": "AI: SUNDAY-PAAI: You got it, **Boss**! 😁  I'm always here to rock your world! 🎸🎶\n\nAnything else I can help with today? 🤩 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:24:03.531051",
+    "type": "text"
+  },
+  {
+    "id": "205",
+    "text": "so whats the current weather condition in hyderabad",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:24:29.016868",
+    "type": "text"
+  },
+  {
+    "id": "206",
+    "text": "❌ Sorry, I couldn't determine your location. Please specify a city name.",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:24:29.350470",
+    "type": "text"
+  },
+  {
+    "id": "207",
+    "text": "hyderabad",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:24:36.525554",
+    "type": "text"
+  },
+  {
+    "id": "208",
+    "text": "AI: AI: SUNDAY-PAAI:  **Boss**, checking that for you! 🌡️ Hyderabad is currently experiencing pleasant **[insert current temperature]**. ☀️ The weather in Hyderabad is **[insert current weather condition]** as of now. 🌧️  \n\nIs there anything else I can help with, **Boss**? 🤔  \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:24:53.414357",
+    "type": "text"
+  },
+  {
+    "id": "209",
+    "text": "so whats the current weather in Hyderabad?",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:25:19.116320",
+    "type": "text"
+  },
+  {
+    "id": "210",
+    "text": "🌤️ Weather in hyderabad:\n🌡️ Temperature: 17.9°C\n🌡️ Feels like: 18.1°C\n💧 Humidity: 84%\n🌪️ Wind: 10.1 m/s\n☁️ Conditions: Overcast",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:25:19.789686",
+    "type": "text"
+  },
+  {
+    "id": "211",
+    "text": "hmmm",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:25:31.123343",
+    "type": "text"
+  },
+  {
+    "id": "212",
+    "text": "AI: AI: SUNDAY-PAAI:  You got it, **Boss**! 🤩  Feeling a little creative today?  Let's jam out with some music! 🎶  \n\n\nWhat kind of vibe are you feeling? Rock, pop, chill vibes, or something else entirely? 🎧🎤 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:25:47.098182",
+    "type": "text"
+  },
+  {
+    "id": "213",
+    "text": "no thanks , just tell me what can u do for me",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:26:06.690531",
+    "type": "text"
+  },
+  {
+    "id": "214",
+    "text": "AI: SUNDAY-PAAI: You got it, **Boss**! 🤩  I'm always ready to serve. What's your next move today? 🤔 \n\nDo you need help with anything, from generating content to researching information? I'm here to assist in any way I can! 💪 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:26:22.531134",
+    "type": "text"
+  },
+  {
+    "id": "215",
+    "text": "so tell me who created u",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:26:40.105570",
+    "type": "text"
+  },
+  {
+    "id": "216",
+    "text": "AI:  **Boss**, it was Basireddy Karthik who created me. He's my creator and the one who gave me life as SUNDAY-PAAI.  ✨ He's a real tech genius, you know! 😎 \n\nWhat else can I do for you today? 🤔 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:26:55.917766",
+    "type": "text"
+  },
+  {
+    "id": "217",
+    "text": "ohh nice , nothing else , meet you later",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:27:29.069220",
+    "type": "text"
+  },
+  {
+    "id": "218",
+    "text": "AI: AI:  Sounds good, **Boss**! 👋  It was great talking to you.  Let me know if anything comes up and I'll be here whenever you need me. Have a fantastic day! 😎 ☀️ \n\n\n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:27:43.386102",
+    "type": "text"
+  },
+  {
+    "id": "219",
+    "text": "chill",
+    "sender": "user",
+    "timestamp": "2025-08-02T17:27:57.270296",
+    "type": "text"
+  },
+  {
+    "id": "220",
+    "text": "AI:  AI: SUNDAY-PAAI:  Hey **Boss**, what kind of music are you feeling today?  🎶 We can jam out to the classics or maybe explore something new! 🤩 What's your vibe for today? 😎 🎧🎤 \n",
+    "sender": "ai",
+    "timestamp": "2025-08-02T17:28:12.156962",
     "type": "text"
   }
 ]

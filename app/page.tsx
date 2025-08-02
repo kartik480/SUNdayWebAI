@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Bot, 
@@ -37,13 +37,23 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [isClient, setIsClient] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  // Auto-scroll to bottom when new messages arrive
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   // Load fresh welcome message only (clear chat display, keep backend memory)
   useEffect(() => {
     const loadFreshWelcome = async () => {
       try {
         // Get a fresh welcome message from backend
-        const response = await fetch('/api/welcome')
+        const response = await fetch('http://localhost:8080/api/welcome')
         if (response.ok) {
           const data = await response.json()
           setMessages([{
@@ -102,9 +112,9 @@ export default function Home() {
     setInputText('')
     setIsTyping(true)
 
-    // Get AI response from Flask backend
+    // Get AI response from Flask backend directly
     try {
-      const response = await fetch('/api/messages', {
+      const response = await fetch('http://localhost:8080/api/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -259,33 +269,35 @@ export default function Home() {
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="h-full bg-glass rounded-2xl p-6 flex flex-col"
+              className="h-full bg-glass rounded-2xl flex flex-col"
             >
-              {/* AI Avatar */}
-              <div className="flex items-center space-x-4 mb-6">
-                <motion.div
-                  animate={{ 
-                    scale: [1, 1.1, 1],
-                    rotate: [0, 5, -5, 0]
-                  }}
-                  transition={{ 
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="w-16 h-16 bg-gradient-to-r from-ai-500 to-purple-600 rounded-full flex items-center justify-center relative"
-                >
-                  <Bot className="w-8 h-8 text-white" />
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full animate-pulse" />
-                </motion.div>
-                <div>
-                  <h2 className="text-xl font-semibold">Assistant</h2>
-                  <p className="text-slate-300 text-sm">Online & Ready</p>
+              {/* AI Avatar - Fixed at top */}
+              <div className="p-6 border-b border-white/10">
+                <div className="flex items-center space-x-4">
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.1, 1],
+                      rotate: [0, 5, -5, 0]
+                    }}
+                    transition={{ 
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                    className="w-16 h-16 bg-gradient-to-r from-ai-500 to-purple-600 rounded-full flex items-center justify-center relative"
+                  >
+                    <Bot className="w-8 h-8 text-white" />
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full animate-pulse" />
+                  </motion.div>
+                  <div>
+                    <h2 className="text-xl font-semibold">Assistant</h2>
+                    <p className="text-slate-300 text-sm">Online & Ready</p>
+                  </div>
                 </div>
               </div>
 
-              {/* Messages */}
-              <div className="flex-1 overflow-y-auto space-y-4 mb-6">
+              {/* Messages Container - Scrollable */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-4 chat-scrollbar" style={{ maxHeight: 'calc(100vh - 400px)' }}>
                 <AnimatePresence>
                   {messages.map((message) => (
                     <motion.div
@@ -300,7 +312,7 @@ export default function Home() {
                           ? 'bg-gradient-to-r from-ai-500 to-purple-600 text-white' 
                           : 'bg-white/10 backdrop-blur-sm'
                       }`}>
-                        <p className="text-sm">{message.text}</p>
+                        <p className="text-sm whitespace-pre-wrap break-words">{message.text}</p>
                         <p className="text-xs opacity-60 mt-2">
                           {message.timestamp.toLocaleTimeString()}
                         </p>
@@ -324,40 +336,45 @@ export default function Home() {
                     </motion.div>
                   )}
                 </AnimatePresence>
+                
+                {/* Invisible div for auto-scroll */}
+                <div ref={messagesEndRef} />
               </div>
 
-              {/* Input Area */}
-              <div className="flex items-center space-x-4">
-                <div className="flex-1 relative">
-                  <input
-                    type="text"
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Ask me anything..."
-                    className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-4 text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-ai-500 focus:border-transparent"
-                  />
+              {/* Input Area - Fixed at bottom */}
+              <div className="p-6 border-t border-white/10">
+                <div className="flex items-center space-x-4">
+                  <div className="flex-1 relative">
+                    <input
+                      type="text"
+                      value={inputText}
+                      onChange={(e) => setInputText(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                      placeholder="Ask me anything..."
+                      className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-4 text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-ai-500 focus:border-transparent"
+                    />
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={toggleVoice}
+                    className={`p-4 rounded-full transition-colors ${
+                      isListening 
+                        ? 'bg-red-500 hover:bg-red-600' 
+                        : 'bg-ai-500 hover:bg-ai-600'
+                    }`}
+                  >
+                    {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={sendMessage}
+                    className="p-4 bg-gradient-to-r from-ai-500 to-purple-600 rounded-full hover:from-ai-600 hover:to-purple-700 transition-all"
+                  >
+                    <Send className="w-5 h-5" />
+                  </motion.button>
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={toggleVoice}
-                  className={`p-4 rounded-full transition-colors ${
-                    isListening 
-                      ? 'bg-red-500 hover:bg-red-600' 
-                      : 'bg-ai-500 hover:bg-ai-600'
-                  }`}
-                >
-                  {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={sendMessage}
-                  className="p-4 bg-gradient-to-r from-ai-500 to-purple-600 rounded-full hover:from-ai-600 hover:to-purple-700 transition-all"
-                >
-                  <Send className="w-5 h-5" />
-                </motion.button>
               </div>
             </motion.div>
           </div>

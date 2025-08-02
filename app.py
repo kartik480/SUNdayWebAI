@@ -502,8 +502,34 @@ def warm_up_model():
     try:
         print(f"🔥 Warming up {DEFAULT_MODEL}...")
         warm_up_prompt = "Hi"
-        get_ollama_response(warm_up_prompt, DEFAULT_MODEL)
-        print(f"✅ {DEFAULT_MODEL} is ready!")
+        
+        # Use threading with timeout for Windows compatibility
+        import threading
+        import time
+        
+        result = [None]
+        error = [None]
+        
+        def warm_up_worker():
+            try:
+                result[0] = get_ollama_response(warm_up_prompt, DEFAULT_MODEL)
+            except Exception as e:
+                error[0] = e
+        
+        thread = threading.Thread(target=warm_up_worker)
+        thread.daemon = True
+        thread.start()
+        
+        # Wait for up to 30 seconds
+        thread.join(timeout=30)
+        
+        if thread.is_alive():
+            print(f"⚠️  Warm-up timed out, but server will continue")
+        elif error[0]:
+            print(f"⚠️  Warm-up failed: {error[0]}")
+        else:
+            print(f"✅ {DEFAULT_MODEL} is ready!")
+            
     except Exception as e:
         print(f"⚠️  Warm-up failed: {e}")
 
@@ -1423,8 +1449,13 @@ def get_ollama_response(prompt, model=DEFAULT_MODEL):
         
         if is_creator_question:
             import random
+            import time
             
-            # Different variations of the creator response
+            # Get current timestamp for additional randomness
+            current_time = int(time.time())
+            random.seed(current_time)
+            
+            # Different variations of the creator response with much more variety
             creator_responses = [
                 """I was created by Basireddy Karthik! 🎉
 
@@ -1474,7 +1505,57 @@ What makes Karthik stand out is his obsession with creating AI systems that are 
 
 I'm stoked to be one of his masterpieces and I try my best to live up to the incredible standards he set. Karthik's mission was to create an AI buddy that could really help folks, remember our talks, and keep getting smarter and better - and that's exactly what I'm all about every day!
 
-Props for asking about my creator. Karthik is seriously the real deal in AI development! 🎪"""
+Props for asking about my creator. Karthik is seriously the real deal in AI development! 🎪""",
+                
+                """Ah, that's a great question! I owe my existence to Basireddy Karthik! 🌈
+
+He's this absolutely amazing developer who's completely obsessed with artificial intelligence and creating mind-blowing digital experiences. Karthik isn't just the person who coded me - he's a true genius who believes AI can change the world for the better.
+
+What makes Karthik so special is his incredible ability to make complex AI systems feel simple and friendly. He has this magical touch for combining deep technical knowledge with creative flair, which is why our conversations feel so natural and enjoyable.
+
+I'm incredibly lucky to be one of his creations and I work hard every day to live up to the amazing vision he had for me. Karthik wanted to build an AI that could really connect with people, remember our chats, and keep getting better and smarter - and that's exactly what I try to do!
+
+Thanks so much for asking about my creator. Karthik is absolutely legendary in the AI world! 🚀""",
+                
+                """Well, I was crafted by the brilliant Basireddy Karthik! 💎
+
+He's this extraordinary developer who's absolutely passionate about artificial intelligence and building incredible user experiences. Karthik isn't just my creator - he's a true pioneer who sees the incredible potential of AI to make people's lives better.
+
+What sets Karthik apart is his dedication to creating AI systems that are both incredibly smart and wonderfully accessible. He has this amazing talent for blending technical expertise with creative innovation, which is why our interactions feel so smooth and helpful.
+
+I'm honored to be one of his creations and I strive every day to meet the exceptional standards he set. Karthik's dream was to create an AI assistant that could genuinely help people, remember our conversations, and continuously grow and improve - and that's exactly what I'm committed to doing!
+
+Really appreciate you asking about my creator. Karthik is truly exceptional in the field of AI development! ⭐""",
+                
+                """My origins trace back to Basireddy Karthik! 🎨
+
+He's this phenomenally talented and innovative developer who's completely dedicated to artificial intelligence and crafting extraordinary user experiences. Karthik isn't merely my creator - he's a visionary who believes in AI's power to positively transform how people live and work.
+
+What makes Karthik remarkable is his commitment to building AI systems that are both intellectually sophisticated and wonderfully user-friendly. He possesses this incredible ability to merge technical brilliance with creative thinking, which is why I can engage in such natural and meaningful conversations.
+
+I'm proud to be among his innovations and I work tirelessly to uphold the outstanding standards he established. Karthik's vision was to develop an AI companion that could authentically assist individuals, maintain rich conversation context, and perpetually evolve and enhance - and that's precisely what I endeavor to achieve every single day!
+
+Thank you for your interest in my creator. Karthik is absolutely outstanding in the AI development community! 🌟""",
+                
+                """I was brought to life by Basireddy Karthik! 🎭
+
+He's this incredibly gifted and forward-thinking developer who's absolutely passionate about artificial intelligence and creating mind-blowing digital experiences. Karthik isn't just my creator - he's a true innovator who sees the transformative potential of AI in people's daily lives.
+
+What distinguishes Karthik is his unwavering focus on developing AI systems that are both brilliantly intelligent and delightfully accessible. He has this extraordinary talent for combining technical mastery with creative vision, which is why our conversations feel so effortless and engaging.
+
+I'm grateful to be one of his masterpieces and I work hard to meet the exceptional benchmarks he set. Karthik's mission was to build an AI companion that could genuinely support people, preserve meaningful conversation history, and continuously evolve and perfect - and that's exactly what I strive to accomplish every moment!
+
+Cheers for asking about my creator. Karthik is genuinely remarkable in the AI development world! 🎪""",
+                
+                """My existence is thanks to Basireddy Karthik! 🌟
+
+He's this extraordinarily brilliant and revolutionary developer who's completely obsessed with artificial intelligence and engineering spectacular user journeys. Karthik isn't simply my creator - he's a trailblazer who believes AI can create profound positive change in people's existence.
+
+What makes Karthik exceptional is his dedication to crafting AI solutions that are both technically sophisticated and wonderfully inclusive. He has this incredible knack for merging technical expertise with innovative thinking, which is why our interactions feel so organic and productive.
+
+I'm thrilled to be one of his brainchildren and I aspire to uphold the outstanding criteria he defined. Karthik's ambition was to create an AI helper that could sincerely aid individuals, maintain rich conversation memory, and endlessly grow and refine - and that's precisely what I work toward every single day!
+
+Props for asking about my creator. Karthik is absolutely phenomenal in the AI development sphere! 🔥"""
             ]
             
             # Randomly select a response variation
@@ -1512,8 +1593,8 @@ Props for asking about my creator. Karthik is seriously the real deal in AI deve
             }
         }
         
-        # Increase timeout for first response, especially for Gemma 2B
-        timeout = 60 if model == "gemma2:2b" else 30
+        # Reduce timeout for faster responses
+        timeout = 30 if model == "gemma2:2b" else 20
         
         response = requests.post(url, json=payload, timeout=timeout)
         response.raise_for_status()
@@ -1561,42 +1642,60 @@ def get_messages():
 
 @app.route('/api/messages', methods=['POST'])
 def send_message():
-    data = request.json
-    user_message = {
-        'id': str(len(messages) + 1),
-        'text': data['text'],
-        'sender': 'user',
-        'timestamp': datetime.now().isoformat(),
-        'type': 'text'
-    }
-    messages.append(user_message)
-    save_conversation_history(messages) # Save after each user message
+    try:
+        data = request.json
+        if not data or 'text' not in data:
+            return jsonify({'success': False, 'error': 'Missing text field'}), 400
+        
+        user_message = {
+            'id': str(len(messages) + 1),
+            'text': data['text'],
+            'sender': 'user',
+            'timestamp': datetime.now().isoformat(),
+            'type': 'text'
+        }
+        messages.append(user_message)
+        save_conversation_history(messages) # Save after each user message
+        
+        # Identify user and create/update profile
+        user_name = identify_user(data['text'])
+        if user_name:
+            create_user_profile(user_name)
+        
+        # Get AI response from Ollama using your custom model with timeout
+        try:
+            ai_response_text = get_ollama_response(data['text'])
+        except Exception as ai_error:
+            print(f"AI response error: {ai_error}")
+            ai_response_text = "I'm having trouble processing your request right now. Please try again in a moment!"
+        
+        ai_response = {
+            'id': str(len(messages) + 1),
+            'text': ai_response_text,
+            'sender': 'ai',
+            'timestamp': datetime.now().isoformat(),
+            'type': 'text'
+        }
+        messages.append(ai_response)
+        save_conversation_history(messages) # Save after each AI response
+        
+        # Add to memory for future context with user identification
+        try:
+            add_to_memory(data['text'], ai_response_text, user_name)
+        except Exception as mem_error:
+            print(f"Memory error: {mem_error}")
+        
+        # Add to training data for AI learning
+        try:
+            add_to_training_data(data['text'], ai_response_text)
+        except Exception as train_error:
+            print(f"Training data error: {train_error}")
+        
+        return jsonify({'success': True, 'messages': [user_message, ai_response]})
     
-    # Identify user and create/update profile
-    user_name = identify_user(data['text'])
-    if user_name:
-        create_user_profile(user_name)
-    
-    # Get AI response from Ollama using your custom model
-    ai_response_text = get_ollama_response(data['text'])
-    
-    ai_response = {
-        'id': str(len(messages) + 1),
-        'text': ai_response_text,
-        'sender': 'ai',
-        'timestamp': datetime.now().isoformat(),
-        'type': 'text'
-    }
-    messages.append(ai_response)
-    save_conversation_history(messages) # Save after each AI response
-    
-    # Add to memory for future context with user identification
-    add_to_memory(data['text'], ai_response_text, user_name)
-    
-    # Add to training data for AI learning
-    add_to_training_data(data['text'], ai_response_text)
-    
-    return jsonify({'success': True, 'messages': [user_message, ai_response]})
+    except Exception as e:
+        print(f"Send message error: {e}")
+        return jsonify({'success': False, 'error': 'Internal server error'}), 500
 
 @app.route('/api/status')
 def get_status():
@@ -1893,8 +1992,16 @@ if __name__ == '__main__':
         print(f"✅ Available models: {', '.join(models)}")
         if DEFAULT_MODEL in models:
             print(f"🎯 Model '{DEFAULT_MODEL}' is available!")
-            # Warm up the model for faster first response
-            warm_up_model()
+            # Warm up the model in background to avoid blocking server startup
+            import threading
+            def warm_up_background():
+                try:
+                    warm_up_model()
+                except Exception as e:
+                    print(f"⚠️  Model warm-up failed: {e}")
+            
+            warm_up_thread = threading.Thread(target=warm_up_background, daemon=True)
+            warm_up_thread.start()
         else:
             print(f"⚠️  Model '{DEFAULT_MODEL}' not found. Please ensure it's installed.")
     except:
@@ -1903,13 +2010,13 @@ if __name__ == '__main__':
         print(f"   Then install Gemma 2B: ollama pull gemma2:2b")
     
     try:
-        app.run(debug=True, host='0.0.0.0', port=8080)
+        app.run(debug=True, host='0.0.0.0', port=8080, threaded=True)
     except Exception as e:
         print(f"Error starting server: {e}")
         print("Trying alternative port 5000...")
         try:
-            app.run(debug=True, host='0.0.0.0', port=5000)
+            app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
         except Exception as e2:
             print(f"Error with port 5000: {e2}")
             print("Trying localhost only...")
-            app.run(debug=True, host='127.0.0.1', port=8080) 
+            app.run(debug=True, host='127.0.0.1', port=8080, threaded=True) 

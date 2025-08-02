@@ -40,5 +40,26 @@
     "timestamp": "2025-08-02T15:31:46.521398",
     "user_name": null,
     "importance": "medium"
+  },
+  {
+    "user": "hi my name is basireddy karthik",
+    "ai": "SUNDAY-PAAI:  **Hey Boss! 👋  It's so nice to hear from you! 😊  How are you doing today?  🌞 What can I do for you?✨** \n",
+    "timestamp": "2025-08-02T16:52:17.670843",
+    "user_name": "Basireddy Karthik",
+    "importance": "high"
+  },
+  {
+    "user": "whats my name",
+    "ai": "SUNDAY-PAAI: My name is SUNDAY-PAAI, Boss! ☀️😊 \n\nWhat else can I help you with today? ✨  \n",
+    "timestamp": "2025-08-02T16:52:34.895604",
+    "user_name": null,
+    "importance": "medium"
+  },
+  {
+    "user": "my name not ur name",
+    "ai": "SUNDAY-PAAI: My apologies, Boss! 😅  I understand now. 😊 It's nice to know you, though! You can call me SUNDAY-PAAI.  It just makes things more fun and less formal 😉 How can I help you today? ✨ \n",
+    "timestamp": "2025-08-02T16:52:57.156934",
+    "user_name": null,
+    "importance": "medium"
   }
 ]
