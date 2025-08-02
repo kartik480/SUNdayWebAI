@@ -7,6 +7,7 @@ import webbrowser
 import subprocess
 import platform
 import re
+import hashlib
 
 app = Flask(__name__)
 
@@ -18,6 +19,8 @@ DEFAULT_MODEL = "gemma2:2b"
 CONVERSATION_FILE = "conversation_history.json"
 MEMORY_FILE = "memory_data.json"
 TRAINING_FILE = "training_data.json"
+USER_PROFILE_FILE = "user_profiles.json"
+LONG_TERM_MEMORY_FILE = "long_term_memory.json"
 
 # Load or create conversation history
 def load_conversation_history():
@@ -83,6 +86,53 @@ def save_memory_data(memory_data):
     except Exception as e:
         print(f"⚠️ Error saving memory data: {e}")
 
+# Load or create user profiles
+def load_user_profiles():
+    """Load user profiles from file"""
+    try:
+        if os.path.exists(USER_PROFILE_FILE):
+            with open(USER_PROFILE_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                print(f"📂 Loaded {len(data)} user profiles")
+                return data
+        else:
+            return {}
+    except Exception as e:
+        print(f"⚠️ Error loading user profiles: {e}")
+        return {}
+
+def save_user_profiles(user_profiles):
+    """Save user profiles to file"""
+    try:
+        with open(USER_PROFILE_FILE, 'w', encoding='utf-8') as f:
+            json.dump(user_profiles, f, indent=2, ensure_ascii=False)
+        print(f"💾 Saved {len(user_profiles)} user profiles")
+    except Exception as e:
+        print(f"⚠️ Error saving user profiles: {e}")
+
+# Load or create long-term memory
+def load_long_term_memory():
+    """Load long-term memory from file"""
+    try:
+        if os.path.exists(LONG_TERM_MEMORY_FILE):
+            with open(LONG_TERM_MEMORY_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                print(f"📂 Loaded {len(data)} long-term memory entries")
+                return data
+        else:
+            return []
+    except Exception as e:
+        print(f"⚠️ Error loading long-term memory: {e}")
+        return []
+
+def save_long_term_memory(long_term_memory):
+    """Save long-term memory to file"""
+    try:
+        with open(LONG_TERM_MEMORY_FILE, 'w', encoding='utf-8') as f:
+            json.dump(long_term_memory, f, indent=2, ensure_ascii=False)
+        print(f"💾 Saved {len(long_term_memory)} long-term memory entries")
+    except Exception as e:
+        print(f"⚠️ Error saving long-term memory: {e}")
 
 def load_training_data():
     """Load training data from file"""
@@ -111,28 +161,86 @@ def save_training_data(training_data):
 messages = load_conversation_history()
 conversation_memory = load_memory_data()
 training_data = load_training_data()
+user_profiles = load_user_profiles()
+long_term_memory = load_long_term_memory()
 
-memory_limit = 10  # Keep last 10 exchanges for context
+memory_limit = 15  # Increased memory limit for better context
+long_term_memory_limit = 100  # Keep important memories for longer
 
-# Training system
-training_status = {
-    'is_training': False,
-    'progress': 0,
-    'epochs': 0,
-    'current_epoch': 0,
-    'loss': 0.0,
-    'accuracy': 0.0,
-    'last_trained': None
-}
+def identify_user(message):
+    """Identify user from message content"""
+    # Look for name mentions in the message
+    name_patterns = [
+        r"i am (\w+)",
+        r"my name is (\w+)",
+        r"i'm (\w+)",
+        r"call me (\w+)",
+        r"i am basireddy (\w+)",
+        r"i'm basireddy (\w+)",
+        r"my name is basireddy (\w+)"
+    ]
+    
+    message_lower = message.lower()
+    
+    for pattern in name_patterns:
+        match = re.search(pattern, message_lower)
+        if match:
+            name = match.group(1).title()
+            # Check if it's Basireddy Karthik
+            if "karthik" in name.lower() or "basireddy" in message_lower:
+                return "Basireddy Karthik"
+            return name
+    
+    # Check if user is asking about their name
+    if any(phrase in message_lower for phrase in ["what's my name", "what is my name", "tell me my name", "do you know my name"]):
+        # Return the most recent user name from memory
+        for entry in reversed(conversation_memory):
+            if entry.get('user_name'):
+                return entry['user_name']
+    
+    return None
 
-def add_to_memory(user_message, ai_response):
-    """Add conversation to memory"""
+def create_user_profile(user_name):
+    """Create or update user profile"""
+    global user_profiles
+    
+    if user_name not in user_profiles:
+        user_profiles[user_name] = {
+            'name': user_name,
+            'first_seen': datetime.now().isoformat(),
+            'last_seen': datetime.now().isoformat(),
+            'conversation_count': 0,
+            'preferences': {},
+            'important_facts': [],
+            'relationship': 'user'
+        }
+    else:
+        user_profiles[user_name]['last_seen'] = datetime.now().isoformat()
+        user_profiles[user_name]['conversation_count'] += 1
+    
+    # Special handling for creator
+    if user_name == "Basireddy Karthik":
+        user_profiles[user_name]['relationship'] = 'creator'
+        user_profiles[user_name]['important_facts'].append("Created SUNDAY-PAAI")
+    
+    save_user_profiles(user_profiles)
+    return user_profiles[user_name]
+
+def add_to_memory(user_message, ai_response, user_name=None):
+    """Add conversation to memory with user identification"""
     global conversation_memory
+    
+    # Identify user if not provided
+    if not user_name:
+        user_name = identify_user(user_message)
+    
     memory_entry = {
         'user': user_message,
         'ai': ai_response,
-        'timestamp': datetime.now().isoformat()
+        'timestamp': datetime.now().isoformat(),
+        'user_name': user_name
     }
+    
     conversation_memory.append(memory_entry)
     
     # Keep only the last memory_limit entries
@@ -142,6 +250,63 @@ def add_to_memory(user_message, ai_response):
     # Save to file
     save_memory_data(conversation_memory)
     print(f"💾 Memory updated: {len(conversation_memory)} entries stored")
+    
+    # Add to long-term memory if important
+    if user_name or any(keyword in user_message.lower() for keyword in ['important', 'remember', 'never forget', 'my name', 'i am']):
+        add_to_long_term_memory(user_message, ai_response, user_name)
+
+def add_to_long_term_memory(user_message, ai_response, user_name=None):
+    """Add important information to long-term memory"""
+    global long_term_memory
+    
+    long_term_entry = {
+        'user': user_message,
+        'ai': ai_response,
+        'timestamp': datetime.now().isoformat(),
+        'user_name': user_name,
+        'importance': 'high' if user_name else 'medium'
+    }
+    
+    long_term_memory.append(long_term_entry)
+    
+    # Keep only the last long_term_memory_limit entries
+    if len(long_term_memory) > long_term_memory_limit:
+        long_term_memory = long_term_memory[-long_term_memory_limit:]
+    
+    save_long_term_memory(long_term_memory)
+    print(f"🧠 Long-term memory updated: {len(long_term_memory)} entries stored")
+
+def get_user_context(user_name=None):
+    """Get context about the user for better responses"""
+    if not user_name:
+        return ""
+    
+    context = f"User Context - Name: {user_name}\n"
+    
+    # Get user profile
+    if user_name in user_profiles:
+        profile = user_profiles[user_name]
+        context += f"Relationship: {profile['relationship']}\n"
+        context += f"Conversations: {profile['conversation_count']}\n"
+        if profile['important_facts']:
+            context += f"Important facts: {', '.join(profile['important_facts'])}\n"
+    
+    # Get recent conversations with this user
+    user_conversations = [entry for entry in conversation_memory if entry.get('user_name') == user_name]
+    if user_conversations:
+        context += "Recent conversations:\n"
+        for i, entry in enumerate(user_conversations[-3:], 1):
+            context += f"{i}. User: {entry['user']}\n"
+            context += f"   AI: {entry['ai']}\n"
+    
+    # Get long-term memories about this user
+    user_long_term = [entry for entry in long_term_memory if entry.get('user_name') == user_name]
+    if user_long_term:
+        context += "Important memories:\n"
+        for entry in user_long_term[-2:]:  # Last 2 important memories
+            context += f"- {entry['user']}\n"
+    
+    return context
 
 def add_to_training_data(user_message, ai_response, rating=None):
     """Add conversation to training data"""
@@ -165,11 +330,23 @@ def get_conversation_context():
         return ""
     
     context = "Recent conversation context:\n"
-    for i, entry in enumerate(conversation_memory[-3:], 1):  # Last 3 exchanges
-        context += f"{i}. User: {entry['user']}\n"
+    for i, entry in enumerate(conversation_memory[-5:], 1):  # Last 5 exchanges
+        user_name = entry.get('user_name', 'User')
+        context += f"{i}. {user_name}: {entry['user']}\n"
         context += f"   AI: {entry['ai']}\n"
     context += "\nCurrent conversation: "
     return context
+
+# Training system
+training_status = {
+    'is_training': False,
+    'progress': 0,
+    'epochs': 0,
+    'current_epoch': 0,
+    'loss': 0.0,
+    'accuracy': 0.0,
+    'last_trained': None
+}
 
 def start_training():
     """Start the training process"""
@@ -399,9 +576,18 @@ Props for asking about my creator. Karthik is seriously the real deal in AI deve
             # Randomly select a response variation
             return random.choice(creator_responses)
         
-        # Get conversation context for better responses
-        context = get_conversation_context()
-        enhanced_prompt = context + prompt if context else prompt
+        # Identify user and get enhanced context
+        user_name = identify_user(prompt)
+        user_context = get_user_context(user_name)
+        conversation_context = get_conversation_context()
+        
+        # Combine all context for better responses
+        enhanced_prompt = ""
+        if user_context:
+            enhanced_prompt += user_context + "\n\n"
+        if conversation_context:
+            enhanced_prompt += conversation_context
+        enhanced_prompt += prompt if enhanced_prompt else prompt
         
         url = f"{OLLAMA_BASE_URL}/api/generate"
         payload = {
@@ -475,6 +661,11 @@ def send_message():
     messages.append(user_message)
     save_conversation_history(messages) # Save after each user message
     
+    # Identify user and create/update profile
+    user_name = identify_user(data['text'])
+    if user_name:
+        create_user_profile(user_name)
+    
     # Get AI response from Ollama using your custom model
     ai_response_text = get_ollama_response(data['text'])
     
@@ -488,8 +679,8 @@ def send_message():
     messages.append(ai_response)
     save_conversation_history(messages) # Save after each AI response
     
-    # Add to memory for future context
-    add_to_memory(data['text'], ai_response_text)
+    # Add to memory for future context with user identification
+    add_to_memory(data['text'], ai_response_text, user_name)
     
     # Add to training data for AI learning
     add_to_training_data(data['text'], ai_response_text)
@@ -560,6 +751,9 @@ def get_memory():
     return jsonify({
         'memory_entries': len(conversation_memory),
         'memory_limit': memory_limit,
+        'long_term_memory_entries': len(long_term_memory),
+        'long_term_memory_limit': long_term_memory_limit,
+        'user_profiles': len(user_profiles),
         'recent_context': conversation_memory[-3:] if conversation_memory else []
     })
 
@@ -570,6 +764,44 @@ def clear_memory():
     conversation_memory = []
     save_memory_data(conversation_memory) # Save empty memory
     return jsonify({'success': True, 'message': 'Memory cleared successfully'})
+
+@app.route('/api/users')
+def get_users():
+    """Get all user profiles"""
+    return jsonify({
+        'users': user_profiles,
+        'total_users': len(user_profiles)
+    })
+
+@app.route('/api/users/<user_name>')
+def get_user_profile(user_name):
+    """Get specific user profile"""
+    if user_name in user_profiles:
+        return jsonify({
+            'success': True,
+            'profile': user_profiles[user_name]
+        })
+    else:
+        return jsonify({
+            'success': False,
+            'message': 'User not found'
+        }), 404
+
+@app.route('/api/long-term-memory')
+def get_long_term_memory():
+    """Get long-term memory entries"""
+    return jsonify({
+        'entries': long_term_memory,
+        'total_entries': len(long_term_memory)
+    })
+
+@app.route('/api/long-term-memory/clear', methods=['POST'])
+def clear_long_term_memory():
+    """Clear long-term memory"""
+    global long_term_memory
+    long_term_memory = []
+    save_long_term_memory(long_term_memory)
+    return jsonify({'success': True, 'message': 'Long-term memory cleared successfully'})
 
 @app.route('/api/conversation/clear', methods=['POST'])
 def clear_conversation():
