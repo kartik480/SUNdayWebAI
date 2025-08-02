@@ -8,6 +8,9 @@ import subprocess
 import platform
 import re
 import hashlib
+import urllib.parse
+from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut
 
 app = Flask(__name__)
 
@@ -22,6 +25,11 @@ def after_request(response):
 # Ollama configuration
 OLLAMA_BASE_URL = "http://localhost:11434"
 DEFAULT_MODEL = "gemma2:2b"  
+
+# API Keys and Configuration
+WEATHER_API_KEY = "YOUR_OPENWEATHER_API_KEY"  # Get from https://openweathermap.org/api
+SPOTIFY_CLIENT_ID = "YOUR_SPOTIFY_CLIENT_ID"  # Get from https://developer.spotify.com
+SPOTIFY_CLIENT_SECRET = "YOUR_SPOTIFY_CLIENT_SECRET"
 
 # File paths for persistent storage
 CONVERSATION_FILE = "conversation_history.json"
@@ -509,6 +517,485 @@ def get_current_time():
         'formatted': f"Today is {now.strftime('%A, %B %d, %Y')} and the current time is {now.strftime('%I:%M:%S %p')}"
     }
 
+def get_user_location():
+    """Get user's location using IP geolocation"""
+    try:
+        # Use a free IP geolocation service
+        response = requests.get('https://ipapi.co/json/', timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            return {
+                'city': data.get('city', 'Unknown'),
+                'country': data.get('country_name', 'Unknown'),
+                'latitude': data.get('latitude'),
+                'longitude': data.get('longitude'),
+                'timezone': data.get('timezone', 'Unknown')
+            }
+    except Exception as e:
+        print(f"Error getting location: {e}")
+    
+    return None
+
+def get_weather(location=None):
+    """Get current weather information"""
+    try:
+        # If no location provided, try to get user's location
+        user_location = None
+        if not location:
+            user_location = get_user_location()
+            if user_location:
+                location = user_location['city']
+            else:
+                return "❌ Sorry, I couldn't determine your location. Please specify a city name."
+        
+        # Use OpenWeatherMap API
+        if WEATHER_API_KEY == "YOUR_OPENWEATHER_API_KEY":
+            # Fallback to a free weather service
+            url = f"https://api.open-meteo.com/v1/forecast"
+            params = {
+                'latitude': user_location['latitude'] if user_location else 40.7128,
+                'longitude': user_location['longitude'] if user_location else -74.0060,
+                'current': 'temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m',
+                'timezone': 'auto'
+            }
+        else:
+            # Use OpenWeatherMap API
+            url = "http://api.openweathermap.org/data/2.5/weather"
+            params = {
+                'q': location,
+                'appid': WEATHER_API_KEY,
+                'units': 'metric'
+            }
+        
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        
+        if WEATHER_API_KEY == "YOUR_OPENWEATHER_API_KEY":
+            # Parse Open-Meteo response
+            current = data.get('current', {})
+            weather_info = {
+                'temperature': current.get('temperature_2m', 'N/A'),
+                'feels_like': current.get('apparent_temperature', 'N/A'),
+                'humidity': current.get('relative_humidity_2m', 'N/A'),
+                'description': get_weather_description(current.get('weather_code', 0)),
+                'wind_speed': current.get('wind_speed_10m', 'N/A'),
+                'location': location
+            }
+        else:
+            # Parse OpenWeatherMap response
+            weather_info = {
+                'temperature': data['main']['temp'],
+                'feels_like': data['main']['feels_like'],
+                'humidity': data['main']['humidity'],
+                'description': data['weather'][0]['description'],
+                'wind_speed': data['wind']['speed'],
+                'location': data['name']
+            }
+        
+        return f"🌤️ Weather in {weather_info['location']}:\n" \
+               f"🌡️ Temperature: {weather_info['temperature']}°C\n" \
+               f"🌡️ Feels like: {weather_info['feels_like']}°C\n" \
+               f"💧 Humidity: {weather_info['humidity']}%\n" \
+               f"🌪️ Wind: {weather_info['wind_speed']} m/s\n" \
+               f"☁️ Conditions: {weather_info['description']}"
+        
+    except Exception as e:
+        print(f"Weather API error: {e}")
+        # Try to research weather information online as fallback
+        try:
+            research_query = f"current weather {location} today"
+            research_result = research_internet(research_query)
+            if research_result and "❌" not in research_result:
+                return f"🌤️ Weather information for {location} (researched online):\n{research_result}"
+        except:
+            pass
+        return f"❌ Sorry, I couldn't get the weather information. Error: {str(e)}"
+
+def get_weather_description(code):
+    """Convert weather code to description"""
+    weather_codes = {
+        0: "Clear sky",
+        1: "Mainly clear",
+        2: "Partly cloudy",
+        3: "Overcast",
+        45: "Foggy",
+        48: "Depositing rime fog",
+        51: "Light drizzle",
+        53: "Moderate drizzle",
+        55: "Dense drizzle",
+        61: "Slight rain",
+        63: "Moderate rain",
+        65: "Heavy rain",
+        71: "Slight snow",
+        73: "Moderate snow",
+        75: "Heavy snow",
+        77: "Snow grains",
+        80: "Slight rain showers",
+        81: "Moderate rain showers",
+        82: "Violent rain showers",
+        85: "Slight snow showers",
+        86: "Heavy snow showers",
+        95: "Thunderstorm",
+        96: "Thunderstorm with slight hail",
+        99: "Thunderstorm with heavy hail"
+    }
+    return weather_codes.get(code, "Unknown")
+
+def search_youtube(query):
+    """Search YouTube and open the first result"""
+    try:
+        # Create YouTube search URL
+        search_query = urllib.parse.quote(query)
+        youtube_search_url = f"https://www.youtube.com/results?search_query={search_query}"
+        
+        # Open YouTube search in browser
+        webbrowser.open(youtube_search_url)
+        
+        return f"🎵 I've opened YouTube search for '{query}' in your browser! You should see the search results now."
+        
+    except Exception as e:
+        return f"❌ Sorry, I couldn't search YouTube. Error: {str(e)}"
+
+def search_spotify(query):
+    """Search Spotify and open the first result"""
+    try:
+        # Create Spotify search URL
+        search_query = urllib.parse.quote(query)
+        spotify_search_url = f"https://open.spotify.com/search/{search_query}"
+        
+        # Open Spotify search in browser
+        webbrowser.open(spotify_search_url)
+        
+        return f"🎵 I've opened Spotify search for '{query}' in your browser! You should see the search results now."
+        
+    except Exception as e:
+        return f"❌ Sorry, I couldn't search Spotify. Error: {str(e)}"
+
+def search_netflix(query):
+    """Search Netflix and open the first result"""
+    try:
+        # Create Netflix search URL
+        search_query = urllib.parse.quote(query)
+        netflix_search_url = f"https://www.netflix.com/search?q={search_query}"
+        
+        # Open Netflix search in browser
+        webbrowser.open(netflix_search_url)
+        
+        return f"🎬 I've opened Netflix search for '{query}' in your browser! You should see the search results now."
+        
+    except Exception as e:
+        return f"❌ Sorry, I couldn't search Netflix. Error: {str(e)}"
+
+def search_amazon(query):
+    """Search Amazon and open the first result"""
+    try:
+        # Create Amazon search URL
+        search_query = urllib.parse.quote(query)
+        amazon_search_url = f"https://www.amazon.com/s?k={search_query}"
+        
+        # Open Amazon search in browser
+        webbrowser.open(amazon_search_url)
+        
+        return f"🛒 I've opened Amazon search for '{query}' in your browser! You should see the search results now."
+        
+    except Exception as e:
+        return f"❌ Sorry, I couldn't search Amazon. Error: {str(e)}"
+
+def search_social_media(platform, query):
+    """Search social media platforms"""
+    try:
+        platform_urls = {
+            'facebook': f"https://www.facebook.com/search/top/?q={urllib.parse.quote(query)}",
+            'instagram': f"https://www.instagram.com/explore/tags/{urllib.parse.quote(query)}/",
+            'twitter': f"https://twitter.com/search?q={urllib.parse.quote(query)}",
+            'x': f"https://twitter.com/search?q={urllib.parse.quote(query)}",
+            'tiktok': f"https://www.tiktok.com/search?q={urllib.parse.quote(query)}",
+            'linkedin': f"https://www.linkedin.com/search/results/all/?keywords={urllib.parse.quote(query)}",
+            'reddit': f"https://www.reddit.com/search/?q={urllib.parse.quote(query)}"
+        }
+        
+        if platform in platform_urls:
+            webbrowser.open(platform_urls[platform])
+            return f"📱 I've opened {platform.title()} search for '{query}' in your browser!"
+        else:
+            return f"❌ Sorry, I don't support searching on {platform} yet."
+        
+    except Exception as e:
+        return f"❌ Sorry, I couldn't search {platform}. Error: {str(e)}"
+
+def search_web_enhanced(query):
+    """Enhanced web search with multiple options"""
+    try:
+        # Create search URLs for different engines
+        google_url = f"https://www.google.com/search?q={urllib.parse.quote(query)}"
+        bing_url = f"https://www.bing.com/search?q={urllib.parse.quote(query)}"
+        duckduckgo_url = f"https://duckduckgo.com/?q={urllib.parse.quote(query)}"
+        
+        # Open Google search by default
+        webbrowser.open(google_url)
+        
+        return f"🔍 I've opened a web search for '{query}' in your browser! You can also try:\n" \
+               f"• Bing: {bing_url}\n" \
+               f"• DuckDuckGo: {duckduckgo_url}"
+        
+    except Exception as e:
+        return f"❌ Sorry, I couldn't perform the web search. Error: {str(e)}"
+
+def research_internet(query):
+    """Research information from the internet and provide direct answers"""
+    try:
+        import requests
+        try:
+            from bs4 import BeautifulSoup
+        except ImportError:
+            # Fallback if BeautifulSoup is not available
+            BeautifulSoup = None
+        import re
+        
+        # Clean and enhance the query
+        query_lower = query.lower()
+        
+        # Determine the type of research needed
+        if any(keyword in query_lower for keyword in ['ganesh chaturthi', 'ganesh', 'chaturthi']):
+            search_query = "Ganesh Chaturthi 2025 date celebration festival"
+            topic = "Ganesh Chaturthi"
+        elif any(keyword in query_lower for keyword in ['diwali', 'deepavali']):
+            search_query = "Diwali 2025 date celebration festival"
+            topic = "Diwali"
+        elif any(keyword in query_lower for keyword in ['holi']):
+            search_query = "Holi 2025 date celebration festival"
+            topic = "Holi"
+        elif any(keyword in query_lower for keyword in ['dussera', 'dussehra', 'navratri', 'durga puja']):
+            search_query = "Dussehra 2025 date celebration festival"
+            topic = "Dussehra"
+        elif any(keyword in query_lower for keyword in ['ramadan', 'ramzan']):
+            search_query = "Ramadan 2025 date start end"
+            topic = "Ramadan"
+        else:
+            search_query = f"{query} 2025 information"
+            topic = query
+        
+        # Use Google search (more reliable than DuckDuckGo for this purpose)
+        search_url = f"https://www.google.com/search?q={urllib.parse.quote(search_query)}"
+        
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Accept-Encoding': 'gzip, deflate',
+            'DNT': '1',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+        }
+        
+        response = requests.get(search_url, headers=headers, timeout=15)
+        response.raise_for_status()
+        
+        if BeautifulSoup is None:
+            raise ImportError("BeautifulSoup not available")
+            
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Try to extract featured snippet or knowledge panel
+        featured_snippet = soup.find('div', class_='IZ6rdc')
+        if featured_snippet:
+            snippet_text = featured_snippet.get_text(strip=True)
+            if snippet_text:
+                return f"🔍 Research Results for '{topic}':\n\n" \
+                       f"📋 Featured Information:\n{snippet_text}\n\n" \
+                       f"💡 This information was found through web research"
+        
+        # Extract search results
+        results = []
+        for result in soup.find_all('div', class_='g')[:5]:  # Get top 5 results
+            title_elem = result.find('h3')
+            snippet_elem = result.find('div', class_='VwiC3b')
+            
+            if title_elem and snippet_elem:
+                title = title_elem.get_text(strip=True)
+                snippet = snippet_elem.get_text(strip=True)
+                
+                results.append({
+                    'title': title,
+                    'snippet': snippet
+                })
+        
+        # If no structured results, try alternative parsing
+        if not results:
+            # Look for any text content that might contain dates
+            page_text = soup.get_text()
+            
+            # Look for date patterns
+            date_patterns = [
+                r'\b\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}\b',
+                r'\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}\b',
+                r'\b\d{4}-\d{2}-\d{2}\b',
+                r'\b\d{1,2}/\d{1,2}/\d{4}\b'
+            ]
+            
+            dates_found = []
+            for pattern in date_patterns:
+                matches = re.findall(pattern, page_text, re.IGNORECASE)
+                dates_found.extend(matches)
+            
+            if dates_found:
+                return f"🔍 Based on my research for '{topic}':\n\n" \
+                       f"📅 I found these relevant dates:\n" \
+                       f"{chr(10).join([f'• {date}' for date in dates_found[:3]])}\n\n" \
+                       f"💡 For the most accurate and up-to-date information, I recommend checking:\n" \
+                       f"• Official calendar websites\n" \
+                       f"• Religious organization websites\n" \
+                       f"• Government holiday calendars\n\n" \
+                       f"💡 This information was found through web research"
+        
+        # Analyze results for specific information
+        research_summary = f"🔍 Research Results for '{topic}':\n\n"
+        
+        # Look for specific information in the results
+        found_info = []
+        for result in results:
+            text_to_search = f"{result['title']} {result['snippet']}".lower()
+            
+            # Look for date patterns
+            date_patterns = [
+                r'\b\d{1,2}\s+(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{4}\b',
+                r'\b(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{1,2},?\s+\d{4}\b',
+                r'\b\d{4}-\d{2}-\d{2}\b',
+                r'\b\d{1,2}/\d{1,2}/\d{4}\b'
+            ]
+            
+            for pattern in date_patterns:
+                matches = re.findall(pattern, text_to_search, re.IGNORECASE)
+                found_info.extend(matches)
+            
+            # Look for specific keywords related to the query
+            relevant_keywords = ['ganesh', 'chaturthi', 'diwali', 'holi', 'ramadan', 'festival', 'celebration', 'date', '2025', 'holiday']
+            if any(keyword in text_to_search for keyword in relevant_keywords):
+                found_info.append(f"Relevant info: {result['snippet'][:100]}...")
+        
+        if found_info:
+            research_summary += "📅 Found Information:\n"
+            for info in found_info[:5]:  # Limit to 5 items
+                research_summary += f"• {info}\n"
+            research_summary += "\n"
+        
+        # Add top search results
+        if results:
+            research_summary += "🔗 Top Search Results:\n"
+            for i, result in enumerate(results[:3], 1):
+                research_summary += f"{i}. {result['title']}\n"
+                research_summary += f"   {result['snippet'][:150]}...\n\n"
+        
+        # Add recommendation based on topic
+        research_summary += "💡 Recommendation:\n"
+        if 'ganesh' in query_lower or 'chaturthi' in query_lower:
+            research_summary += "For the most accurate and current information about Ganesh Chaturthi 2025, I recommend:\n"
+            research_summary += "• Checking official Hindu calendar websites\n"
+            research_summary += "• Visiting temple websites or religious organizations\n"
+            research_summary += "• Consulting government holiday calendars\n"
+            research_summary += "• Using reliable calendar apps or websites\n\n"
+        else:
+            research_summary += "For the most accurate and current information, I recommend:\n"
+            research_summary += "• Checking official websites and sources\n"
+            research_summary += "• Consulting reliable news sources\n"
+            research_summary += "• Using government or organization websites\n"
+            research_summary += "• Verifying information from multiple sources\n\n"
+        
+        research_summary += f"💡 For more detailed information, you can search online for '{query}'"
+        
+        # Note: Removed browser opening to provide direct answers instead
+        
+        return research_summary
+        
+    except Exception as e:
+        print(f"Research error: {e}")
+        # Fallback to simple web search with enhanced response
+        fallback_response = f"🔍 I'm researching '{query}' for you!\n\n"
+        fallback_response += "📋 Based on my knowledge, here's what I can tell you:\n"
+        
+        # Provide some basic information based on the query
+        query_lower = query.lower()
+        if 'ganesh chaturthi' in query_lower:
+            fallback_response += "• Ganesh Chaturthi is a Hindu festival celebrating Lord Ganesha's birth\n"
+            fallback_response += "• It typically falls in August or September\n"
+            fallback_response += "• The exact date varies each year based on the Hindu lunar calendar\n"
+            fallback_response += "• In 2025, it's likely to be in September\n\n"
+        elif 'diwali' in query_lower:
+            fallback_response += "• Diwali is the Festival of Lights\n"
+            fallback_response += "• It typically falls in October or November\n"
+            fallback_response += "• The exact date varies each year\n"
+            fallback_response += "• In 2025, it's likely to be in November\n\n"
+        elif 'holi' in query_lower:
+            fallback_response += "• Holi is the Festival of Colors\n"
+            fallback_response += "• It typically falls in March\n"
+            fallback_response += "• The exact date varies each year\n"
+            fallback_response += "• In 2025, it's likely to be in March\n\n"
+        elif any(keyword in query_lower for keyword in ['dussera', 'dussehra', 'navratri']):
+            fallback_response += "• Dussehra (also called Dussera) is a major Hindu festival\n"
+            fallback_response += "• It celebrates the victory of good over evil\n"
+            fallback_response += "• It typically falls in September or October\n"
+            fallback_response += "• The exact date varies each year based on the Hindu lunar calendar\n"
+            fallback_response += "• In 2025, it's likely to be in October\n\n"
+        
+        fallback_response += "💡 For the exact dates and more detailed information, you can search online for this topic"
+        
+        # Note: Removed browser opening to provide direct answers instead
+        
+        return fallback_response
+
+def get_news(category="general", country="us"):
+    """Get latest news"""
+    try:
+        # Use a free news API
+        url = "https://newsapi.org/v2/top-headlines"
+        params = {
+            'country': country,
+            'category': category,
+            'apiKey': 'YOUR_NEWS_API_KEY'  # Get from https://newsapi.org
+        }
+        
+        # For now, just open a news website
+        news_urls = {
+            'general': 'https://news.google.com',
+            'technology': 'https://techcrunch.com',
+            'sports': 'https://espn.com',
+            'business': 'https://bloomberg.com',
+            'entertainment': 'https://variety.com'
+        }
+        
+        news_url = news_urls.get(category, 'https://news.google.com')
+        webbrowser.open(news_url)
+        
+        return f"📰 I've opened {category} news in your browser!"
+        
+    except Exception as e:
+        return f"❌ Sorry, I couldn't get the news. Error: {str(e)}"
+
+def get_stock_price(symbol):
+    """Get stock price information"""
+    try:
+        # Use Yahoo Finance URL
+        yahoo_url = f"https://finance.yahoo.com/quote/{symbol.upper()}"
+        webbrowser.open(yahoo_url)
+        
+        return f"📈 I've opened stock information for {symbol.upper()} in your browser!"
+        
+    except Exception as e:
+        return f"❌ Sorry, I couldn't get stock information. Error: {str(e)}"
+
+def translate_text(text, target_language="en"):
+    """Translate text using Google Translate"""
+    try:
+        # Create Google Translate URL
+        translate_url = f"https://translate.google.com/?sl=auto&tl={target_language}&text={urllib.parse.quote(text)}"
+        webbrowser.open(translate_url)
+        
+        return f"🌐 I've opened Google Translate for '{text}' in your browser!"
+        
+    except Exception as e:
+        return f"❌ Sorry, I couldn't translate the text. Error: {str(e)}"
+
 def open_website(url):
     """Open a website in the default browser"""
     try:
@@ -543,23 +1030,168 @@ def detect_action_request(prompt):
     """Detect if the user is requesting an action"""
     prompt_lower = prompt.lower()
     
+    # Weather requests
+    weather_keywords = ['weather', 'temperature', 'forecast', 'how hot', 'how cold', 'weather today', 'weather now']
+    if any(keyword in prompt_lower for keyword in weather_keywords):
+        # Extract location if mentioned
+        location_patterns = [
+            r'weather in (\w+)',
+            r'weather at (\w+)',
+            r'weather for (\w+)',
+            r'temperature in (\w+)',
+            r'forecast for (\w+)'
+        ]
+        for pattern in location_patterns:
+            match = re.search(pattern, prompt_lower)
+            if match:
+                location = match.group(1)
+                return f'weather:{location}'
+        return 'weather'
+    
+    # YouTube requests
+    youtube_keywords = ['youtube', 'play', 'watch', 'video', 'song', 'music video']
+    if any(keyword in prompt_lower for keyword in youtube_keywords):
+        # Extract search query
+        search_patterns = [
+            r'play (.+) on youtube',
+            r'watch (.+) on youtube',
+            r'youtube (.+)',
+            r'play (.+)',
+            r'watch (.+)',
+            r'open (.+) on youtube',
+            r'open (.+) in youtube',
+            r'open (.+) song in youtube',
+            r'open (.+) music in youtube',
+            r'search (.+) on youtube',
+            r'find (.+) on youtube',
+            r'look up (.+) on youtube'
+        ]
+        for pattern in search_patterns:
+            match = re.search(pattern, prompt_lower)
+            if match:
+                query = match.group(1).strip()
+                return f'youtube_search:{query}'
+        return 'youtube'
+    
+    # Spotify requests
+    spotify_keywords = ['spotify', 'music', 'song', 'playlist', 'album']
+    if any(keyword in prompt_lower for keyword in spotify_keywords):
+        # Extract search query
+        search_patterns = [
+            r'play (.+) on spotify',
+            r'spotify (.+)',
+            r'play (.+)',
+            r'find (.+) on spotify',
+            r'search (.+) on spotify',
+            r'open (.+) on spotify',
+            r'open (.+) in spotify',
+            r'search (.+) in spotify',
+            r'find (.+) in spotify',
+            r'look up (.+) on spotify',
+            r'look up (.+) in spotify'
+        ]
+        for pattern in search_patterns:
+            match = re.search(pattern, prompt_lower)
+            if match:
+                query = match.group(1).strip()
+                return f'spotify_search:{query}'
+        return 'spotify'
+    
     # Time-related requests
     time_keywords = ['what time', 'current time', 'what is the time', 'time now', 'what day', 'current date', 'today\'s date']
     if any(keyword in prompt_lower for keyword in time_keywords):
         return 'time'
     
-    # YouTube requests
-    youtube_keywords = ['open youtube', 'go to youtube', 'youtube', 'play youtube', 'watch youtube']
-    if any(keyword in prompt_lower for keyword in youtube_keywords):
-        return 'youtube'
+    # Netflix requests
+    netflix_keywords = ['netflix', 'movie', 'show', 'series', 'stream']
+    if any(keyword in prompt_lower for keyword in netflix_keywords):
+        # Extract search query
+        search_patterns = [
+            r'watch (.+) on netflix',
+            r'netflix (.+)',
+            r'find (.+) on netflix',
+            r'search (.+) on netflix',
+            r'open (.+) on netflix',
+            r'open (.+) in netflix',
+            r'search (.+) in netflix',
+            r'look up (.+) on netflix'
+        ]
+        for pattern in search_patterns:
+            match = re.search(pattern, prompt_lower)
+            if match:
+                query = match.group(1).strip()
+                return f'netflix_search:{query}'
+        return 'netflix'
+    
+    # Amazon requests
+    amazon_keywords = ['amazon', 'buy', 'purchase', 'order', 'product']
+    if any(keyword in prompt_lower for keyword in amazon_keywords):
+        # Extract search query
+        search_patterns = [
+            r'buy (.+) on amazon',
+            r'amazon (.+)',
+            r'find (.+) on amazon',
+            r'search (.+) on amazon',
+            r'open (.+) on amazon',
+            r'open (.+) in amazon',
+            r'search (.+) in amazon',
+            r'look up (.+) on amazon'
+        ]
+        for pattern in search_patterns:
+            match = re.search(pattern, prompt_lower)
+            if match:
+                query = match.group(1).strip()
+                return f'amazon_search:{query}'
+        return 'amazon'
+    
+    # Social Media requests
+    social_keywords = ['facebook', 'instagram', 'twitter', 'x', 'tiktok', 'linkedin', 'reddit']
+    if any(keyword in prompt_lower for keyword in social_keywords):
+        # Extract search query
+        search_patterns = [
+            r'search (.+) on facebook',
+            r'search (.+) on instagram',
+            r'search (.+) on twitter',
+            r'search (.+) on x',
+            r'search (.+) on tiktok',
+            r'search (.+) on linkedin',
+            r'search (.+) on reddit',
+            r'open (.+) on facebook',
+            r'open (.+) on instagram',
+            r'open (.+) on twitter',
+            r'open (.+) on x',
+            r'open (.+) on tiktok',
+            r'open (.+) on linkedin',
+            r'open (.+) on reddit'
+        ]
+        for pattern in search_patterns:
+            match = re.search(pattern, prompt_lower)
+            if match:
+                query = match.group(1).strip()
+                platform = pattern.split(' on ')[1].split(')')[0]
+                return f'social_search:{platform}:{query}'
+        
+        # Check for just opening the platform
+        if 'facebook' in prompt_lower:
+            return 'facebook'
+        elif 'instagram' in prompt_lower:
+            return 'instagram'
+        elif 'twitter' in prompt_lower or 'x' in prompt_lower:
+            return 'twitter'
+        elif 'tiktok' in prompt_lower:
+            return 'tiktok'
+        elif 'linkedin' in prompt_lower:
+            return 'linkedin'
+        elif 'reddit' in prompt_lower:
+            return 'reddit'
     
     # Google requests
     google_keywords = ['open google', 'go to google', 'search google', 'google search']
     if any(keyword in prompt_lower for keyword in google_keywords):
         return 'google'
     
-    # Web search requests
-    search_keywords = ['search for', 'search', 'find', 'look up', 'google']
+    # Web search requests (more specific to avoid conflicts)
+    search_keywords = ['search for', 'search the web', 'web search', 'internet search']
     if any(keyword in prompt_lower for keyword in search_keywords):
         # Extract search query
         for keyword in search_keywords:
@@ -571,6 +1203,67 @@ def detect_action_request(prompt):
                     if query:
                         return f'search:{query}'
         return 'search'
+    
+    # Research requests - when user asks for specific information that needs internet research
+    research_keywords = ['when is', 'what is the date', 'what date', 'research', 'find out', 'look up', 'check', 'what is', 'tell me about', 'how is', 'current']
+    if any(keyword in prompt_lower for keyword in research_keywords):
+        # Check if it's asking for specific information that would benefit from research
+        research_topics = ['ganesh chaturthi', 'diwali', 'holi', 'ramadan', 'christmas', 'easter', 'festival', 'holiday', 'celebration', 'dussera', 'dussehra', 'navratri', 'durga puja', 'weather', 'temperature', 'climate', 'forecast']
+        if any(topic in prompt_lower for topic in research_topics):
+            return f'research:{prompt}'
+    
+    # Direct festival/date queries without "when is" keywords
+    direct_festival_keywords = ['dussera', 'dussehra', 'navratri', 'durga puja', 'ganesh chaturthi', 'diwali', 'holi', 'ramadan']
+    if any(keyword in prompt_lower for keyword in direct_festival_keywords):
+        # Check if it contains a year or date-related words
+        date_indicators = ['2025', '2024', '2026', 'date', 'when', 'celebration', 'festival']
+        if any(indicator in prompt_lower for indicator in date_indicators):
+            return f'research:{prompt}'
+    
+    # General research fallback for queries that might benefit from internet research
+    # This catches queries that are asking for current information, facts, or specific details
+    general_research_indicators = ['current', 'latest', 'today', 'now', 'recent', 'update', 'information about', 'details about']
+    if any(indicator in prompt_lower for indicator in general_research_indicators):
+        # Only trigger for queries that seem to be asking for factual information
+        if len(prompt.split()) >= 3:  # At least 3 words to avoid simple greetings
+            return f'research:{prompt}'
+    
+    # News requests
+    news_keywords = ['news', 'latest news', 'current events', 'what\'s happening']
+    if any(keyword in prompt_lower for keyword in news_keywords):
+        # Extract category if mentioned
+        categories = ['technology', 'sports', 'business', 'entertainment', 'politics']
+        for category in categories:
+            if category in prompt_lower:
+                return f'news:{category}'
+        return 'news'
+    
+    # Stock requests
+    stock_keywords = ['stock', 'stock price', 'stock market', 'share price']
+    if any(keyword in prompt_lower for keyword in stock_keywords):
+        # Extract stock symbol
+        stock_pattern = r'\$?([A-Z]{1,5})'
+        match = re.search(stock_pattern, prompt.upper())
+        if match:
+            symbol = match.group(1)
+            return f'stock:{symbol}'
+        return 'stock'
+    
+    # Translation requests
+    translate_keywords = ['translate', 'translation', 'in spanish', 'in french', 'in german']
+    if any(keyword in prompt_lower for keyword in translate_keywords):
+        # Extract text to translate
+        translate_patterns = [
+            r'translate (.+)',
+            r'translate (.+) to (.+)',
+            r'how do you say (.+) in (.+)'
+        ]
+        for pattern in translate_patterns:
+            match = re.search(pattern, prompt_lower)
+            if match:
+                text = match.group(1).strip()
+                return f'translate:{text}'
+        return 'translate'
     
     # Task-related requests
     task_keywords = ['add task', 'new task', 'create task', 'assign task', 'give me a task', 'remember task']
@@ -596,19 +1289,101 @@ def get_ollama_response(prompt, model=DEFAULT_MODEL):
         # Check for action requests first
         action_type = detect_action_request(prompt)
         
-        if action_type == 'time':
-            time_info = get_current_time()
-            return f"🕐 {time_info['formatted']}"
+        if action_type == 'weather':
+            return get_weather()
+        
+        elif action_type and action_type.startswith('weather:'):
+            location = action_type.split(':', 1)[1]
+            return get_weather(location)
         
         elif action_type == 'youtube':
             return open_youtube()
+        
+        elif action_type and action_type.startswith('youtube_search:'):
+            query = action_type.split(':', 1)[1]
+            return search_youtube(query)
+        
+        elif action_type == 'spotify':
+            return open_website("https://open.spotify.com")
+        
+        elif action_type and action_type.startswith('spotify_search:'):
+            query = action_type.split(':', 1)[1]
+            return search_spotify(query)
+        
+        elif action_type == 'netflix':
+            return open_website("https://www.netflix.com")
+        
+        elif action_type and action_type.startswith('netflix_search:'):
+            query = action_type.split(':', 1)[1]
+            return search_netflix(query)
+        
+        elif action_type == 'amazon':
+            return open_website("https://www.amazon.com")
+        
+        elif action_type and action_type.startswith('amazon_search:'):
+            query = action_type.split(':', 1)[1]
+            return search_amazon(query)
+        
+        elif action_type == 'facebook':
+            return open_website("https://www.facebook.com")
+        
+        elif action_type == 'instagram':
+            return open_website("https://www.instagram.com")
+        
+        elif action_type == 'twitter':
+            return open_website("https://twitter.com")
+        
+        elif action_type == 'tiktok':
+            return open_website("https://www.tiktok.com")
+        
+        elif action_type == 'linkedin':
+            return open_website("https://www.linkedin.com")
+        
+        elif action_type == 'reddit':
+            return open_website("https://www.reddit.com")
+        
+        elif action_type and action_type.startswith('social_search:'):
+            parts = action_type.split(':', 2)
+            if len(parts) == 3:
+                platform = parts[1]
+                query = parts[2]
+                return search_social_media(platform, query)
+        
+        elif action_type == 'time':
+            time_info = get_current_time()
+            return f"🕐 {time_info['formatted']}"
         
         elif action_type == 'google':
             return open_google()
         
         elif action_type and action_type.startswith('search:'):
             query = action_type.split(':', 1)[1]
-            return search_web(query)
+            return search_web_enhanced(query)
+        
+        elif action_type and action_type.startswith('research:'):
+            query = action_type.split(':', 1)[1]
+            return research_internet(query)
+        
+        elif action_type == 'news':
+            return get_news()
+        
+        elif action_type and action_type.startswith('news:'):
+            category = action_type.split(':', 1)[1]
+            return get_news(category)
+        
+        elif action_type == 'stock':
+            return "📈 Please specify a stock symbol (e.g., 'stock price for AAPL' or '$AAPL')"
+        
+        elif action_type and action_type.startswith('stock:'):
+            symbol = action_type.split(':', 1)[1]
+            return get_stock_price(symbol)
+        
+        elif action_type == 'translate':
+            return "🌐 Please specify what you'd like to translate (e.g., 'translate hello to spanish')"
+        
+        elif action_type and action_type.startswith('translate:'):
+            text = action_type.split(':', 1)[1]
+            return translate_text(text)
         
         elif action_type and action_type.startswith('url:'):
             url = action_type.split(':', 1)[1]
@@ -1057,8 +1832,21 @@ def get_capabilities():
             'memory': 'Can remember conversation history and context',
             'learning': 'Can learn from interactions and improve responses',
             'internet_access': 'Can access real-time information and perform web actions',
+            'research': 'Can research information from the internet and provide direct answers',
+            'weather': 'Get current weather information for any location',
+            'music': 'Search and play music on YouTube and Spotify',
+            'news': 'Get latest news from various categories',
+            'finance': 'Check stock prices and market information',
+            'translation': 'Translate text between languages',
             'actions': [
                 'Get current time and date',
+                'Get weather information',
+                'Research information from the internet',
+                'Search and play music on YouTube',
+                'Search and play music on Spotify',
+                'Get latest news',
+                'Check stock prices',
+                'Translate text',
                 'Open websites (YouTube, Google, etc.)',
                 'Perform web searches',
                 'Open URLs directly'
@@ -1066,12 +1854,28 @@ def get_capabilities():
             'conversation': 'Natural language processing with context awareness'
         },
         'supported_actions': {
+            'weather': 'Ask for weather (e.g., "what\'s the weather?", "weather in London")',
+            'research': 'Research information (e.g., "when is ganesh chaturthi", "diwali date 2025")',
+            'youtube': 'Search YouTube (e.g., "play rockstar song on youtube", "watch tutorial")',
+            'spotify': 'Search Spotify (e.g., "play rockstar song on spotify", "find playlist")',
             'time': 'Ask for current time or date',
-            'youtube': 'Open YouTube in browser',
+            'news': 'Get news (e.g., "latest news", "technology news")',
+            'stock': 'Check stock prices (e.g., "stock price for AAPL", "$TSLA")',
+            'translate': 'Translate text (e.g., "translate hello to spanish")',
             'google': 'Open Google in browser',
             'search': 'Search the web for information',
             'urls': 'Open any website URL'
-        }
+        },
+        'examples': [
+            'What\'s the weather like today?',
+            'When is Ganesh Chaturthi?',
+            'Play rockstar song on YouTube',
+            'Find rockstar song on Spotify',
+            'What\'s the latest technology news?',
+            'Stock price for AAPL',
+            'Translate hello to Spanish',
+            'Search for Python tutorials'
+        ]
     }
     return jsonify(capabilities)
 

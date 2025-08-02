@@ -272,7 +272,7 @@
         updateTime();
         setInterval(updateTime, 1000);
 
-        // Chat functionality
+        
         let isListening = false;
         let isPlaying = false;
 
@@ -285,7 +285,7 @@
             const messagesContainer = document.getElementById('messages');
             const now = new Date();
             
-            // Add user message
+            
             const userMessage = document.createElement('div');
             userMessage.className = 'flex justify-end';
             userMessage.innerHTML = `
@@ -296,10 +296,10 @@
             `;
             messagesContainer.appendChild(userMessage);
             
-            // Clear input
+            
             input.value = '';
             
-            // Simulate AI response
+            
             setTimeout(() => {
                 const aiMessage = document.createElement('div');
                 aiMessage.className = 'flex justify-start';
