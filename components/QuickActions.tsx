@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { 
   MessageCircle, 
   Clock, 
@@ -11,7 +12,9 @@ import {
   FileText, 
   Music,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  X,
+  Send
 } from 'lucide-react'
 
 interface QuickAction {
@@ -29,6 +32,19 @@ interface QuickActionsProps {
 }
 
 export default function QuickActions({ onAction }: QuickActionsProps) {
+  const [showScheduleNote, setShowScheduleNote] = useState(false)
+  const [scheduleNote, setScheduleNote] = useState('')
+
+  const handleScheduleSubmit = () => {
+    if (scheduleNote.trim()) {
+      // Handle the schedule note submission here
+      console.log('Schedule note submitted:', scheduleNote)
+      onAction?.('schedule')
+      setScheduleNote('')
+      setShowScheduleNote(false)
+    }
+  }
+
   const actions: QuickAction[] = [
     {
       id: 'chat',
@@ -46,7 +62,7 @@ export default function QuickActions({ onAction }: QuickActionsProps) {
       description: 'Set up reminders',
       color: 'from-green-500 to-emerald-500',
       gradient: 'hover:from-green-600 hover:to-emerald-600',
-      action: () => onAction?.('schedule')
+      action: () => setShowScheduleNote(true)
     },
     {
       id: 'reminder',
@@ -145,6 +161,52 @@ export default function QuickActions({ onAction }: QuickActionsProps) {
           </motion.button>
         ))}
       </div>
+
+      {/* Schedule Task Note Box */}
+      {showScheduleNote && (
+        <motion.div
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -20, scale: 0.95 }}
+          className="mt-4 p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="text-sm font-medium text-white flex items-center gap-2">
+              <Clock className="w-4 h-4" />
+              Schedule Task
+            </h4>
+            <button
+              onClick={() => setShowScheduleNote(false)}
+              className="text-white/60 hover:text-white transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          
+          <div className="space-y-3">
+            <textarea
+              value={scheduleNote}
+              onChange={(e) => setScheduleNote(e.target.value)}
+              placeholder="Enter your task details here..."
+              className="w-full p-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 resize-none focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50"
+              rows={4}
+            />
+            
+            <div className="flex justify-center">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleScheduleSubmit}
+                disabled={!scheduleNote.trim()}
+                className="px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 disabled:from-gray-500 disabled:to-gray-600 disabled:cursor-not-allowed text-white font-medium rounded-lg flex items-center gap-2 transition-all duration-200 shadow-lg"
+              >
+                <Send className="w-4 h-4" />
+                Submit
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Recent Actions */}
       <div className="mt-6">

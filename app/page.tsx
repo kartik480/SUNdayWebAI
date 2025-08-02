@@ -17,7 +17,8 @@ import {
   ChevronRight,
   Play,
   Pause,
-  Volume2
+  Volume2,
+  X
 } from 'lucide-react'
 
 interface Message {
@@ -37,6 +38,13 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [isClient, setIsClient] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [showScheduleNote, setShowScheduleNote] = useState(false)
+  const [scheduleNote, setScheduleNote] = useState('')
+  const [showReminderSection, setShowReminderSection] = useState(false)
+  const [reminderDetails, setReminderDetails] = useState('')
+  const [reminderDate, setReminderDate] = useState('')
+  const [reminderTime, setReminderTime] = useState('')
+  const [reminderDay, setReminderDay] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll to bottom when new messages arrive
@@ -169,6 +177,33 @@ export default function Home() {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       sendMessage()
+    }
+  }
+
+  const handleScheduleSubmit = () => {
+    if (scheduleNote.trim()) {
+      console.log('Schedule note submitted:', scheduleNote)
+      setScheduleNote('')
+      setShowScheduleNote(false)
+      // Take user to Set Reminder section
+      setShowReminderSection(true)
+    }
+  }
+
+  const handleReminderSubmit = () => {
+    if (reminderDetails.trim() && reminderDate && reminderTime) {
+      console.log('Reminder set:', {
+        details: reminderDetails,
+        date: reminderDate,
+        time: reminderTime,
+        day: reminderDay
+      })
+      setReminderDetails('')
+      setReminderDate('')
+      setReminderTime('')
+      setReminderDay('')
+      setShowReminderSection(false)
+      alert('Reminder set successfully!')
     }
   }
 
@@ -403,6 +438,11 @@ export default function Home() {
                     key={action.text}
                     whileHover={{ scale: 1.02, x: 5 }}
                     whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      if (action.text === 'Schedule Task') {
+                        setShowScheduleNote(true)
+                      }
+                    }}
                     className={`w-full p-3 bg-gradient-to-r ${action.color} rounded-xl flex items-center justify-between text-white font-medium`}
                   >
                     <div className="flex items-center">
@@ -413,6 +453,139 @@ export default function Home() {
                   </motion.button>
                 ))}
               </div>
+
+              {/* Schedule Task Note Box */}
+              {showScheduleNote && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                  className="mt-4 p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-sm font-medium text-white flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      Schedule Task
+                    </h4>
+                    <button
+                      onClick={() => setShowScheduleNote(false)}
+                      className="text-white/60 hover:text-white transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <textarea
+                      value={scheduleNote}
+                      onChange={(e) => setScheduleNote(e.target.value)}
+                      placeholder="Enter your task details here..."
+                      className="w-full p-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 resize-none focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50"
+                      rows={4}
+                    />
+                    
+                    <div className="flex justify-center">
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={handleScheduleSubmit}
+                        disabled={!scheduleNote.trim()}
+                        className="px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 disabled:from-gray-500 disabled:to-gray-600 disabled:cursor-not-allowed text-white font-medium rounded-lg flex items-center gap-2 transition-all duration-200 shadow-lg"
+                      >
+                        <Send className="w-4 h-4" />
+                        Submit
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+                             {/* Set Reminder Section */}
+               {showReminderSection && (
+                 <motion.div
+                   initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                   animate={{ opacity: 1, y: 0, scale: 1 }}
+                   exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                   className="mt-4 p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20"
+                 >
+                   <div className="flex items-center justify-between mb-3">
+                     <h4 className="text-sm font-medium text-white flex items-center gap-2">
+                       <Star className="w-4 h-4" />
+                       Set Reminder
+                     </h4>
+                     <button
+                       onClick={() => setShowReminderSection(false)}
+                       className="text-white/60 hover:text-white transition-colors"
+                     >
+                       <X className="w-4 h-4" />
+                     </button>
+                   </div>
+                   
+                   <div className="space-y-3">
+                     <textarea
+                       value={reminderDetails}
+                       onChange={(e) => setReminderDetails(e.target.value)}
+                       placeholder="Enter reminder details..."
+                       className="w-full p-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 resize-none focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500/50"
+                       rows={3}
+                     />
+                     
+                     {/* Date and Time Selection */}
+                     <div className="grid grid-cols-2 gap-3">
+                       <div>
+                         <label className="block text-xs text-white/70 mb-1">Date</label>
+                         <input
+                           type="date"
+                           value={reminderDate}
+                           onChange={(e) => setReminderDate(e.target.value)}
+                           className="w-full p-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500/50 text-sm"
+                         />
+                       </div>
+                       <div>
+                         <label className="block text-xs text-white/70 mb-1">Time</label>
+                         <input
+                           type="time"
+                           value={reminderTime}
+                           onChange={(e) => setReminderTime(e.target.value)}
+                           className="w-full p-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500/50 text-sm"
+                         />
+                       </div>
+                     </div>
+                     
+                     {/* Day Selection */}
+                     <div>
+                       <label className="block text-xs text-white/70 mb-1">Day of Week</label>
+                       <select
+                         value={reminderDay}
+                         onChange={(e) => setReminderDay(e.target.value)}
+                         className="w-full p-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500/50 text-sm"
+                       >
+                         <option value="">Select day</option>
+                         <option value="monday">Monday</option>
+                         <option value="tuesday">Tuesday</option>
+                         <option value="wednesday">Wednesday</option>
+                         <option value="thursday">Thursday</option>
+                         <option value="friday">Friday</option>
+                         <option value="saturday">Saturday</option>
+                         <option value="sunday">Sunday</option>
+                       </select>
+                     </div>
+                     
+                     <div className="flex justify-center">
+                       <motion.button
+                         whileHover={{ scale: 1.05 }}
+                         whileTap={{ scale: 0.95 }}
+                         onClick={handleReminderSubmit}
+                         disabled={!reminderDetails.trim() || !reminderDate || !reminderTime}
+                         className="px-6 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 disabled:from-gray-500 disabled:to-gray-600 disabled:cursor-not-allowed text-white font-medium rounded-lg flex items-center gap-2 transition-all duration-200 shadow-lg"
+                       >
+                         <Send className="w-4 h-4" />
+                         Set Reminder
+                       </motion.button>
+                     </div>
+                   </div>
+                 </motion.div>
+               )}
             </motion.div>
 
             {/* AI Status */}
