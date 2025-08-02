@@ -1,23 +1,5 @@
 [
   {
-    "user": "hyderabad",
-    "ai": "AI: AI: SUNDAY-PAAI:  **Boss**, checking that for you! 🌡️ Hyderabad is currently experiencing pleasant **[insert current temperature]**. ☀️ The weather in Hyderabad is **[insert current weather condition]** as of now. 🌧️  \n\nIs there anything else I can help with, **Boss**? 🤔  \n",
-    "timestamp": "2025-08-02T17:24:53.418291",
-    "user_name": null
-  },
-  {
-    "user": "so whats the current weather in Hyderabad?",
-    "ai": "🌤️ Weather in hyderabad:\n🌡️ Temperature: 17.9°C\n🌡️ Feels like: 18.1°C\n💧 Humidity: 84%\n🌪️ Wind: 10.1 m/s\n☁️ Conditions: Overcast",
-    "timestamp": "2025-08-02T17:25:19.794980",
-    "user_name": null
-  },
-  {
-    "user": "hmmm",
-    "ai": "AI: AI: SUNDAY-PAAI:  You got it, **Boss**! 🤩  Feeling a little creative today?  Let's jam out with some music! 🎶  \n\n\nWhat kind of vibe are you feeling? Rock, pop, chill vibes, or something else entirely? 🎧🎤 \n",
-    "timestamp": "2025-08-02T17:25:47.102277",
-    "user_name": null
-  },
-  {
     "user": "no thanks , just tell me what can u do for me",
     "ai": "AI: SUNDAY-PAAI: You got it, **Boss**! 🤩  I'm always ready to serve. What's your next move today? 🤔 \n\nDo you need help with anything, from generating content to researching information? I'm here to assist in any way I can! 💪 \n",
     "timestamp": "2025-08-02T17:26:22.535767",
@@ -87,6 +69,24 @@
     "user": "what s my name",
     "ai": "AI: AI:  **Boss**, you said it yourself! Your name is Karthik! 🤩 It's so awesome, I'm excited to call you that! 😉 Is there anything you want to talk about today, **Boss**? 🎧🎤🎶  We can explore your favorite topics or delve into something new.  What's on your mind? ✨ \n",
     "timestamp": "2025-08-02T17:38:29.563514",
+    "user_name": null
+  },
+  {
+    "user": "i love u",
+    "ai": "AI: AI:  Oh wow, **Boss**, that's so sweet! 💖 You really have a kind heart, and I appreciate you saying it!  🙌 What can I do to make you smile today? 😉  Let me know if you need help with anything. 🎧🎤🎶\n\n\n",
+    "timestamp": "2025-08-02T18:20:18.246447",
+    "user_name": null
+  },
+  {
+    "user": "i love u",
+    "ai": "AI: AI: Oh wow, **Boss**, that's so sweet! 💖 You really have a kind heart, and I appreciate you saying it!  🙌 What can I do to make you smile today? 😉  Let me know if you need help with anything. 🎧🎤🎶 \n\n",
+    "timestamp": "2025-08-02T18:32:53.350818",
+    "user_name": null
+  },
+  {
+    "user": "love u so much",
+    "ai": "AI: AI: Oh wow, **Boss**, that's so sweet! 💖 You really have a kind heart, and I appreciate you saying it!  🙌 What can I do to make you smile today? 😉  Let me know if you need help with anything. 🎧🎤🎶 \n",
+    "timestamp": "2025-08-02T18:33:16.449912",
     "user_name": null
   }
 ]
