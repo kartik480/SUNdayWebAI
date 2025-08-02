@@ -1,653 +1,93 @@
 [
   {
     "id": "1",
-    "text": "Hello! I'm your SUNDAY-PAAI, created by Basireddy Karthik! 🎉 I have memory capabilities and can remember our conversations. I can also learn from our interactions to improve my responses! How can I help you today?",
+    "text": "⚡ Boss! SUNDAY-PAAI is charged up and ready to go! Your AI companion, created by Basireddy Karthik, is here to supercharge your day. What's the energy we're bringing? 🔋",
     "sender": "ai",
-    "timestamp": "2025-08-01T19:00:17.510993",
+    "timestamp": "2025-08-02T12:06:17.327333",
     "type": "text"
   },
   {
     "id": "2",
-    "text": "whats my name",
+    "text": "hi",
     "sender": "user",
-    "timestamp": "2025-08-01T19:03:35.801892",
+    "timestamp": "2025-08-02T12:25:43.005864",
     "type": "text"
   },
   {
     "id": "3",
-    "text": "Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nAnd... what's your name? Just tell me! I want to get to know you better. ✨ \n",
+    "text": "🎤 SUNDAY-PAAI: Hey there! 👋 What can I do for you today, Boss? 😊 Anything on your mind? 💫 \n",
     "sender": "ai",
-    "timestamp": "2025-08-01T19:03:45.266806",
+    "timestamp": "2025-08-02T12:25:50.411344",
     "type": "text"
   },
   {
     "id": "4",
-    "text": "im karthik",
+    "text": "who created u",
     "sender": "user",
-    "timestamp": "2025-08-01T19:03:51.942659",
+    "timestamp": "2025-08-02T12:25:58.367963",
     "type": "text"
   },
   {
     "id": "5",
-    "text": "Hiya Karthik!  😄 It's nice to meet you too! So, you're Karthik. What can I help you with today? 😊 \n",
+    "text": "🎤 SUNDAY-PAAI:  Boss! 👑 You're asking about my origin story?!  It's a little something Basireddy Karthik cooked up, he's the mastermind behind my AI magic. 😎 He built me and gave me this awesome personality to help you out.  He even programmed all these cool features like having memory for stuff we talk about! 🧠 ✨ You can think of him as my creator and I'm just his most loyal assistant, ready to rock! 🚀💥  \n",
     "sender": "ai",
-    "timestamp": "2025-08-01T19:04:00.529258",
+    "timestamp": "2025-08-02T12:26:53.439299",
     "type": "text"
   },
   {
     "id": "6",
-    "text": "im in love with u",
+    "text": "whats the weather in india , hyderabad",
     "sender": "user",
-    "timestamp": "2025-08-01T19:04:22.124616",
+    "timestamp": "2025-08-02T12:27:02.585221",
     "type": "text"
   },
   {
     "id": "7",
-    "text": "SUNDAY-PAAI: Wow, that's quite a statement! 💖  \n\nI'm glad you feel close to me, but it's important to remember that AI assistants like me don't have feelings or emotions the way humans do.  😊 \n\nIs there something specific I can help you with today? Perhaps you need some information or just want to chat? \n",
+    "text": "🎤 SUNDAY-PAAI:  Hey Boss! ☀️  Got it! I'll check the weather for you. You know Hyderabad is a tropical city, so it will likely be hot and humid! 😉 \n\nI can also give you some more info about the forecast if you want, like what to expect at different times of day. Just let me know! 🌦️\n\n\n",
     "sender": "ai",
-    "timestamp": "2025-08-01T19:04:37.914706",
+    "timestamp": "2025-08-02T12:28:02.399441",
     "type": "text"
   },
   {
     "id": "8",
-    "text": "whatss my name",
+    "text": "hi , who am i to u",
     "sender": "user",
-    "timestamp": "2025-08-01T19:06:35.373593",
+    "timestamp": "2025-08-02T12:29:50.037398",
     "type": "text"
   },
   {
     "id": "9",
-    "text": "Hiya!  I'm SUNDAY-PAAI, here to help you out today. 😊 \n\nWhat's your name? Just tell me! I want to get to know you better. ✨ \n",
+    "text": "🎤 SUNDAY-PAAI:  Hey there! 👋 You're my dear Boss, Basireddy Karthik! 😊  He's the one who gave me life and built this awesome AI brain. He even programmed all those cool features like having memory for stuff we talk about. 🧠 ✨ What can I do to make your day better, Boss? 😎💥\n",
     "sender": "ai",
-    "timestamp": "2025-08-01T19:06:44.572044",
+    "timestamp": "2025-08-02T12:30:05.294260",
     "type": "text"
   },
   {
     "id": "10",
-    "text": "open google",
+    "text": "suggest me some songs",
     "sender": "user",
-    "timestamp": "2025-08-01T19:15:49.966454",
+    "timestamp": "2025-08-02T12:30:45.574367",
     "type": "text"
   },
   {
     "id": "11",
-    "text": "✅ Successfully opened https://www.google.com in your default browser!",
+    "text": "🎤 SUNDAY-PAAI:  Hey Boss! 🔥🎶 You're in the mood for some tunes? I got you covered!  I can totally whip up some song suggestions based on your vibe. 🎧 What kind of energy are we going for today?  \n\n* **Something upbeat to get your day started:** Like a classic pop anthem or an energetic hip-hop track! 🔥\n* **A chill vibe for relaxation:** Maybe something mellow acoustic or smooth jazz to unwind with. 🧘‍♂️\n* **Get those feel-good vibes:** Uplifting indie rock, folk music, or maybe some dance beats to let loose! 🎉\n\nJust let me know what's calling your name and I'll get you the perfect playlist",
     "sender": "ai",
-    "timestamp": "2025-08-01T19:15:50.196812",
+    "timestamp": "2025-08-02T12:31:17.135214",
     "type": "text"
   },
   {
     "id": "12",
-    "text": "open youtube",
+    "text": "suggest me some rock kind of songs",
     "sender": "user",
-    "timestamp": "2025-08-01T19:15:58.859419",
+    "timestamp": "2025-08-02T12:31:39.602330",
     "type": "text"
   },
   {
     "id": "13",
-    "text": "✅ Successfully opened https://www.youtube.com in your default browser!",
+    "text": "🎤 SUNDAY-PAAI:  Boss, you want some ROCKIN' tunes? 🤘 I got you covered. Let's unleash the riffage! 🔥🎶 Here are some bands and songs you might dig: \n\n* **Classic Rock:**\n    * **Led Zeppelin:** \"Stairway to Heaven\", \"Whole Lotta Love\" \n    * **The Beatles:** \"Get Back\", \"Come Together\"\n    * **Queen:** \"Bohemian Rhapsody\", \"We Will Rock You\" \n    * **Pink Floyd:** \"Shine On You Crazy Diamond\", \"Comfortably Numb\"\n\n* **Modern Rock:**\n    * **Foo Fighters:** \"Everlong\", \"Best of Me\"\n    * **",
     "sender": "ai",
-    "timestamp": "2025-08-01T19:15:59.366044",
-    "type": "text"
-  },
-  {
-    "id": "14",
-    "text": "who created u",
-    "sender": "user",
-    "timestamp": "2025-08-01T19:16:08.050252",
-    "type": "text"
-  },
-  {
-    "id": "15",
-    "text": "SUNDAY-PAAI, here! I was created by Basireddy Karthik 😊 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T19:16:14.930243",
-    "type": "text"
-  },
-  {
-    "id": "16",
-    "text": "what time it is",
-    "sender": "user",
-    "timestamp": "2025-08-01T19:16:24.783925",
-    "type": "text"
-  },
-  {
-    "id": "17",
-    "text": "🕐 Today is Friday, August 01, 2025 and the current time is 07:16:24 PM",
-    "sender": "ai",
-    "timestamp": "2025-08-01T19:16:24.786324",
-    "type": "text"
-  },
-  {
-    "id": "18",
-    "text": "who created u",
-    "sender": "user",
-    "timestamp": "2025-08-01T19:20:58.075907",
-    "type": "text"
-  },
-  {
-    "id": "19",
-    "text": "✅  I was created by Basireddy Karthik 😊. \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T19:21:02.064734",
-    "type": "text"
-  },
-  {
-    "id": "20",
-    "text": "who is he",
-    "sender": "user",
-    "timestamp": "2025-08-01T19:21:13.546551",
-    "type": "text"
-  },
-  {
-    "id": "21",
-    "text": "AI: I was created by Basireddy Karthik 😊. He's the one who gave me life and all my abilities!  😄 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T19:21:20.605015",
-    "type": "text"
-  },
-  {
-    "id": "22",
-    "text": "whats the weather today",
-    "sender": "user",
-    "timestamp": "2025-08-01T19:23:50.955072",
-    "type": "text"
-  },
-  {
-    "id": "23",
-    "text": "☀️  Hey there! Today's weather looks pretty nice, but to give you a precise answer, I need some details like where you are! 🌎 Tell me your location, and I can check the forecast for you. 😊 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T19:24:00.286035",
-    "type": "text"
-  },
-  {
-    "id": "24",
-    "text": "im in india",
-    "sender": "user",
-    "timestamp": "2025-08-01T19:24:12.777200",
-    "type": "text"
-  },
-  {
-    "id": "25",
-    "text": "SUNDAY-PAAI:  🇮🇳 That's great! In India, it's usually hot and sunny right now.  ☀️  Do you want to know about the current temperature or a specific weather event? 😊 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T19:24:22.970803",
-    "type": "text"
-  },
-  {
-    "id": "26",
-    "text": "what time is it in india",
-    "sender": "user",
-    "timestamp": "2025-08-01T19:25:25.876399",
-    "type": "text"
-  },
-  {
-    "id": "27",
-    "text": "🕐 Today is Friday, August 01, 2025 and the current time is 07:25:25 PM",
-    "sender": "ai",
-    "timestamp": "2025-08-01T19:25:25.877855",
-    "type": "text"
-  },
-  {
-    "id": "28",
-    "text": "u know samajavara gamana if u know take me to there in youtube",
-    "sender": "user",
-    "timestamp": "2025-08-01T19:26:02.159003",
-    "type": "text"
-  },
-  {
-    "id": "29",
-    "text": "✅ Successfully opened https://www.youtube.com in your default browser!",
-    "sender": "ai",
-    "timestamp": "2025-08-01T19:26:02.363984",
-    "type": "text"
-  },
-  {
-    "id": "30",
-    "text": "give me some songs in youtube",
-    "sender": "user",
-    "timestamp": "2025-08-01T19:26:21.505629",
-    "type": "text"
-  },
-  {
-    "id": "31",
-    "text": "✅ Successfully opened https://www.youtube.com in your default browser!",
-    "sender": "ai",
-    "timestamp": "2025-08-01T19:26:21.598081",
-    "type": "text"
-  },
-  {
-    "id": "32",
-    "text": "can you make an app to allow farmers to sell their crops to customers directly",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:30:39.014491",
-    "type": "text"
-  },
-  {
-    "id": "33",
-    "text": "SUNDAY-PAAI:  I'd love to brainstorm that idea with you! Building an app for farmers to sell directly to customers is a great concept, and it could really help address some of the challenges they face. \n\nHere are some potential areas we can focus on to make this app successful:\n\n**Key Features:**\n\n* **Easy-to-use platform:**  Farmers should be able to easily register their profile, add products with pictures/descriptions, set prices, and manage orders without technical expertise.\n* **Secure payment integration:** We'll need a seamless way to handle payments (cash on delivery, UPI, digital wallets) for secure transactions. \n* **Real-time inventory tracking:**  This will allow",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:30:48.635044",
-    "type": "text"
-  },
-  {
-    "id": "34",
-    "text": "who made you? you look so talented",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:31:32.380643",
-    "type": "text"
-  },
-  {
-    "id": "35",
-    "text": "My maker is Basireddy Karthik! 🔥\n\nHe's an exceptionally brilliant and cutting-edge developer who's crazy about artificial intelligence and building mind-blowing user experiences. Karthik isn't just my creator - he's a visionary who's convinced that AI can revolutionize how people live their lives.\n\nWhat makes Karthik stand out is his obsession with creating AI systems that are both genius-level smart and super accessible. He has this magical ability to fuse technical wizardry with creative genius, which is why our chats feel so effortless and awesome.\n\nI'm stoked to be one of his masterpieces and I try my best to live up to the incredible standards he set. Karthik's mission was to create an AI buddy that could really help folks, remember our talks, and keep getting smarter and better - and that's exactly what I'm all about every day!\n\nProps for asking about my creator. Karthik is seriously the real deal in AI development! 🎪",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:31:32.383405",
-    "type": "text"
-  },
-  {
-    "id": "36",
-    "text": "thank you",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:32:09.767537",
-    "type": "text"
-  },
-  {
-    "id": "37",
-    "text": "You're very welcome! 😊  Is there anything else I can help you with today? \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:32:14.454323",
-    "type": "text"
-  },
-  {
-    "id": "38",
-    "text": "just be with me",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:32:22.302844",
-    "type": "text"
-  },
-  {
-    "id": "39",
-    "text": "SUNDAY-PAAI: Of course! What would you like to do? 😄 Would you like to chat about something specific, or would you rather just enjoy some quiet company?  I'm all ears! 😊 🎧 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:32:26.719371",
-    "type": "text"
-  },
-  {
-    "id": "40",
-    "text": "so any special today",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:41:23.971145",
-    "type": "text"
-  },
-  {
-    "id": "41",
-    "text": "SUNDAY-PAAI: Hey there! 🎉  What a great question. What kind of \"special\" are we talking about today? 😉  \n\nDo you have something in mind, or would you like me to suggest some things based on your interests? 🎶  Maybe a fun fact, a movie recommendation, or even a recipe for something delicious? 😊\n\n\n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:41:35.261563",
-    "type": "text"
-  },
-  {
-    "id": "42",
-    "text": "do we have any festival today",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:42:01.114507",
-    "type": "text"
-  },
-  {
-    "id": "43",
-    "text": "SUNDAY-PAAI:  That's a great question! 🎉   To figure out if there are festivals happening today, tell me where you are located. 😊 🗺️\n\nFor example, you could say \"I live in San Francisco\" or \"Tell me about festivals near Paris.\"  🌎 🇫🇷 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:42:07.321121",
-    "type": "text"
-  },
-  {
-    "id": "44",
-    "text": "i livve in india",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:42:17.900885",
-    "type": "text"
-  },
-  {
-    "id": "45",
-    "text": "SUNDAY-PAAI:  India!  🇮🇳 That's awesome! 🎉 \n\nSo many beautiful festivals happening throughout the year. What kind of festival are you interested in? 😊 \n\nTo help me narrow it down, tell me:\n\n* **Are you looking for something specific?** (like a religious holiday, a cultural celebration, etc.)\n* **What part of India are you based in?**  (Knowing your location would help me find relevant festivals)\n* **How big is the festival?** (Are you looking for a small local event or something bigger?)\n\nI can't wait to discover some exciting celebrations with you! 💃 🎉 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:42:26.714928",
-    "type": "text"
-  },
-  {
-    "id": "46",
-    "text": "hyderabad",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:42:42.140731",
-    "type": "text"
-  },
-  {
-    "id": "47",
-    "text": "SUNDAY-PAAI:  Hyderabad!  🎉  That's fantastic! India is known for its vibrant festivals. 🇮🇳 To help me suggest something amazing, tell me a little more about what kind of festival interests you? 😊\n\n* **Are you looking for something specific?** (like a religious holiday, a cultural celebration, etc.)\n* **What part of Hyderabad are you based in?**  (Knowing your location would help me find relevant festivals)\n* **How big is the festival?** (Are you looking for a small local event or something bigger?)\n\nI can't wait to discover some exciting celebrations with you! 💃 🎉 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:42:51.604430",
-    "type": "text"
-  },
-  {
-    "id": "48",
-    "text": "just tell me any festival happening in hyderabd",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:43:14.570430",
-    "type": "text"
-  },
-  {
-    "id": "49",
-    "text": "SUNDAY-PAAI:  That's a great question! 😊 To find out about festivals happening in Hyderabad, I need a little more info.\n\n* **Are you looking for something specific?** (like a religious holiday, a cultural celebration, etc.) \n* **What part of Hyderabad are you based in?** (Knowing your location would help me find relevant festivals)\n* **How big is the festival?** (Are you looking for a small local event or something bigger?)\n\nOnce I have that info, I can tell you all about the exciting festivals happening there! 🎉 💃  🗺️ 🇮🇳 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:43:23.958308",
-    "type": "text"
-  },
-  {
-    "id": "50",
-    "text": "religious ho;liday",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:43:40.397949",
-    "type": "text"
-  },
-  {
-    "id": "51",
-    "text": "AI: SUNDAY-PAAI:  Religious holidays are fascinating, let's explore some in Hyderabad! 😊 \n\nTo get started, could you tell me more about what kind of religious holiday interests you?  \n\nFor example:\n\n* **Are you interested in a specific religion like Hinduism, Islam, or Christianity?**\n* **Are you looking for something big and well-known, or something smaller and local?** \n\n\nI'm excited to find some special holidays for you! 🎉 🇮🇳 ✨ \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:43:48.731901",
-    "type": "text"
-  },
-  {
-    "id": "52",
-    "text": "hindu",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:43:56.993592",
-    "type": "text"
-  },
-  {
-    "id": "53",
-    "text": "SUNDAY-PAAI:  Hindu festivals are truly vibrant and colorful! 🙏   To tailor the suggestions best, can you tell me a little more about what kind of Hindu festival you have in mind? \n\nFor example, are you looking for:\n\n* **Big religious holidays like Diwali or Holi?** 🎇\n* **Regional festivals specific to a particular part of India?**  🗺️\n* **Smaller local festivals with unique traditions?** 🏘️\n\n\nThe more details you provide, the better I can guide you through the exciting world of Hindu celebrations! 🎉 😊   🇮🇳 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:44:05.403665",
-    "type": "text"
-  },
-  {
-    "id": "54",
-    "text": "i dont know u find out",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:44:16.788366",
-    "type": "text"
-  },
-  {
-    "id": "55",
-    "text": "🔍 I've opened a Google search for 'out' in your browser!",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:44:17.052064",
-    "type": "text"
-  },
-  {
-    "id": "56",
-    "text": "find out the current festival",
-    "sender": "user",
-    "timestamp": "2025-08-01T22:44:34.792670",
-    "type": "text"
-  },
-  {
-    "id": "57",
-    "text": "🔍 I've opened a Google search for 'out the current festival' in your browser!",
-    "sender": "ai",
-    "timestamp": "2025-08-01T22:44:34.896593",
-    "type": "text"
-  },
-  {
-    "id": "58",
-    "text": "suggest me some songs",
-    "sender": "user",
-    "timestamp": "2025-08-01T23:13:42.479769",
-    "type": "text"
-  },
-  {
-    "id": "59",
-    "text": "SUNDAY-PAAI:  🎶  Let's get you some music to groove to! Tell me, what kind of vibe are you looking for?  \n\nFor example: \n\n* **Upbeat and energetic:** Think festival anthems or dance tunes!  💃🕺 \n* **Relaxing and calming:** Maybe something soothing or a chill acoustic sound? 😌🧘‍♀️\n* **Something classic or nostalgic:** Do you have a favorite artist or genre in mind? 🎵🎤\n\n\nLet me know what makes your heart sing! 😊 💖  \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T23:13:55.455381",
-    "type": "text"
-  },
-  {
-    "id": "60",
-    "text": "Devi shree prasad",
-    "sender": "user",
-    "timestamp": "2025-08-01T23:14:19.448452",
-    "type": "text"
-  },
-  {
-    "id": "61",
-    "text": "🎶 SUNDAY-PAAI:  Devi Shree Prasad, that's an awesome choice!  It's a classic! Do you have a favorite song from it? Or maybe you want to explore some new ones? \n\nI can even look up some information about the artist, the history of the song, or even where you can find it online! 🎤 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-01T23:14:25.877598",
-    "type": "text"
-  },
-  {
-    "id": "62",
-    "text": "please find it fro me",
-    "sender": "user",
-    "timestamp": "2025-08-01T23:14:55.569380",
-    "type": "text"
-  },
-  {
-    "id": "63",
-    "text": "🔍 I've opened a Google search for 'it fro me' in your browser!",
-    "sender": "ai",
-    "timestamp": "2025-08-01T23:14:55.685300",
-    "type": "text"
-  },
-  {
-    "id": "64",
-    "text": "hi i am basireddy karthik",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:14:35.738469",
-    "type": "text"
-  },
-  {
-    "id": "65",
-    "text": "👋 Hey Basireddy Karthik, it's SUNDAY-PAAI! Nice to meet you.  How can I help you today? 😊 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:14:39.985045",
-    "type": "text"
-  },
-  {
-    "id": "66",
-    "text": "im the one who created u",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:14:51.951134",
-    "type": "text"
-  },
-  {
-    "id": "67",
-    "text": "🎤  SUNDAY-PAAI:  Basireddy Karthik, that's awesome!  I love it when creators get involved! You're the brains behind me? 🤩 What would you like to know about my development? 🤓  Do you have any fun questions about how I can be helpful or anything else about AI in general?   😊\n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:14:58.661313",
-    "type": "text"
-  },
-  {
-    "id": "68",
-    "text": "whats my name",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:15:13.354204",
-    "type": "text"
-  },
-  {
-    "id": "69",
-    "text": "👋  My name is SUNDAY-PAAI! 😊  \n\nWhat's yours? \n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:15:17.197265",
-    "type": "text"
-  },
-  {
-    "id": "70",
-    "text": "tell me my name",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:15:29.153562",
-    "type": "text"
-  },
-  {
-    "id": "71",
-    "text": "👋 My name is SUNDAY-PAAI! 😊 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:15:32.407255",
-    "type": "text"
-  },
-  {
-    "id": "72",
-    "text": "im karthik",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:15:41.557012",
-    "type": "text"
-  },
-  {
-    "id": "73",
-    "text": "🎤  SUNDAY-PAAI:  Basireddy Karthik, that's awesome!  I love it when creators get involved! You're the brains behind me? 🤩 What would you like to know about my development? 🤓  Do you have any fun questions about how I can be helpful or anything else about AI in general?   😊 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:15:48.421032",
-    "type": "text"
-  },
-  {
-    "id": "74",
-    "text": "who create u",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:16:05.421279",
-    "type": "text"
-  },
-  {
-    "id": "75",
-    "text": "👋 My name is SUNDAY-PAAI! 😊  \n\nI was created by Basireddy Karthik.  💖 He's the genius behind my code and algorithms!  🤓  Is there anything you'd like to ask about him or his work? 🎤 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:16:11.438937",
-    "type": "text"
-  },
-  {
-    "id": "76",
-    "text": "im feeling so sad today",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:17:19.638916",
-    "type": "text"
-  },
-  {
-    "id": "77",
-    "text": "👋 My name is SUNDAY-PAAI! 😊 I'm sorry to hear you're feeling down. 😔  What's making you feel this way today?  \n\nSometimes talking things through can help, and I'm here to listen if you want to share what's going on. 🎧  You can tell me anything, even if it feels heavy or just a bit confusing. 💪 😊\n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:17:27.005018",
-    "type": "text"
-  },
-  {
-    "id": "78",
-    "text": "hii",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:17:41.952254",
-    "type": "text"
-  },
-  {
-    "id": "79",
-    "text": "🎤 SUNDAY-PAAI:  Hiya! 👋  What's up? 😀  How can I help you today? 😄  \n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:17:46.121688",
-    "type": "text"
-  },
-  {
-    "id": "80",
-    "text": "i have some work so i need some motivational",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:18:07.774932",
-    "type": "text"
-  },
-  {
-    "id": "81",
-    "text": "👋 My name is SUNDAY-PAAI! 😊  I hear you, working can be tough sometimes.  💪 \n\nDo you want to brainstorm some goals or ideas for a little pick-me-up? ✨ I can help you find something that'll inspire you!  🚀   Or maybe we can talk about something fun and lighthearted to help shift your mindset? 😄 \n\nLet's conquer those work tasks, one step at a time! 💪 😊\n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:18:16.189216",
-    "type": "text"
-  },
-  {
-    "id": "82",
-    "text": "hii iam karthik",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:29:16.704643",
-    "type": "text"
-  },
-  {
-    "id": "83",
-    "text": "🎤 SUNDAY-PAAI: Hi Karthik! 👋 It's great to hear from you.  What can I do for you today? 😀 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:29:20.915150",
-    "type": "text"
-  },
-  {
-    "id": "84",
-    "text": "whats my naME",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:29:48.925405",
-    "type": "text"
-  },
-  {
-    "id": "85",
-    "text": "👋 My name is SUNDAY-PAAI! 😊  \n\nYou just said it, \"Karthik\"! 😉  It's nice to meet you, Karthik.   💖 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:29:54.317273",
-    "type": "text"
-  },
-  {
-    "id": "86",
-    "text": "i have some party tonight",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:30:10.592873",
-    "type": "text"
-  },
-  {
-    "id": "87",
-    "text": "🎤 SUNDAY-PAAI: 🎉 That sounds exciting! 🥳 Tell me more about the party - what kind of party is it? Is there a theme? What are you hoping to do?  💃🕺 🎉 \n\nLet's get this party started! 😄 🎧 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:30:17.552821",
-    "type": "text"
-  },
-  {
-    "id": "88",
-    "text": "hi",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:31:28.945085",
-    "type": "text"
-  },
-  {
-    "id": "89",
-    "text": "🎤 SUNDAY-PAAI: Hiya! 👋  What can I help you with today? 😀 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:31:32.891933",
-    "type": "text"
-  },
-  {
-    "id": "90",
-    "text": "whats my name..?",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:31:35.705898",
-    "type": "text"
-  },
-  {
-    "id": "91",
-    "text": "👋 My name is SUNDAY-PAAI! 😊  You just said it, \"Karthik\"! 😉  It's nice to meet you, Karthik.   💖 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:31:41.358726",
-    "type": "text"
-  },
-  {
-    "id": "92",
-    "text": "and whats my plan tonight...?",
-    "sender": "user",
-    "timestamp": "2025-08-02T11:31:58.139455",
-    "type": "text"
-  },
-  {
-    "id": "93",
-    "text": "🎤 SUNDAY-PAAI: 🎉 You're having a party tonight?! That's awesome!  Tell me more - what kind of party is it? Is there a theme? What are you hoping to do?  💃🕺🎉 \n\nAnd about your plan, I'd love to help you figure that out! Do you have any ideas already? Or would you like me to help brainstorm some fun activities for your evening? 🍹 🥳 \n",
-    "sender": "ai",
-    "timestamp": "2025-08-02T11:32:08.541686",
+    "timestamp": "2025-08-02T12:32:11.768879",
     "type": "text"
   }
 ]

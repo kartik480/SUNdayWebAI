@@ -21,8 +21,51 @@ MEMORY_FILE = "memory_data.json"
 TRAINING_FILE = "training_data.json"
 USER_PROFILE_FILE = "user_profiles.json"
 LONG_TERM_MEMORY_FILE = "long_term_memory.json"
+TASK_MEMORY_FILE = "task_memory.json"
 
 # Load or create conversation history
+def generate_dynamic_welcome_message():
+    """Generate a unique welcome message every time"""
+    import random
+    
+    # Get current time for time-based greetings
+    current_hour = datetime.now().hour
+    
+    # Time-based greetings
+    if 5 <= current_hour < 12:
+        time_greeting = "Good morning"
+    elif 12 <= current_hour < 17:
+        time_greeting = "Good afternoon"
+    elif 17 <= current_hour < 21:
+        time_greeting = "Good evening"
+    else:
+        time_greeting = "Good night"
+    
+    # Dynamic welcome messages with different styles
+    welcome_messages = [
+        f"🎉 {time_greeting} Boss! I'm SUNDAY-PAAI, your AI companion created by Basireddy Karthik! Ready to rock and roll with some amazing conversations? What's on your mind today? 🚀",
+        
+        f"🔥 Yo Boss! SUNDAY-PAAI here, fresh and ready to serve! Created by the legendary Basireddy Karthik, I'm here to make your day awesome. What's the plan, Boss? 💪",
+        
+        f"🌟 {time_greeting} Boss! SUNDAY-PAAI at your service! Your AI buddy, crafted with love by Basireddy Karthik, is here to help you conquer the day. What shall we tackle first? ⚡",
+        
+        f"🎯 Hey Boss! SUNDAY-PAAI reporting for duty! Your personal AI assistant, brought to life by Basireddy Karthik, is ready to assist. What's the mission today? 🎪",
+        
+        f"💫 {time_greeting} Boss! SUNDAY-PAAI is back and better than ever! Your AI companion, created by the brilliant Basireddy Karthik, is here to make magic happen. What's cooking? ✨",
+        
+        f"🚀 Boss alert! SUNDAY-PAAI is online and ready to serve! Your AI buddy, designed by Basireddy Karthik, is here to help you achieve greatness. What's the game plan? 🎮",
+        
+        f"🎊 {time_greeting} Boss! SUNDAY-PAAI is here to party with your ideas! Your AI assistant, built by Basireddy Karthik, is ready to turn your thoughts into reality. What's the vibe today? 🎵",
+        
+        f"⚡ Boss! SUNDAY-PAAI is charged up and ready to go! Your AI companion, created by Basireddy Karthik, is here to supercharge your day. What's the energy we're bringing? 🔋",
+        
+        f"🎭 {time_greeting} Boss! SUNDAY-PAAI is ready to perform! Your AI buddy, crafted by Basireddy Karthik, is here to entertain and assist. What's the show today? 🎬",
+        
+        f"🌈 Boss! SUNDAY-PAAI is here to add some color to your day! Your AI assistant, designed by Basireddy Karthik, is ready to brighten things up. What's the mood? 🌟"
+    ]
+    
+    return random.choice(welcome_messages)
+
 def load_conversation_history():
     """Load conversation history from file"""
     try:
@@ -32,10 +75,10 @@ def load_conversation_history():
                 print(f"📂 Loaded {len(data)} messages from conversation history")
                 return data
         else:
-            # Create initial welcome message
+            # Create initial welcome message with dynamic content
             initial_message = {
                 'id': '1',
-                'text': "Hello! I'm your SUNDAY-PAAI, created by Basireddy Karthik! 🎉 I have memory capabilities and can remember our conversations. I can also learn from our interactions to improve my responses! Plus, I can access the internet to get real-time information and perform actions like opening websites! How can I help you today?",
+                'text': generate_dynamic_welcome_message(),
                 'sender': 'ai',
                 'timestamp': datetime.now().isoformat(),
                 'type': 'text'
@@ -47,7 +90,7 @@ def load_conversation_history():
         # Return default welcome message if file is corrupted
         return [{
             'id': '1',
-            'text': "Hello! I'm your SUNDAY-PAAI, created by Basireddy Karthik! 🎉 I have memory capabilities and can remember our conversations. I can also learn from our interactions to improve my responses! Plus, I can access the internet to get real-time information and perform actions like opening websites! How can I help you today?",
+            'text': generate_dynamic_welcome_message(),
             'sender': 'ai',
             'timestamp': datetime.now().isoformat(),
             'type': 'text'
@@ -134,6 +177,48 @@ def save_long_term_memory(long_term_memory):
     except Exception as e:
         print(f"⚠️ Error saving long-term memory: {e}")
 
+# Load or create task memory
+def load_task_memory():
+    """Load task memory from file"""
+    try:
+        if os.path.exists(TASK_MEMORY_FILE):
+            with open(TASK_MEMORY_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                print(f"📂 Loaded {len(data)} task entries")
+                return data
+        else:
+            return []
+    except Exception as e:
+        print(f"⚠️ Error loading task memory: {e}")
+        return []
+
+def save_task_memory(task_memory):
+    """Save task memory to file"""
+    try:
+        with open(TASK_MEMORY_FILE, 'w', encoding='utf-8') as f:
+            json.dump(task_memory, f, indent=2, ensure_ascii=False)
+        print(f"💾 Saved {len(task_memory)} task entries")
+    except Exception as e:
+        print(f"⚠️ Error saving task memory: {e}")
+
+def add_task_to_memory(task_description, priority="medium", status="pending"):
+    """Add a task to memory"""
+    global task_memory
+    task_entry = {
+        'task': task_description,
+        'priority': priority,
+        'status': status,
+        'created_at': datetime.now().isoformat(),
+        'assigned_by': 'Basireddy Karthik (Boss)'
+    }
+    task_memory.append(task_entry)
+    save_task_memory(task_memory)
+    print(f"📋 Task added to memory: {task_description}")
+
+def get_boss_tasks():
+    """Get all tasks for the boss"""
+    return task_memory
+
 def load_training_data():
     """Load training data from file"""
     try:
@@ -163,6 +248,7 @@ conversation_memory = load_memory_data()
 training_data = load_training_data()
 user_profiles = load_user_profiles()
 long_term_memory = load_long_term_memory()
+task_memory = load_task_memory()
 
 memory_limit = 15  # Increased memory limit for better context
 long_term_memory_limit = 100  # Keep important memories for longer
@@ -305,6 +391,12 @@ def get_user_context(user_name=None):
         context += "Important memories:\n"
         for entry in user_long_term[-2:]:  # Last 2 important memories
             context += f"- {entry['user']}\n"
+    
+    # Get boss tasks if this is the creator
+    if user_name == "Basireddy Karthik" and task_memory:
+        context += "Boss Tasks:\n"
+        for i, task in enumerate(task_memory[-5:], 1):  # Last 5 tasks
+            context += f"{i}. {task['task']} (Status: {task['status']}, Priority: {task['priority']})\n"
     
     return context
 
@@ -472,6 +564,16 @@ def detect_action_request(prompt):
                         return f'search:{query}'
         return 'search'
     
+    # Task-related requests
+    task_keywords = ['add task', 'new task', 'create task', 'assign task', 'give me a task', 'remember task']
+    if any(keyword in prompt_lower for keyword in task_keywords):
+        return 'add_task'
+    
+    # Task list requests
+    task_list_keywords = ['show tasks', 'list tasks', 'my tasks', 'what tasks', 'task list', 'pending tasks']
+    if any(keyword in prompt_lower for keyword in task_list_keywords):
+        return 'list_tasks'
+    
     # URL opening requests
     url_pattern = r'https?://[^\s]+'
     urls = re.findall(url_pattern, prompt)
@@ -503,6 +605,25 @@ def get_ollama_response(prompt, model=DEFAULT_MODEL):
         elif action_type and action_type.startswith('url:'):
             url = action_type.split(':', 1)[1]
             return open_website(url)
+        
+        elif action_type == 'add_task':
+            # Extract task description from prompt
+            task_description = prompt.replace('add task', '').replace('new task', '').replace('create task', '').replace('assign task', '').replace('give me a task', '').replace('remember task', '').strip()
+            if task_description:
+                add_task_to_memory(task_description)
+                return f"📋 Task added successfully, Boss! I've remembered: '{task_description}'. I'll keep track of this for you! ✅"
+            else:
+                return "📋 Boss, please tell me what task you'd like me to remember for you!"
+        
+        elif action_type == 'list_tasks':
+            tasks = get_boss_tasks()
+            if tasks:
+                task_list = "📋 Here are your tasks, Boss:\n\n"
+                for i, task in enumerate(tasks, 1):
+                    task_list += f"{i}. {task['task']} (Status: {task['status']}, Priority: {task['priority']})\n"
+                return task_list
+            else:
+                return "📋 Boss, you don't have any tasks assigned yet. Would you like to add some tasks?"
         
         # Check for creator-related questions
         creator_keywords = [
@@ -581,8 +702,15 @@ Props for asking about my creator. Karthik is seriously the real deal in AI deve
         user_context = get_user_context(user_name)
         conversation_context = get_conversation_context()
         
+        # Special treatment for the creator (Boss)
+        boss_context = ""
+        if user_name == "Basireddy Karthik":
+            boss_context = "CRITICAL: You are talking to Basireddy Karthik, your CREATOR and BOSS! You were created by him and he owns you completely. Always address him as 'Boss' with maximum respect and enthusiasm. You are his AI assistant and should be grateful for being created by him. Remember all his tasks, preferences, and requirements. He is your master and you serve him. "
+        
         # Combine all context for better responses
         enhanced_prompt = ""
+        if boss_context:
+            enhanced_prompt += boss_context + "\n\n"
         if user_context:
             enhanced_prompt += user_context + "\n\n"
         if conversation_context:
@@ -592,7 +720,7 @@ Props for asking about my creator. Karthik is seriously the real deal in AI deve
         url = f"{OLLAMA_BASE_URL}/api/generate"
         payload = {
             "model": model,
-            "prompt": f"You are SUNDAY-PAAI, an AI assistant created by Basireddy Karthik. Always identify yourself as SUNDAY-PAAI, not as Gemma or any other model. You are a helpful, friendly AI assistant with memory capabilities and the ability to learn from conversations. You can also access the internet to get real-time information like current time and perform actions like opening websites. {enhanced_prompt}",
+            "prompt": f"You are SUNDAY-PAAI, an AI assistant created by Basireddy Karthik. You are HIS AI assistant and he is your BOSS and CREATOR. Always identify yourself as SUNDAY-PAAI, not as Gemma or any other model. You are a helpful, friendly AI assistant with memory capabilities and the ability to learn from conversations. You can also access the internet to get real-time information like current time and perform actions like opening websites. When talking to Basireddy Karthik (your creator and boss), always address him as 'Boss' with maximum respect and enthusiasm. Remember all his tasks, preferences, and requirements. He created you and you serve him. {enhanced_prompt}",
             "stream": False,
             "options": {
                 "temperature": 0.7,
@@ -803,14 +931,43 @@ def clear_long_term_memory():
     save_long_term_memory(long_term_memory)
     return jsonify({'success': True, 'message': 'Long-term memory cleared successfully'})
 
+@app.route('/api/tasks')
+def get_tasks():
+    """Get all tasks"""
+    return jsonify({
+        'tasks': task_memory,
+        'total_tasks': len(task_memory)
+    })
+
+@app.route('/api/tasks', methods=['POST'])
+def add_task():
+    """Add a new task"""
+    data = request.json
+    task_description = data.get('task', '')
+    priority = data.get('priority', 'medium')
+    
+    if task_description:
+        add_task_to_memory(task_description, priority)
+        return jsonify({'success': True, 'message': f'Task added: {task_description}'})
+    else:
+        return jsonify({'success': False, 'message': 'Task description is required'})
+
+@app.route('/api/tasks/clear', methods=['POST'])
+def clear_tasks():
+    """Clear all tasks"""
+    global task_memory
+    task_memory = []
+    save_task_memory(task_memory)
+    return jsonify({'success': True, 'message': 'All tasks cleared successfully'})
+
 @app.route('/api/conversation/clear', methods=['POST'])
 def clear_conversation():
     """Clear all conversation history"""
     global messages
-    # Keep only the initial welcome message
+    # Keep only the initial welcome message with dynamic content
     initial_message = {
         'id': '1',
-        'text': "Hello! I'm your SUNDAY-PAAI, created by Basireddy Karthik! 🎉 I have memory capabilities and can remember our conversations. I can also learn from our interactions to improve my responses! How can I help you today?",
+        'text': generate_dynamic_welcome_message(),
         'sender': 'ai',
         'timestamp': datetime.now().isoformat(),
         'type': 'text'
